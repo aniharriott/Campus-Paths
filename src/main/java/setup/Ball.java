@@ -14,10 +14,10 @@ public class Ball {
 
     /**
      * Constructor that creates a new ball object with the specified volume.
-     * @param volume Volume of the new object.
+     * @param vol Volume of the new object.
      */
-    public Ball(double volume) {
-        volume = volume;
+    public Ball(double vol) {
+        volume = vol;
     }
 
     /**
@@ -25,7 +25,7 @@ public class Ball {
      * @return the volume of the Ball.
      */
     public double getVolume() {
-        return 0;
+        return volume;
     }
 
 }
