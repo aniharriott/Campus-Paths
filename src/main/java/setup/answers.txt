@@ -1,7 +1,7 @@
 CSE 331 Homework 3.  Answers to Written questions.
 Edit this file to supply your answers.
 
-Name:  <Anina Harriott>
+Name:  Anina Harriott
 
 Problem 6.
 
@@ -22,4 +22,9 @@ Problem 6.
 
 Problem 7. 
 
-<replace this line with your answers>
+ 1. The problems with Ball.java were that a variable and a field were both named volume, and the method getVolume()
+    was always returning 0 instead of that objects volume. I changed the variable referring to a volume to vol and
+    left the field as volume. I changed the method getVolume() to return volume.
+
+ 2. I think the second approach to getVolume() for BallContainer is better (keeping track of the total volume) because
+    it gets rid of repeated computations and reduces the complexity of the method, so it truly just gets the volume.
