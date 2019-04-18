@@ -17,11 +17,14 @@ public class BallContainer implements Iterable<Ball> {
 
     /** Contents of the BallContainer. */
     private Set<Ball> contents;
+    /** Total volume of all the Balls in the BallContainer. */
+    private double totalVolume;
 
     /**
      * Constructor that creates a new ballcontainer.
      */
     public BallContainer() {
+        totalVolume = 0.0;
         contents = new LinkedHashSet<Ball>();
     }
 
@@ -55,8 +58,13 @@ public class BallContainer implements Iterable<Ball> {
      * already in the container.
      */
     public boolean add(Ball b) {
-        // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        // Add to totalVolume field
+        if (contents.add(b)) {
+            totalVolume = totalVolume + b.getVolume();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -72,8 +80,13 @@ public class BallContainer implements Iterable<Ball> {
      * in the container.
      */
     public boolean remove(Ball b) {
-        // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        // Subtract from totalVolume field
+        if (contents.remove(b)) {
+            totalVolume = totalVolume - b.getVolume();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -82,8 +95,7 @@ public class BallContainer implements Iterable<Ball> {
      * @return the volume of the contents of the container.
      */
     public double getVolume() {
-        // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        return totalVolume;
     }
 
     /**
@@ -91,16 +103,15 @@ public class BallContainer implements Iterable<Ball> {
      * @return the number of Balls in this container.
      */
     public int size() {
-        // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        return contents.size();
     }
 
     /**
      * Empties the container, i.e. removes all its contents.
      */
     public void clear() {
-        // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        contents.clear();
+        totalVolume = 0.0;
     }
 
     /**
@@ -112,8 +123,7 @@ public class BallContainer implements Iterable<Ball> {
      * false, otherwise.
      */
     public boolean contains(Ball b) {
-        // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        return contents.contains(b);
     }
 
 }
