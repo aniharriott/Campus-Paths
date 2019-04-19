@@ -110,8 +110,8 @@ public class BallContainer implements Iterable<Ball> {
      * Empties the container, i.e. removes all its contents.
      */
     public void clear() {
-        contents.clear();
-        totalVolume = 0.0;
+            contents.clear();
+            totalVolume = 0.0;
     }
 
     /**
