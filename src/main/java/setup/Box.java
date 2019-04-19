@@ -4,7 +4,7 @@
 package setup;
 
 import java.lang.Iterable;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * This is a container can be used to contain Balls. The key
@@ -17,14 +17,18 @@ public class Box implements Iterable<Ball> {
      * ballContainer is used to internally store balls for this Box
      */
     private BallContainer ballContainer;
+    /**
+     * The total volume this box can contain
+     */
+    private double maximum;
 
     /**
      * Constructor that creates a new box.
      * @param maxVolume Total volume of balls that this box can contain.
      */
     public Box(double maxVolume) {
-        // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        ballContainer = new BallContainer();
+        maximum = maxVolume;
     }
 
     /**
@@ -53,8 +57,13 @@ public class Box implements Iterable<Ball> {
      * if the box is too full to contain the new ball.
      */
     public boolean add(Ball b) {
-        // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+            double total = b.getVolume() + getVolume();
+            if (!contains(b) && total <= maximum) {
+                ballContainer.add(b);
+                return true;
+            } else {
+                return false;
+            }
     }
 
     /**
@@ -65,8 +74,13 @@ public class Box implements Iterable<Ball> {
      * ascending size.
      */
     public Iterator<Ball> getBallsFromSmallest() {
-        // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        ArrayList<Ball> listOfBalls = new ArrayList<Ball>();
+        for (Ball b : ballContainer) {
+            listOfBalls.add(b);
+        }
+        Comparator<Ball> byVolume = Comparator.comparing(Ball::getVolume);
+        listOfBalls.sort(byVolume);
+        return listOfBalls.iterator();
     }
 
     /**
@@ -106,7 +120,7 @@ public class Box implements Iterable<Ball> {
      * Empties the box, i.e. removes all its contents.
      */
     public void clear() {
-        ballContainer.clear();
+            ballContainer.clear();
     }
 
     /**
