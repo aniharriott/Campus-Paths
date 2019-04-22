@@ -6,19 +6,52 @@ Name:  Anina Harriott
 Problem 0.
 
 (a) r = p * q:
-        set r = empty
+        set r = 0 (a polynomial)
         {Inv: r = q*p_0 + q*p_1 + ... + q*p_n-1, where p_n is the nth term in p}
         for each term, t_p, in p:
-            set s = empty
+            set s = 0 (a polynomial)
             {Inv: s = t_p*q_0 + t_p*q_1 + ... + t_p*q_n-1, where q_n is the nth term in q}
             for each term, t_q, in q:
                 multiply the coefficients of t_p and t_q
-                add the degrees of t_p and t_q
-                add new term to s
+                add the exponents of t_p and t_q
+                use new coefficient and new exponent to make a new term and add that to s
             use polynomial addition to add s to r (will condense like terms)
 
-(b)
+     DEFINITION OF ADDITION OF TERM AND POLYNOMIAL
+     r = p + t_0:
+        set r = p
+        t_0 = the term
+        {Inv: r = (t_p0+t_0) + (t_p1+t_0) + ... + (t_pn-1+t_0)}
+        for each term, t_r, in r:
+            if any term in t_r matches the exponent of t_0:
+                then replace t_r with the sum of t_r and t_0
+                else insert t_0 to r as a new term
 
+(b) q = u / v:
+        set q = 0
+        {Inv: q = u_prev0FirstTerm/v_prev0FirstTerm + u_prev1FirstTerm/v_prev1FirstTerm +
+            ... + u_prevn-1FirstTerm/v_prevn-1FirstTerm}
+        while the highest degree of v is < the highest degree of u:
+            set t_u = highest degree term of u
+            set t_v = highest degree term of v
+            set t_coefficient = 0
+            if the coefficient of t_u % the coefficient of t_v = 0:
+                then divide the coefficient of u by that of v and the result is set to t_coefficient
+                else t_coefficient is "(coefficient of u)/(coefficient of v)"
+            subtract the exponent of t_v from the exponent of t_u and set as t_exponent
+            set t_temp = a new polynomial term with t_coefficient as its coefficient and t_exponent as its exponent
+            add t_temp to q
+            set v_temp = multiply t_temp by v
+            set u = u - v_temp
+
+    DEFINITION OF POLYNOMIAL SUBTRACTION
+    r = p - q:
+        set r = q by making a term-by-term copy of all terms in q to r
+        {Inv: r = q - p_0 - p_1 - ... - p_i-1, where p_i is the ith term in p}
+        foreach term, t_p, in p:
+            if any term, t_r, in r has the same degree as t_p,
+                then replace t_r in r with the difference of t_p and t_r
+            else insert t_p into r as a new negative term
 
 (c)
 
