@@ -1,12 +1,21 @@
 CSE 331 Homework 4.  Answers to written questions.
 Edit this file to supply your answers.
 
-Name:  <replace this with your name>
+Name:  Anina Harriott
 
 Problem 0.
 
-(a)
-
+(a) r = p * q:
+        set r = empty
+        {Inv: r = q*p_0 + q*p_1 + ... + q*p_n-1, where p_n is the nth term in p}
+        for each term, t_p, in p:
+            set s = empty
+            {Inv: s = t_p*q_0 + t_p*q_1 + ... + t_p*q_n-1, where q_n is the nth term in q}
+            for each term, t_q, in q:
+                multiply the coefficients of t_p and t_q
+                add the degrees of t_p and t_q
+                add new term to s
+            use polynomial addition to add s to r (will condense like terms)
 
 (b)
 
