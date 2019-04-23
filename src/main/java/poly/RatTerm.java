@@ -113,10 +113,9 @@ public final class RatTerm {
       return Double.NaN;
     }
     // d = x, d to the power of this.expt
-    RatNum num = new RatNum((int) Math.pow(d, expt));
+    double num = Math.pow(d, expt);
     // then multiply by this.coeff
-    RatNum answer = coeff.mul(num);
-    return answer.doubleValue();
+    return coeff.doubleValue()*num;
   }
 
   /**
@@ -144,7 +143,7 @@ public final class RatTerm {
   public RatTerm add(RatTerm arg) {
     if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
       return RatTerm.NaN;
-    } else if ((this.expt != arg.getExpt()) && !this.equals(RatTerm.ZERO) && !arg.equals(RatTerm.ZERO)) {
+    } else if ((this.expt != arg.getExpt()) && this.equals(RatTerm.ZERO) && arg.equals(RatTerm.ZERO)) {
       throw new IllegalArgumentException("Exponents must match and neither argument can be a NaN or zero");
     }
     RatNum c = this.coeff.add(arg.getCoeff()); // add coefficients of terms
@@ -163,7 +162,7 @@ public final class RatTerm {
   public RatTerm sub(RatTerm arg) {
     if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
       return RatTerm.NaN;
-    } else if ((this.expt != arg.getExpt()) && !this.equals(RatTerm.ZERO) && !arg.equals(RatTerm.ZERO)) {
+    } else if ((this.expt != arg.getExpt()) && this.equals(RatTerm.ZERO) && arg.equals(RatTerm.ZERO)) {
       throw new IllegalArgumentException("Exponents must match and neither argument can be a NaN or zero");
     }
     RatNum c = this.coeff.sub(arg.getCoeff()); // subtract coefficients of terms
@@ -242,8 +241,15 @@ public final class RatTerm {
    *     function, RatPoly, contains a rep. invariant stating that b is never less than 0.)
    */
   public RatTerm antiDifferentiate() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.antiDifferentiate() unimplemented!");
+    if (isNaN()) {
+      return RatTerm.NaN;
+    }
+    // divide coefficient by (exponent + 1)
+    RatNum exponent = new RatNum(expt);
+    exponent = exponent.add(new RatNum(1));
+    RatNum c = coeff.div(exponent);
+    // add 1 to the exponent
+    return new RatTerm(c, expt + 1);
   }
 
   /**
