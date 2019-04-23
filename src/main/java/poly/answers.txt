@@ -29,20 +29,20 @@ Problem 0.
 
 (b) q = u / v:
         set q = 0
-        set t_u = highest degree term of u
+        set u_change = u
+        set t_u = highest degree term of u_change
         set t_v = highest degree term of v
-        {Inv: q = u_prev0FirstTerm/v_prev0FirstTerm + u_prev1FirstTerm/v_prev1FirstTerm +
-            ... + u_prevn-1FirstTerm/v_prevn-1FirstTerm}
-        while the highest degree of v is < the highest degree of u:
+        {Inv: q = t_u_0/t_v + t_u_1/t_v + ... + t_u_n-1/t_v}
+        while the highest degree of v is < the highest degree of u_change:
             set t_coefficient = 0
-            if the coefficient of t_u % the coefficient of t_v = 0:
-                then divide the coefficient of t_u by that of t_v and the result is set to t_coefficient
-                else t_coefficient is "(coefficient of t_u)/(coefficient of t_v)"
-            subtract the exponent of t_v from the exponent of t_u and set as t_exponent
+            if the coefficient of t_u_change % the coefficient of t_v = 0:
+                then divide the coefficient of t_u_change by that of t_v and the result is set to t_coefficient
+                else t_coefficient is "(coefficient of t_u_change)/(coefficient of t_v)"
+            subtract the exponent of t_v from the exponent of t_u_change and set as t_exponent
             set t_temp = a new polynomial term with t_coefficient as its coefficient and t_exponent as its exponent
             add t_temp to q
             set v_temp = multiply t_temp by v
-            set u = u - v_temp
+            set u_change = u_change - v_temp
 
     DEFINITION OF POLYNOMIAL SUBTRACTION
     r = p - q:
@@ -65,39 +65,40 @@ Problem 0.
     u = (x^3+x-1)
     v = (x+1)
     q = 0
+    set u_change = u
     t_u = x^3
     t_v = x
-    while the highest degree of v is <= the highest degree of u:
+    while the highest degree of v is <= the highest degree of u_change:
 
-        ITERATION 1: u = (x^3+x-1), v = (x+1), q = 0, t_u = x^3, t_v = x
-        [if the coefficient of t_u % the coefficient of t_v = 0:] YES 1%1 = 0
-            [then divide the coefficient of t_u by that of t_v and the result is set to t_coefficient] 1/1 = 1 = t_coefficient
-            [else t_coefficient is "(coefficient of t_u)/(coefficient of t_v)"]
-        [subtract the exponent of t_v from the exponent of t_u and set as t_exponent] t_exponent = 3 - 1 = 2
+        ITERATION 1: u_change = (x^3+x-1), v = (x+1), q = 0, t_u_change = x^3, t_v = x
+        [if the coefficient of t_u_change % the coefficient of t_v = 0:] YES 1%1 = 0
+            [then divide the coefficient of t_u_change by that of t_v and the result is set to t_coefficient] 1/1 = 1 = t_coefficient
+            [else t_coefficient is "(coefficient of t_u_change)/(coefficient of t_v)"]
+        [subtract the exponent of t_v from the exponent of t_u_change and set as t_exponent] t_exponent = 3 - 1 = 2
         [set t_temp = a new polynomial term with t_coefficient as its coefficient and t_exponent as its exponent] t_temp = x^2
         [add t_temp to q] q = 0 + x^2 => q = x^2
         [set v_temp = multiply t_temp by v] v_temp = x^2 * (x+1) => v_temp = (x^3+x^2)
-        [set u = u - v_temp] u = (x^3+x-1) - (x^3+x^2) => u = (-x^2+x-1)
+        [set u_change = u_change - v_temp] u_change = (x^3+x-1) - (x^3+x^2) => u_change = (-x^2+x-1)
 
-        ITERATION 2: u = (-x^2+x-1), v = (x+1), q = x^2, t_u = -x^2, t_v = x
-        [if the coefficient of t_u % the coefficient of t_v = 0:] YES -1%1 = 0
-            [then divide the coefficient of t_u by that of t_v and the result is set to t_coefficient] -1/1 = -1 = t_coefficient
-            [else t_coefficient is "(coefficient of t_u)/(coefficient of t_v)"]
-        [subtract the exponent of t_v from the exponent of t_u and set as t_exponent] t_exponent = 2 - 1 = 1
+        ITERATION 2: u_change = (-x^2+x-1), v = (x+1), q = x^2, t_u_change = -x^2, t_v = x
+        [if the coefficient of t_u_change % the coefficient of t_v = 0:] YES -1%1 = 0
+            [then divide the coefficient of t_u_change by that of t_v and the result is set to t_coefficient] -1/1 = -1 = t_coefficient
+            [else t_coefficient is "(coefficient of t_u_change)/(coefficient of t_v)"]
+        [subtract the exponent of t_v from the exponent of t_u_change and set as t_exponent] t_exponent = 2 - 1 = 1
         [set t_temp = a new polynomial term with t_coefficient as its coefficient and t_exponent as its exponent] t_temp = -x^1 = -x
         [add t_temp to q] q = x^2 + -x => q = x^2-x
         [set v_temp = multiply t_temp by v] v_temp = -x * (x+1) => v_temp = (-x^2-x)
-        [set u = u - v_temp] u = (-x^2+x-1) - (-x^2-x) => u = (2x-1)
+        [set u_change = u_change - v_temp] u_change = (-x^2+x-1) - (-x^2-x) => u_change = (2x-1)
 
-        ITERATION 3: u = (2x-1), v = (x+1), q = x^2-x, t_u = 2x, t_v = x
-        [if the coefficient of t_u % the coefficient of t_v = 0:] YES 2%1 = 0
-            [then divide the coefficient of t_u by that of t_v and the result is set to t_coefficient] 2/1 = 2 = t_coefficient
-            [else t_coefficient is "(coefficient of t_u)/(coefficient of t_v)"]
-        [subtract the exponent of t_v from the exponent of t_u and set as t_exponent] t_exponent = 1 - 1 = 0
+        ITERATION 3: u_change = (2x-1), v = (x+1), q = x^2-x, t_u_change = 2x, t_v = x
+        [if the coefficient of t_u_change % the coefficient of t_v = 0:] YES 2%1 = 0
+            [then divide the coefficient of t_u_change by that of t_v and the result is set to t_coefficient] 2/1 = 2 = t_coefficient
+            [else t_coefficient is "(coefficient of t_u_change)/(coefficient of t_v)"]
+        [subtract the exponent of t_v from the exponent of t_u_change and set as t_exponent] t_exponent = 1 - 1 = 0
         [set t_temp = a new polynomial term with t_coefficient as its coefficient and t_exponent as its exponent] t_temp = 2x^0 = 2
         [add t_temp to q] q = x^2-x+2
         [set v_temp = multiply t_temp by v] v_temp = 2*(x+1) => v_temp = 2x+2
-        [set u = u - v_temp] u = (2x-1) - (2x+2) => u = (-3)
+        [set u_change = u_change - v_temp] u_change = (2x-1) - (2x+2) => u_change = (-3)
 
 Problem 1.
 
