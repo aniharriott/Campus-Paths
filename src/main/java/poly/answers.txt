@@ -100,16 +100,22 @@ Problem 0.
         [set v_temp = multiply t_temp by v] v_temp = 2*(x+1) => v_temp = 2x+2
         [set u_change = u_change - v_temp] u_change = (2x-1) - (2x+2) => u_change = (-3)
 
+        Done: q = x^2-x+2
+
 Problem 1.
 
-(a)
+(a) The constructor would no longer need to reduce the numerator and denominator, checkRep should no longer check for
+    lowest form. toString, add, sub, mul, and div would have to reduce the fractions before operations, but not after.
+    This would create repeated reducing of fractions when running operations on them, and would make the code less clear.
 
+(b) This fails to meet the specification of the methods because the methods are supposed to return something equivalent
+    to this modified by something, but instead you are changing this and returning this, which by changing it the specification
+    becomes incorrect. Also, the methods don't specify that they modify anything, so the new implementation would break the
+    spec that way. Additionally, the class spec says that RatNum is immutable, so changing the fields of this would break that.
 
-(b)
-
-
-(c)
-
+(c) checkRep only needs to be called at the end of constructors because the class RatNum is supposed to be immutable.
+    In all the other methods the fields shouldn't be changed, which means the representation invariant could only change
+    in the constructors, so if it is satisfied at the end of the constructor then it should always be satisfied.
 
 Problem 2.
 
