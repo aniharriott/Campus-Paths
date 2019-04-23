@@ -52,8 +52,13 @@ public final class RatTerm {
    *     t.expt = 0, otherwise t.expt = e
    */
   public RatTerm(RatNum c, int e) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.constructor is not yet implemented");
+    if (c.equals(RatNum.ZERO)) {
+      expt = 0;
+    } else {
+      expt = e;
+    }
+    coeff = c;
+    checkRep();
   }
 
   /**
@@ -62,8 +67,10 @@ public final class RatTerm {
    * @return the coefficient of this RatTerm
    */
   public RatNum getCoeff() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.getCoeff() is not yet implemented");
+    // don't return the RatNum object of this class,
+    // that could affect immutability
+    RatNum c = coeff;
+    return c;
   }
 
   /**
@@ -72,8 +79,8 @@ public final class RatTerm {
    * @return the exponent of this RatTerm
    */
   public int getExpt() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.getExpt() is not yet implemented");
+    // int not an object, doesn't need to be copied
+    return expt;
   }
 
   /**
@@ -82,8 +89,7 @@ public final class RatTerm {
    * @return true if and only if this has NaN as a coefficient
    */
   public boolean isNaN() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.isNaN() is not yet implemented");
+    return coeff.equals(RatNum.NaN);
   }
 
   /**
@@ -92,8 +98,7 @@ public final class RatTerm {
    * @return true if and only if this has zero as a coefficient
    */
   public boolean isZero() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.isZero() is not yet implemented");
+    return coeff.equals(RatNum.ZERO);
   }
 
   /**
@@ -104,9 +109,14 @@ public final class RatTerm {
    *     is 12. if (this.isNaN() == true), return Double.NaN
    */
   public double eval(double d) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    // Hint: You may find java.lang.Math's pow() method useful.
-    throw new RuntimeException("RatTerm.eval() is not yet implemented");
+    if (isNaN()) {
+      return Double.NaN;
+    }
+    // d = x, d to the power of this.expt
+    RatNum num = new RatNum((int) Math.pow(d, expt));
+    // then multiply by this.coeff
+    RatNum answer = coeff.mul(num);
+    return answer.doubleValue();
   }
 
   /**
@@ -115,8 +125,11 @@ public final class RatTerm {
    * @return a RatTerm equals to (-this). If this is NaN, then returns NaN.
    */
   public RatTerm negate() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.negate() is not yet implemented");
+    if (isNaN()) {
+      return RatTerm.NaN;
+    }
+    RatNum negC = coeff.negate();
+    return new RatTerm(negC, expt);
   }
 
   /**
@@ -129,8 +142,13 @@ public final class RatTerm {
    *     NaN.
    */
   public RatTerm add(RatTerm arg) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.add() is not yet implemented");
+    if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
+      return RatTerm.NaN;
+    } else if ((this.expt != arg.getExpt()) && !this.equals(RatTerm.ZERO) && !arg.equals(RatTerm.ZERO)) {
+      throw new IllegalArgumentException("Exponents must match and neither argument can be a NaN or zero");
+    }
+    RatNum c = this.coeff.add(arg.getCoeff()); // add coefficients of terms
+    return new RatTerm(c, this.expt); // exponent remains the same
   }
 
   /**
@@ -143,8 +161,13 @@ public final class RatTerm {
    *     NaN.
    */
   public RatTerm sub(RatTerm arg) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.sub() is not yet implemented");
+    if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
+      return RatTerm.NaN;
+    } else if ((this.expt != arg.getExpt()) && !this.equals(RatTerm.ZERO) && !arg.equals(RatTerm.ZERO)) {
+      throw new IllegalArgumentException("Exponents must match and neither argument can be a NaN or zero");
+    }
+    RatNum c = this.coeff.sub(arg.getCoeff()); // subtract coefficients of terms
+    return new RatTerm(c, this.expt); // exponent remains the same
   }
 
   /**
@@ -155,8 +178,14 @@ public final class RatTerm {
    * @return a RatTerm equals to (this * arg). If either argument is NaN, then returns NaN.
    */
   public RatTerm mul(RatTerm arg) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.mul() is not yet implemented");
+    if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
+      return RatTerm.NaN;
+    }
+    // multiply the coefficients
+    RatNum c = this.coeff.mul(arg.getCoeff());
+    // add the exponents
+    int e = this.expt + arg.getExpt();
+    return new RatTerm(c, e);
   }
 
   /**
@@ -168,8 +197,14 @@ public final class RatTerm {
    *     returns NaN.
    */
   public RatTerm div(RatTerm arg) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.div() is not yet implemented");
+    if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN) | arg.equals(RatTerm.ZERO)) {
+      return RatTerm.NaN;
+    }
+    // divide the coefficients
+    RatNum c = this.coeff.div(arg.getCoeff());
+    // subtract the exponents
+    int e = this.expt - arg.getExpt();
+    return new RatTerm(c, e);
   }
 
   /**
@@ -182,8 +217,18 @@ public final class RatTerm {
    *     RatPoly, contains a rep. invariant stating that b is never less than 0.)
    */
   public RatTerm differentiate() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatTerm.differentiate() is not yet implemented");
+    if (isNaN()) {
+      return RatTerm.NaN;
+    }
+    if (expt == 0){
+      return RatTerm.ZERO;
+    }
+    // multiply the coefficient by the exponent
+    RatNum exponent = new RatNum(expt);
+    RatNum c = coeff.mul(exponent);
+    // subtract 1 from the exponent
+    int e = expt - 1;
+    return new RatTerm(c, e);
   }
 
   /**
