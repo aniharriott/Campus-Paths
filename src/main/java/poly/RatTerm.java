@@ -143,11 +143,15 @@ public final class RatTerm {
   public RatTerm add(RatTerm arg) {
     if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
       return RatTerm.NaN;
-    } else if ((this.expt != arg.getExpt()) && this.equals(RatTerm.ZERO) && arg.equals(RatTerm.ZERO)) {
-      throw new IllegalArgumentException("Exponents must match and neither argument can be a NaN or zero");
+    } else if ((this.expt != arg.getExpt()) && !this.equals(RatTerm.ZERO) && !arg.equals(RatTerm.ZERO) && !this.equals(RatTerm.NaN) && !arg.equals(RatTerm.NaN)) {
+      throw new IllegalArgumentException("Exponents must match, arguments can't be a NaN or zero");
+    }
+    int e = this.expt;
+    if (this.equals(RatTerm.ZERO)){
+      e = arg.getExpt();
     }
     RatNum c = this.coeff.add(arg.getCoeff()); // add coefficients of terms
-    return new RatTerm(c, this.expt); // exponent remains the same
+    return new RatTerm(c, e); // exponent remains the same
   }
 
   /**
@@ -162,11 +166,15 @@ public final class RatTerm {
   public RatTerm sub(RatTerm arg) {
     if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
       return RatTerm.NaN;
-    } else if ((this.expt != arg.getExpt()) && this.equals(RatTerm.ZERO) && arg.equals(RatTerm.ZERO)) {
-      throw new IllegalArgumentException("Exponents must match and neither argument can be a NaN or zero");
+    } else if ((this.expt != arg.getExpt()) && !this.equals(RatTerm.ZERO) && !arg.equals(RatTerm.ZERO) && !this.equals(RatTerm.NaN) && !arg.equals(RatTerm.NaN)){
+      throw new IllegalArgumentException("Exponents must match, arguments can't be a NaN or zero");
+    }
+    int e = this.expt;
+    if (this.equals(RatTerm.ZERO)){
+      e = arg.getExpt();
     }
     RatNum c = this.coeff.sub(arg.getCoeff()); // subtract coefficients of terms
-    return new RatTerm(c, this.expt); // exponent remains the same
+    return new RatTerm(c, e); // exponent remains the same
   }
 
   /**
