@@ -45,12 +45,12 @@ Problem 0.
 
     DEFINITION OF POLYNOMIAL SUBTRACTION
     r = p - q:
-        set r = q by making a term-by-term copy of all terms in q to r
-        {Inv: r = q - p_0 - p_1 - ... - p_i-1, where p_i is the ith term in p}
-        for each term, t_p, in p:
-            if any term, t_r, in r has the same degree as t_p,
-                then replace t_r in r with the difference of t_p and t_r
-                else insert t_p into r as a new negative term
+        set r = p by making a term-by-term copy of all terms in q to r
+        {Inv: r = p - q_0 - q_1 - ... - q_i-1, where q_i is the ith term in q}
+        for each term, t_q, in q:
+            if any term, t_r, in r has the same degree as t_q,
+                then replace t_r in r with the difference of t_q and t_r
+                else insert t_q into r as a new negative term
 
     DEFINITION OF MULTIPLICATION WITH A TERM AND A POLYNOMIAL
     r = t * p:
