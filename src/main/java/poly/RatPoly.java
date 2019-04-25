@@ -114,6 +114,7 @@ public final class RatPoly {
       return 0;
     }
     RatTerm highest = terms.get(0);
+    checkRep();
     return highest.getExpt();
   }
 
@@ -131,6 +132,7 @@ public final class RatPoly {
         return rt;
       }
     }
+    checkRep();
     return RatTerm.ZERO;
   }
 
@@ -145,6 +147,7 @@ public final class RatPoly {
         return true;
       }
     }
+    checkRep();
     return false;
   }
 
@@ -207,7 +210,11 @@ public final class RatPoly {
     for(int i = 0; i < lst.size(); i++){
       RatTerm rt = lst.get(i);
       if (rt.getExpt() == newTerm.getExpt()){
-        lst.set(i, rt.add(newTerm));
+        if (!rt.add(newTerm).equals(RatTerm.ZERO)) {
+          lst.set(i, rt.add(newTerm));
+        }else{
+          lst.remove(i);
+        }
         return;
       } else if (rt.getExpt() < newTerm.getExpt()){
         lst.add(i, newTerm);
@@ -224,6 +231,7 @@ public final class RatPoly {
    */
   public RatPoly negate() {
     if (this.isNaN()) {
+      checkRep();
       return RatPoly.NaN;
     }
     List<RatTerm> newTerms = new ArrayList<RatTerm>();
@@ -231,6 +239,7 @@ public final class RatPoly {
       RatTerm negTerm = terms.get(i).negate();
       newTerms.add(i, negTerm);
     }
+    checkRep();
     return new RatPoly(newTerms);
   }
 
@@ -243,20 +252,24 @@ public final class RatPoly {
    *     such that r.isNaN()
    */
   public RatPoly add(RatPoly p) {
-    if(this.isNaN() | p.isNaN()) {
+    if(this.isNaN() || p.isNaN()) {
+      checkRep();
       return RatPoly.NaN;
     }
-    List<RatTerm> returnList = terms;
-    for (int i = 0; i < returnList.size(); i++){
-      int degree = returnList.get(i).getExpt();
-      if(!p.getTerm(degree).equals(RatTerm.ZERO)){
-        returnList.set(i, returnList.get(i).add(p.getTerm(degree)));
-      } else {
-        returnList.add(i, p.getTerm(degree));
-        i++;
-      }
+    List<RatTerm> returnList = new ArrayList<RatTerm>();
+    for (RatTerm tt : this.terms) {
+      returnList.add(tt);
     }
-    return new RatPoly(returnList);
+    for (RatTerm tp : p.terms) {
+      sortedInsert(returnList, tp);
+    }
+    if(returnList.isEmpty()){
+      checkRep();
+      return RatPoly.ZERO;
+    } else {
+      checkRep();
+      return new RatPoly(returnList);
+    }
   }
 
   /**
@@ -268,8 +281,7 @@ public final class RatPoly {
    *     such that r.isNaN()
    */
   public RatPoly sub(RatPoly p) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.sub() is not yet implemented");
+    return add(p.negate());
   }
 
   /**
@@ -281,8 +293,14 @@ public final class RatPoly {
    *     such that r.isNaN()
    */
   public RatPoly mul(RatPoly p) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.mul() is not yet implemented");
+    List<RatTerm> r = new ArrayList<RatTerm>();
+    for (RatTerm tp : p.terms) {
+      for (RatTerm tt : this.terms) {
+        RatTerm addition = tt.mul(tp);
+        sortedInsert(r, addition);
+      }
+    }
+    return new RatPoly(r);
   }
 
   /**
