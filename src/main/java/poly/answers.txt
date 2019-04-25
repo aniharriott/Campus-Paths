@@ -118,11 +118,13 @@ Problem 1.
 
 Problem 2.
 
-(a)
+(a) I only included a call to checkRep at the end of the constructor. This is because the rep invariant applies to the
+    current state of the object, and since the spec describes RatTerm as immutable, the constructor is the only thing
+    that is capable of altering its state or rep invariant. The rest of the class is written without editing the
+    objects fields.
 
-
-(b)
-
+(b) The things that would have to change would be that the constructor no longer needs a sepcial case for when the RatTerm
+    is equal to zero. toString?
 
 (c)
 
