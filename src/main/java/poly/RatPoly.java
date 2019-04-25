@@ -68,8 +68,11 @@ public final class RatPoly {
    * @spec.effects Constructs a new Poly equal to "rt". If rt.isZero(), constructs a "0" polynomial.
    */
   public RatPoly(RatTerm rt) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly constructor is not yet implemented");
+    terms = new ArrayList<RatTerm>();
+    if (!rt.isZero()) {
+      terms.add(rt);
+    }
+    checkRep();
   }
 
   /**
@@ -80,8 +83,12 @@ public final class RatPoly {
    *     polynomial.
    */
   public RatPoly(int c, int e) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly constructor is not yet implemented");
+    terms = new ArrayList<RatTerm>();
+    if (c != 0){
+      RatNum coeff = new RatNum(c);
+      terms.add(new RatTerm(coeff, e));
+    }
+    checkRep();
   }
 
   /**
@@ -103,8 +110,11 @@ public final class RatPoly {
    * @return the largest exponent with a non-zero coefficient, or 0 if this is "0"
    */
   public int degree() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.degree() is not yet implemented");
+    if (this == ZERO){
+      return 0;
+    }
+    RatTerm highest = terms.get(0);
+    return highest.getExpt();
   }
 
   /**
@@ -116,8 +126,12 @@ public final class RatPoly {
    *     returns the zero RatTerm.
    */
   public RatTerm getTerm(int deg) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.getTerm() is not yet implemented");
+    for (RatTerm rt : terms) {
+      if (rt.getExpt() == deg) {
+        return rt;
+      }
+    }
+    return RatTerm.ZERO;
   }
 
   /**
@@ -126,8 +140,12 @@ public final class RatPoly {
    * @return true if and only if this has some coefficient = "NaN"
    */
   public boolean isNaN() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.isNaN() is not yet implemented");
+    for (RatTerm rt : terms) {
+      if(rt.getCoeff().equals(RatNum.NaN)){
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -183,8 +201,20 @@ public final class RatPoly {
    *     cofind(lst,newTerm.getExpt()) + newTerm.getCoeff())
    */
   private static void sortedInsert(List<RatTerm> lst, RatTerm newTerm) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.sortedInsert() is not yet implemented");
+    if(newTerm.equals(RatTerm.ZERO)){
+      return;
+    }
+    for(int i = 0; i < lst.size(); i++){
+      RatTerm rt = lst.get(i);
+      if (rt.getExpt() == newTerm.getExpt()){
+        lst.set(i, rt.add(newTerm));
+        return;
+      } else if (rt.getExpt() < newTerm.getExpt()){
+        lst.add(i, newTerm);
+        return;
+      }
+    }
+    lst.add(newTerm);
   }
 
   /**
@@ -193,8 +223,15 @@ public final class RatPoly {
    * @return a RatPoly equal to "0 - this"; if this.isNaN(), returns some r such that r.isNaN()
    */
   public RatPoly negate() {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.negate() is not yet implemented");
+    if (this.isNaN()) {
+      return RatPoly.NaN;
+    }
+    List<RatTerm> newTerms = new ArrayList<RatTerm>();
+    for(int i = 0; i < terms.size(); i++) {
+      RatTerm negTerm = terms.get(i).negate();
+      newTerms.add(i, negTerm);
+    }
+    return new RatPoly(newTerms);
   }
 
   /**
@@ -206,8 +243,20 @@ public final class RatPoly {
    *     such that r.isNaN()
    */
   public RatPoly add(RatPoly p) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.add() is not yet implemented");
+    if(this.isNaN() | p.isNaN()) {
+      return RatPoly.NaN;
+    }
+    List<RatTerm> returnList = terms;
+    for (int i = 0; i < returnList.size(); i++){
+      int degree = returnList.get(i).getExpt();
+      if(!p.getTerm(degree).equals(RatTerm.ZERO)){
+        returnList.set(i, returnList.get(i).add(p.getTerm(degree)));
+      } else {
+        returnList.add(i, p.getTerm(degree));
+        i++;
+      }
+    }
+    return new RatPoly(returnList);
   }
 
   /**
