@@ -114,7 +114,6 @@ public final class RatPoly {
       return 0;
     }
     RatTerm highest = terms.get(0);
-    checkRep();
     return highest.getExpt();
   }
 
@@ -132,7 +131,6 @@ public final class RatPoly {
         return rt;
       }
     }
-    checkRep();
     return RatTerm.ZERO;
   }
 
@@ -147,40 +145,7 @@ public final class RatPoly {
         return true;
       }
     }
-    checkRep();
     return false;
-  }
-
-  /**
-   * Scales coefficients within 'lst' by 'scalar' (helper procedure).
-   *
-   * @param lst the RatTerms to be scaled
-   * @param scalar the value by which to scale coefficients in lst
-   * @spec.requires lst, scalar != null
-   * @spec.modifies lst
-   * @spec.effects Forall i s.t. 0 <= i < lst.size(), if lst.get(i) = (C . E) then lst_post.get(i) =
-   *     (C*scalar . E)
-   * @see RatTerm regarding (C . E) notation
-   */
-  private static void scaleCoeff(List<RatTerm> lst, RatNum scalar) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.scaleCoeff() is not yet implemented");
-  }
-
-  /**
-   * Increments exponents within 'lst' by 'degree' (helper procedure).
-   *
-   * @param lst the RatTerms whose exponents are to be incremented
-   * @param degree the value by which to increment exponents in lst
-   * @spec.requires lst != null
-   * @spec.modifies lst
-   * @spec.effects Forall i s.t. 0 <= i < lst.size(), if (C . E) = lst.get(i) then lst_post.get(i) =
-   *     (C . E+degree)
-   * @see RatTerm regarding (C . E) notation
-   */
-  private static void incremExpt(List<RatTerm> lst, int degree) {
-    // TODO: Fill in this method, then remove the RuntimeException
-    throw new RuntimeException("RatPoly.incremExpt() is not yet implemented");
   }
 
   /**
@@ -231,7 +196,6 @@ public final class RatPoly {
    */
   public RatPoly negate() {
     if (this.isNaN()) {
-      checkRep();
       return RatPoly.NaN;
     }
     List<RatTerm> newTerms = new ArrayList<RatTerm>();
@@ -239,7 +203,6 @@ public final class RatPoly {
       RatTerm negTerm = terms.get(i).negate();
       newTerms.add(i, negTerm);
     }
-    checkRep();
     return new RatPoly(newTerms);
   }
 
@@ -253,7 +216,6 @@ public final class RatPoly {
    */
   public RatPoly add(RatPoly p) {
     if(this.isNaN() || p.isNaN()) {
-      checkRep();
       return RatPoly.NaN;
     }
     List<RatTerm> returnList = new ArrayList<RatTerm>();
@@ -264,10 +226,8 @@ public final class RatPoly {
       sortedInsert(returnList, tp);
     }
     if(returnList.isEmpty()){
-      checkRep();
       return RatPoly.ZERO;
     } else {
-      checkRep();
       return new RatPoly(returnList);
     }
   }
@@ -281,8 +241,12 @@ public final class RatPoly {
    *     such that r.isNaN()
    */
   public RatPoly sub(RatPoly p) {
+    if (this.isNaN() || p.isNaN()) {
+      return RatPoly.NaN;
+    }
+    RatPoly rp = add(p.negate());
     checkRep();
-    return add(p.negate());
+    return rp;
   }
 
   /**
@@ -294,6 +258,9 @@ public final class RatPoly {
    *     such that r.isNaN()
    */
   public RatPoly mul(RatPoly p) {
+    if (this.isNaN() || p.isNaN()) {
+      return RatPoly.NaN;
+    }
     List<RatTerm> r = new ArrayList<RatTerm>();
     for (RatTerm tp : p.terms) {
       for (RatTerm tt : this.terms) {
@@ -366,6 +333,9 @@ public final class RatPoly {
    *     <p>The derivative of a polynomial is the sum of the derivative of each term.
    */
   public RatPoly differentiate() {
+    if (this.isNaN()){
+      return RatPoly.NaN;
+    }
     RatPoly returnPoly = ZERO;
     for (RatTerm rt : this.terms) {
       returnPoly = returnPoly.add(new RatPoly(rt.differentiate()));
@@ -413,11 +383,10 @@ public final class RatPoly {
    *     Double.NaN, return Double.NaN.
    */
   public double integrate(double lowerBound, double upperBound) {
-    // anti-differentiate each term
+    if (this.isNaN() || (lowerBound == Double.NaN) || (upperBound == Double.NaN)){
+      return Double.NaN;
+    }
     RatPoly antidiff = this.antiDifferentiate(RatNum.ZERO);
-    // evaluate for lower bound
-    // evaluate for upper bound
-    // subtract: upper - lower
     return antidiff.eval(upperBound) - antidiff.eval(lowerBound);
   }
 
@@ -429,11 +398,13 @@ public final class RatPoly {
    *     is 5, and "x^2-x" evaluated at 3 is 6. If (this.isNaN() == true), return Double.NaN.
    */
   public double eval(double d) {
+    if (this.isNaN()){
+      return Double.NaN;
+    }
     double eval = 0;
     for (RatTerm rt : this.terms) {
       eval = eval + rt.eval(d);
     }
-    checkRep();
     return eval;
   }
 
