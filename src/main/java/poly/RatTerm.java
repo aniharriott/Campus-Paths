@@ -67,6 +67,7 @@ public final class RatTerm {
    * @return the coefficient of this RatTerm
    */
   public RatNum getCoeff() {
+    checkRep();
     // don't return the RatNum object of this class,
     // that could affect immutability
     RatNum c = coeff;
@@ -141,6 +142,7 @@ public final class RatTerm {
    *     NaN.
    */
   public RatTerm add(RatTerm arg) {
+    checkRep();
     if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
       return RatTerm.NaN;
     } else if ((this.expt != arg.getExpt()) && !this.equals(RatTerm.ZERO)
@@ -165,6 +167,7 @@ public final class RatTerm {
    *     NaN.
    */
   public RatTerm sub(RatTerm arg) {
+    checkRep();
     if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
       return RatTerm.NaN;
     } else if ((this.expt != arg.getExpt()) && !this.equals(RatTerm.ZERO)
@@ -187,6 +190,7 @@ public final class RatTerm {
    * @return a RatTerm equals to (this * arg). If either argument is NaN, then returns NaN.
    */
   public RatTerm mul(RatTerm arg) {
+    checkRep();
     if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN)) {
       return RatTerm.NaN;
     }
@@ -206,6 +210,7 @@ public final class RatTerm {
    *     returns NaN.
    */
   public RatTerm div(RatTerm arg) {
+    checkRep();
     if (this.equals(RatTerm.NaN) | arg.equals(RatTerm.NaN) | arg.equals(RatTerm.ZERO)) {
       return RatTerm.NaN;
     }
