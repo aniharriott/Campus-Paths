@@ -113,23 +113,49 @@ Problem 1.
     spec that way. Additionally, the class spec says that RatNum is immutable, so changing the fields of this would break that.
 
 (c) checkRep only needs to be called at the end of constructors because the class RatNum is supposed to be immutable.
-    In all the other methods the fields shouldn't be changed, which means the representation invariant could only change
-    in the constructors, so if it is satisfied at the end of the constructor then it should always be satisfied.
+    In all the other methods the fields aren't changed, which means the representation invariant could only change
+    in the constructors, so if it is satisfied at the end of the constructor then it should always be satisfied. All the
+    other methods return a new RatNum also, so the checkRep will be checked within each method at the end when the return
+    variable is created anyways.
 
 Problem 2.
 
-(a) I only included a call to checkRep at the end of the constructor. This is because the rep invariant applies to the
-    current state of the object, and since the spec describes RatTerm as immutable, the constructor is the only thing
-    that is capable of altering its state or rep invariant. The rest of the class is written without editing the
-    objects fields.
+(a) I only included a call to checkRep at the end of the constructor and beginnings of methods that get passed a RatTerm.
+    This is because the rep invariant applies to the current state of the object, and since the spec describes RatTerm as
+    immutable, the constructor is the only thing that is capable of altering RatTerm state or rep invariant.
+    The rest of the class is written without editing the objects fields, however I placed checkRep with methods passed
+    a new RatTerm to make sure that parameter did not violate the rep invariant. Most methods also returned new RatTerms,
+    so checkRep would be called at the end of those methods from within the constructor.
 
-(b) The things that would have to change would be that the constructor no longer needs a sepcial case for when the RatTerm
-    is equal to zero. toString?
+(b) The things that would have to change would be that the constructor, the toString, and getExpt. The constructor no longer
+    needs a special case for creating a zero RatTerm, the toString would need to include a special case for zero coefficient
+    so as to not print those RatTerms, and the getExpt method would need a special zero case to ignore any RatTerms passed
+    that have a zero coefficient and return zero as thee exponent, not its actual exponent.
 
-(c)
-
+(c) The only thing that would have to change would be the constructor, it would need a special case for when the coefficient
+    is a NaN it needs to create a RatTerm with an exponent of zero. I prefer the invariant coeff.equals(RatNum.ZERO) --> expt = 0
+    because it means my code doesn't have to handle the special cases identified in part (2b), and it means my code doesn't
+    have to include a special constructor case for coefficients of NaN. This last part is unnecessary because the rest of
+    the methods only check the coefficient to verify a NaN, so the setting of the exponent is redundant.
 
 Problem 3.
 
+(a) I included checkReps at the end of the constructor, and before the return statement of every method that returned a
+    RatPoly that was not just initialized. This is because methods where a new RatPoly is returned immediately, checkRep
+    would be indirectly called through the constructor at the very end of the method. CheckReps in the constructor and
+    in methods that return new RatPolys are important because those are the times when the RatPoly could be changed and
+    the rep invariant could not be met.
+
+(b) I prefer the RatPoly with a single RatTerm list because of the disadvantages of the two list implementation. With two list,
+    there are twice as many iterations required to do the same thing, and the math becomes more complicated because you have
+    to keep track of the data you want in two places. The single list implementation allows more streamlined math, particularly
+    with the access to RatTerm methods, and your representation of data within RatPoly is clearer.
+
 
 Problem 5.
+
+x^4+x^3+x^2
+3*x^9+8*x^2
+-x^7+9
+6*x^3+52*x
+
