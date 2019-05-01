@@ -1,17 +1,38 @@
 CSE 331 Homework.  Answers to written questions.
 Edit this file to supply your answers.
 
-Name:  <replace this with your name>
+Name:  Anina Harriott
 
 Problem 1. (Written exercises)
 
-(a)
+(a) IntQueue1:
+        Abstraction Function:
+            AF(r) = IntQueue1 q1 such that
+                entries = elements in the queue, where
+                entries.get(0) = first element in queue, last out
+                entries.get(size-1) = last element in queue, first out
+        Rep Invariant:
+            entries != null
+    IntQueue2:
+        Abstraction Function:
+            AF(r) = IntQueue2 q2 such that
+                entries = elements in the queue
+                front = first element in the queue
+                size = the number of elements in the queue
+                entries[front+size-1] = the last element in the queue
+        Rep Invariant:
+            entries != null
 
+(b) My groupings were: (c = f), (a = g = d), (b = h), (e)
 
-(b)
-
-
-(c)
+(c) 1. This method would not expose the representation. Given the information available, I am assuming the method just
+       performs a computation that doesn't impact or change the fields of the object class the method is in.
+    2.
+    3. This method could expose the representation because it's a private method. It could be called while the rep is in
+       an intermediate state that doesn't satisfy the rep invariant.
+    4.
+    5.
+    6.
 
 
 Problem 2.  (Graph interface/operations)
