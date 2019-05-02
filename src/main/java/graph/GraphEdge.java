@@ -71,4 +71,30 @@ public final class GraphEdge {
         throw new NotImplementedException("getDestination not yet implemented");
     }
 
+    /**
+     * Standard equality operation.
+     *
+     * @param o the object to be compared for equality
+     * @return true if 'o' is an instance of a GraphEdge and 'this' and 'o' have the same
+     *     label, source, and destination values.
+     */
+    @Override
+    public boolean equals(Object o) {
+        throw new NotImplementedException("equals not yet implemented");
+    }
+
+    /**
+     * Standard hashCode function.
+     *
+     * @return an int that all objects equal to this will also
+     */
+    @Override
+    public int hashCode() {
+        throw new NotImplementedException("hashCode not yet implemented");
+    }
+
+    /** Throws an exception if the representation invariant is violated. */
+    private void checkRep() {
+        throw new NotImplementedException("checkRep not yet implemented");
+    }
 }
