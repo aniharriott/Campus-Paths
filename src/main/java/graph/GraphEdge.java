@@ -23,7 +23,7 @@ public final class GraphEdge {
     private final GraphNode destination;
 
     // Abstraction Function:
-    //      For any GraphEdge e,
+    //      for any GraphEdge e,
     //          label = the label of this edge
     //          source = the GraphNode this edge points away from
     //          destination = the GraphNode this edge points to
