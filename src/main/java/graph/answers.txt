@@ -9,30 +9,38 @@ Problem 1. (Written exercises)
         Abstraction Function:
             AF(r) = IntQueue1 q1 such that
                 entries = elements in the queue, where
-                entries.get(0) = first element in queue, last out
-                entries.get(size-1) = last element in queue, first out
+                entries.get(0) = front element in queue and the first to be removed
+                entries.get(size-1) = last element in queue and the last to be removed
         Rep Invariant:
-            entries != null
+            entries != null and for all indexes i, entries.get(i) != null
     IntQueue2:
         Abstraction Function:
             AF(r) = IntQueue2 q2 such that
                 entries = elements in the queue
-                front = first element in the queue
+                front = first element in the queue and the first to be removed
                 size = the number of elements in the queue
-                entries[front+size-1] = the last element in the queue
+                entries[front+size-1] = the last element in the queue and the last to be removed
         Rep Invariant:
-            entries != null
+            entries != null and for all indexes i entries.get(i) != null, size != null, front != null
 
 (b) My groupings were: (c = f), (a = g = d), (b = h), (e)
 
-(c) 1. This method would not expose the representation. Given the information available, I am assuming the method just
-       performs a computation that doesn't impact or change the fields of the object class the method is in.
-    2.
-    3. This method could expose the representation because it's a private method. It could be called while the rep is in
-       an intermediate state that doesn't satisfy the rep invariant.
-    4.
-    5.
-    6.
+(c) 1. This method would not expose the representation because it returns an int value which is an immutable
+       data type, so it would not give the client a chance to alter representation data.
+    2. This method could expose the representation because it is public and returns a String[] which is a mutable data type.
+       I am assuming the String[] returned is relevant data to the representation, and so returning this to the client
+       would allow them to alter the data.
+    3. This method would not expose the representation because it is a private method, so the client doesn't have access
+       to this method, so even if the returned Date is mutable the client will never be able to call the method and get
+       the Date.
+    4. This method would not expose the representation because it returns a String value which is an immutable data type,
+       so it would not give the client a chance to alter representation data.
+    5. This method could expose the representation because the iterator it returns is of type Integer, which is a wrapper
+       class that makes ints into mutable objects. This means the iterator returned would give the client access to the Integer
+       references, allowing them to potentially mutate the data there. This would allow the client to alter the
+       representation assuming the Integers are relevant data to the representation.
+    6. This could expose the representation assuming the constructor is initializing relevant data to the representation,
+       which as a constructor it generally gives the client access to relevant data.
 
 
 Problem 2.  (Graph interface/operations)
