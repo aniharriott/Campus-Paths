@@ -48,7 +48,8 @@ public final class Graph {
      * @param n2 the destination node of the GraphEdge to be added
      * @param l the label of the GraphEdge to be added
      * @spec.modifies n1 and n2
-     * @spec.effects Creates a new GraphEdge from the given parameters and associates it
+     * @spec.effects Creates a new GraphEdge from the given parameters and associates it with the
+     * given nodes
      * @throws IllegalArgumentException if either GraphNode passed is not already contained
      * within this Graph, or if the edge already exists in this graph
      */
@@ -61,7 +62,7 @@ public final class Graph {
      *
      * @param n the GraphNode to be added
      * @spec.requires n != null, n.label cannot equal any other label in this graph
-     * @spec.modifies this
+     * @spec.modifies this.nodes
      * @spec.effects If this.nodes = [n0, n1], then this_post.nodes = [n0, n1, n]
      * @throws IllegalArgumentException if the label of n equals the label of a node
      * already contained in this graph
@@ -71,7 +72,7 @@ public final class Graph {
     }
 
     /**
-     * Returns a set of all the GraphNodes in this Graph in alphabetical order
+     * Returns a set of all the GraphNodes in this Graph in alphabetical order.
      *
      * @return a Set</GraphNode> equal to this.nodes
      */
@@ -80,18 +81,7 @@ public final class Graph {
     }
 
     /**
-     * Returns a set of                                                                     //FIX THIS, ASK KATY
-     *
-     * @param n1
-     * @param n2
-     * @return
-     */
-    public Set<GraphEdge> findPath(GraphNode n1, GraphNode n2) {
-        throw new NotImplementedException("findPath not yet implemented");
-    }
-
-    /**
-     * Returns a list of all the GraphEdges in this Graph in alphabetical order
+     * Returns a list of all the GraphEdges in this Graph in alphabetical order.
      *
      * @return a List</GraphNode> equal to all the edges contained in this graph
      */
@@ -99,4 +89,21 @@ public final class Graph {
         throw new NotImplementedException("listEdges not yet implemented");
     }
 
+    /**
+     * Returns a set of GraphNodes representing the "shortest" path from one node to another.
+     * "Shortest" refers to the fewest number of GraphEdges between.
+     *
+     * @param n1 the start node of this path
+     * @param n2 the end node of this path
+     * @return a Set</GraphNode> that represents the shortest path from n1 to n2.
+     * @throws IllegalArgumentException if n1 or n2 is not contained within the this graph.
+     */
+    public Set<GraphNode> findPath(GraphNode n1, GraphNode n2) {
+        throw new NotImplementedException("findPath not yet implemented");
+    }
+
+    /** Throws an exception if the representation invariant is violated. */
+    private void checkRep() {
+        throw new NotImplementedException("checkRep not yet implemented");
+    }
 }
