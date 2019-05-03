@@ -11,6 +11,14 @@ import org.apache.commons.lang3.NotImplementedException;
  *
  * <p>A GraphEdge cannot have a null source or destination node, but source and destination
  * can be the same.
+ *
+ * Specification fields:
+ * @spec.specfield label : String // The label of this edge.
+ * @spec.specfield source : GraphNode  // The GraphNode that this edge points from.
+ * @spec.specfield destination : GraphNode  // The GraphNode that this edge points to.
+ *
+ * Abstract Invariant:
+ * An edge cannot have a null label, source, or destination.
  */
 
 public final class GraphEdge {
@@ -39,6 +47,7 @@ public final class GraphEdge {
      * @spec.requires l != null, s != null, and d != null
      * @spec.effects Constructs a new GraphEdge e, with e.label = l, e.source = s, and
      * e.destination = d
+     * @throws IllegalArgumentException if l, s, or d is null.
      */
     public GraphEdge(String l, GraphNode s, GraphNode d) {
         throw new NotImplementedException("GraphEdge constructor not yet implemented");
