@@ -12,12 +12,11 @@ import org.apache.commons.lang3.NotImplementedException;
  * <p>A GraphEdge cannot have a null source or destination node, but source and destination
  * can be the same.
  *
- * Specification fields:
- * @spec.specfield label : String // The label of this edge.
- * @spec.specfield source : GraphNode  // The GraphNode that this edge points from.
- * @spec.specfield destination : GraphNode  // The GraphNode that this edge points to.
+ * @spec.specfield label : String // The label of this edge
+ * @spec.specfield source : GraphNode  // The GraphNode that this edge points from
+ * @spec.specfield destination : GraphNode  // The GraphNode that this edge points to
  *
- * Abstract Invariant:
+ * <p>Abstract Invariant:
  * An edge cannot have a null label, source, or destination.
  */
 

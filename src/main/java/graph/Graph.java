@@ -10,10 +10,9 @@ import org.apache.commons.lang3.NotImplementedException;
  *
  * <p>A Graph can be empty but it cannot be null.
  *
- * Specification fields:
  * @spec.specfield nodes : Set  // The GraphNode contained in this graph in alphabetical order.
  *
- * Abstract Invariant:
+ * <p>Abstract Invariant:
  * A graph cannot be null, and none of its nodes can be null.
  */
 

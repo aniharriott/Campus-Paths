@@ -12,12 +12,11 @@ import java.util.Set;
  *
  * <p>A GraphNode can have any number of GraphEdges associated with it, including zero.
  *
- * Specification fields:
- * @spec.specfield label : String // The label of this node.
- * @spec.specfield inComing : Set  // The GraphEdges that point to this node in alphabetical order.
- * @spec.specfield outGoing : Set  // The GraphEdges that point away from this node in alphabetical order.
+ * @spec.specfield label : String // The label of this node
+ * @spec.specfield inComing : Set  // The GraphEdges that point to this node in alphabetical order
+ * @spec.specfield outGoing : Set  // The GraphEdges that point away from this node in alphabetical order
  *
- * Abstract Invariant:
+ * <p>Abstract Invariant:
  * A node cannot be null.
  */
 
