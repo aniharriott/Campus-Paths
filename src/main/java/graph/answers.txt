@@ -45,9 +45,64 @@ Problem 1. (Written exercises)
 
 Problem 2.  (Graph interface/operations)
 
+The methods for my Graph class were as follows:
+
+    Graph() - creates the Graph, important for having a graph.
+    addEdge(String l, GraphNode n1, GraphNode n2) - this adds a new edge between two nodes in the graph, which I think is
+important if you want to add new connections between data, it lets the graph be mutable and allows the client to build
+the graph.
+    addNode(GraphNode n) - this adds a new node to the graph, I think this is important if you want to add new data
+points to the graph, it lets the graph be mutable and allows the client to build the graph.
+    deleteEdge(GraphEdge e) - this deletes an edge from the graph, I think its important if your data set is changing
+and there is no longer a connection between two things.
+    deleteNode(GraphNode n) - this deletes a node from the graph. I think its important when your data set changes to be
+able to remove now non-existent or now irrelevant data.
+    Set<GraphNode> listNodes() - this returns a set of all the nodes in this Graph, I think this is important for doing
+searches of the graph for specific data points. It is also useful for verifying the state of the graph, and having a
+view or representation of the structure for the client.
+    List<GraphEdge> listEdges() - this returns a list of all the edges in this Graph, this is useful for doing searches
+like path finding in a graph. It is also useful for verifying the state of the graph, and having a view or
+representation of the structure for the client.
+    List<GraphNode> findPath(GraphNode n1, GraphNode n2) - this returns a list of the fewest number edges to get between
+two nodes, this a common function of graphs and allows the data in the Graph to be interpreted. Finding a path is also
+important since the graph is directed so the nodes are ordered in a way, this also makes the graph interpretable.
+    checkRep() - this checks my rep invariant so I can verify my methods are working correctly.
+
+My graph has one class field that is a set of GraphNodes. This holds the nodes and the connections between them,
+and is a representation of the graph.
+
+I decided to make my Graph mutable because I wanted the client to be able to store varying
+and changing amounts of data.
+
+I decided to also include two additional classes along with Graph, named GraphEdge and GraphNode. These are smaller
+data structures than the Graph, and are meant to represent the edges and nodes (respectively) that go into a graph.
+I think that using a separate edge class is useful because it makes keeping track of the edge's direction more
+straightforward with access to fields representing source nodes and destination nodes. Using a separate node class
+allowed more ease in keeping track of what edges were coming to and from a specific node. It also allowed me to make
+the node class mutable, but the edge class immutable. I think having the separate classes is important when designing
+how different aspects of the Graph interact, because it lets me enforce more interaction limitations through the
+additional class specifications. I also think these additional classes allow the Graph do be less complicated and
+isolate its methods to more big picture things, rather than keeping track of small instances of data.
+The separate classes also made the parameterization of my methods in Graph and the code in Graph clearer.
+
+The separation of Graph into multiple smaller classes also allowed for more isolated testing and the division of
+the graph data into different containers helps to delineate data and make clear what that data means and what it can do.
 
 
 Problem 3.  (Testing strategy)
+
+My main testing approach was to think mostly in terms of "0, 1, many". Sometimes "0" meant I was adding/removing
+something from an empty structure, and sometimes it meant I was looking at an empty structure and had to interpret it
+correctly. "1" either meant I was adding/removing one thing, or I was interpreting just one of something. "Many" was
+normally implemented using two or three things that I was either adding/removing, or interpreting. I also only focused
+on testing defined behaviors for both spec tests and implementation tests.
+
+My spec tests were very different from my implementation tests because they focused on analyzing very different
+behaviors. For the spec tests I had a black box approach and only tested the main functionality of a graph that
+I could using the commands given. The spec tests were also much more isolated and easier to build up complexity in the
+tests because they didn't involve the same co-dependency of data structures that my implementation had. My
+implementation tests were a clear box approach and focused on how the different specific methods I wrote should
+behave, and how the different classes I created should interact with each other.
 
 
 
