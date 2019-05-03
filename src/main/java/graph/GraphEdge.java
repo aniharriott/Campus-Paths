@@ -45,9 +45,10 @@ public final class GraphEdge {
      * @param s the source node of the edge to be constructed
      * @param d the destination node of the edge to be constructed
      * @spec.requires l != null, s != null, and d != null
+     * @spec.modifies GraphNode s, GraphNode d
      * @spec.effects Constructs a new GraphEdge e, with e.label = l, e.source = s, and
-     * e.destination = d
-     * @throws IllegalArgumentException if l, s, or d is null.
+     * e.destination = d. Adds itself to the set of in coming GraphEdges for GraphNode d,
+     * and adds itself to the set of out going GraphEdges for GraphNode s.
      */
     public GraphEdge(String l, GraphNode s, GraphNode d) {
         throw new NotImplementedException("GraphEdge constructor not yet implemented");
