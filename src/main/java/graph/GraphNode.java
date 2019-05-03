@@ -24,7 +24,7 @@ import java.util.Set;
 public final class GraphNode {
 
     /** The label of this node */
-    private String label;
+    private final String label;
     /** The GraphEdges that point to this node in alphabetical order */
     private Set<GraphEdge> inComing;
     /** The GraphEdges that point away from this node in alphabetical order */
@@ -89,9 +89,22 @@ public final class GraphNode {
     }
 
     /**
+     * Deletes a GraphEdge from this node, either in coming or outgoing
+     *
+     * @param e the GraphEdge to be deleted
+     * @spec.modifies this
+     * @spec.effects deletes the GraphEdge e from this node, either in inComing or outGoing
+     * or both
+     * @throws IllegalArgumentException if e is not contained in this node
+     */
+    public void deleteEdge(GraphEdge e) {
+        throw new NotImplementedException("deleteEdge not yet implemented");
+    }
+
+    /**
      * Returns a set of all the GraphNodes that are children of this in alphabetical order.
      *
-     * @return a Set</GraphNode> that contains all the children of this node in alphabetical
+     * @return a set of GraphNodes that contains all the children of this node in alphabetical
      * order
      */
     public Set<GraphNode> getChildren() {
@@ -99,9 +112,19 @@ public final class GraphNode {
     }
 
     /**
+     * Returns a set of all the GraphNodes that are parents of this in alphabetical order.
+     *
+     * @return a set of GraphNodes that contains all the parents of this node in alphabetical
+     * order
+     */
+    public Set<GraphNode> getParents() {
+        throw new NotImplementedException("getParents not yet implemented");
+    }
+
+    /**
      * Returns the in coming edges of this node.
      *
-     * @return a Set</GraphEdge> that is equal to this.inComing
+     * @return a set of GraphEdges that is equal to this.inComing
      */
     public Set<GraphEdge> getInComing() {
         throw new NotImplementedException("getInComing not yet implemented");
@@ -110,10 +133,29 @@ public final class GraphNode {
     /**
      * Returns the out going edges of this node.
      *
-     * @return a Set</GraphEdge> that is equal to this.outGoing
+     * @return a set of GraphEdges that is equal to this.outGoing
      */
     public Set<GraphEdge> getOutGoing() {
         throw new NotImplementedException("getOutGoing not yet implemented");
+    }
+
+    /**
+     * Returns the label of this node.
+     *
+     * @return a String 'label' that is equal to this.label
+     */
+    public String getLabel() {
+        throw new NotImplementedException("getLabel not yet implemented");
+    }
+
+    /**
+     * Returns the edge between this and another node.
+     *
+     * @param other the GraphNode to find an edge to
+     * @return the GraphEdge that connects this GraphNode (parent) and another GraphNode (child)
+     */
+    public GraphEdge findEdge(GraphNode other) {
+        throw new NotImplementedException("findEdge not yet implemented");
     }
 
     /** Throws an exception if the representation invariant is violated. */
