@@ -1,0 +1,13 @@
+I collaborated with Kaytlin Melvin.
+
+We discussed in 1.c. what exactly the problem was asking, and talked about the difference between representation
+exposure and breaking the representation invariant - particularly in the examples asked about.
+
+We talked about problem 2 and reasoned through together what methods in what classes would be necessary to achieve
+certain basic functions of a graph, and what was necessary to achieve functions identified in the spec test script.
+We talked about the benefits and drawbacks of using different implementations of fields in classes.
+
+We also discussed problem 3. We both struggled at first to figure out exactly how to write the spec tests and how
+specific each spec test file needed to be, together we came to a conclusion on how to approach the spec tests and
+how to approach the implementation tests in terms of format. We also talked about different cases to test and
+discussed whether certain code made sense as a test when wither of us got stuck.
