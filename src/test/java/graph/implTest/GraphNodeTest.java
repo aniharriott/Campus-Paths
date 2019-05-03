@@ -58,7 +58,7 @@ public final class GraphNodeTest {
     /** Test to check that GraphNode.getInComing() is implemented correctly */
     @Test
     public void testGetInComing() {
-        assertTrue("node0.getInComing() returns empty set when empty",
+        assertTrue("node0.getInComing() should return an empty set when empty",
                 node0.getInComing().isEmpty());
         assertEquals("node1.getInComing() when inComing has one edge", edges1_in,
                 node1.getInComing());
@@ -69,7 +69,7 @@ public final class GraphNodeTest {
     /** Test to check that GraphNode.getOutGoing() is implemented correctly */
     @Test
     public void testGetOutGoing() {
-        assertTrue("node0.getOutGoing() returns empty set when empty",
+        assertTrue("node0.getOutGoing() should return an empty set when empty",
                 node0.getOutGoing().isEmpty());
         assertEquals("node1.getOutGoing() when outGoing has one edge", edges1_out,
                 node1.getOutGoing());
@@ -119,31 +119,31 @@ public final class GraphNodeTest {
     /** Test to check that GraphNode.getParents() is implemented correctly */
     @Test
     public void testGetParents() {
-        assertTrue("node0.getParents() is empty", node0.getParents().isEmpty());
+        assertTrue("node0.getParents() should be empty", node0.getParents().isEmpty());
         parents1.add(node1b);
-        assertEquals("node1.getParents() has one", parents1, node1.getParents());
+        assertEquals("node1.getParents() should have one", parents1, node1.getParents());
         parents2.add(nodeMultiB);
         parents2.add(nodeMultiC);
-        assertEquals("nodeMulti.getParents() has two", parents2, nodeMulti.getParents());
+        assertEquals("nodeMulti.getParents() should have two", parents2, nodeMulti.getParents());
     }
 
     /** Test to check that GraphNode.getChildren() is implemented correctly */
     @Test
     public void testGetChildren() {
-        assertTrue("node0.getChildren() is empty", node0.getChildren().isEmpty());
+        assertTrue("node0.getChildren() should be empty", node0.getChildren().isEmpty());
         children1.add(node1b);
-        assertEquals("node1.getChildren() has one", children1, node1.getChildren());
+        assertEquals("node1.getChildren() should have one", children1, node1.getChildren());
         children2.add(nodeMultiB);
         children2.add(nodeMultiC);
-        assertEquals("nodeMulti.getChildren() has two", children2, nodeMulti.getChildren());
+        assertEquals("nodeMulti.getChildren() should have two", children2, nodeMulti.getChildren());
     }
 
     /** Test to check that GraphNode.findEdge(GraphEdge) is implemented correctly */
     @Test
     public void testFindEdge() {
-        assertEquals("node1 to node1b is connected by e1", e1, node1.findEdge(node1b));
+        assertEquals("node1 to node1b should be connected by e1", e1, node1.findEdge(node1b));
         GraphEdge e1c = new GraphEdge("e1c", node1, node1b);
-        assertEquals("node1 to node1b is alphabetically connected by e1", e1,
+        assertEquals("node1 to node1b should be alphabetically connected by e1", e1,
                 node1.findEdge(node1b));
     }
 }
