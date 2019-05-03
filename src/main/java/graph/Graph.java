@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 
 /**
- * <b>Graph</b> represents a mutable directed graph represented by a
+ * <b>Graph</b> represents a mutable directed graph represented by
  * a set of unique <b>GraphNodes</b>.
  *
  * <p>A Graph can be empty but it cannot be null.
@@ -43,11 +43,11 @@ public final class Graph {
      * @param l the label of the GraphEdge to be added
      * @param n1 the source node of the GraphEdge to be added
      * @param n2 the destination node of the GraphEdge to be added
+     * @spec.requires both GraphNodes passed cannot already be contained in this graph, and
+     * the edge to be added cannot be a duplicate
      * @spec.modifies n1 and n2
      * @spec.effects Creates a new GraphEdge from the given parameters and associates it with the
      * given nodes
-     * @throws IllegalArgumentException if either GraphNode passed is not already contained
-     * within this Graph, or if the edge already exists in this graph
      */
     public void addEdge(String l, GraphNode n1, GraphNode n2) {
         throw new NotImplementedException("addEdge not yet implemented");
@@ -60,8 +60,6 @@ public final class Graph {
      * @spec.requires n != null, n.label cannot equal any other label in this graph
      * @spec.modifies this.nodes
      * @spec.effects If this.nodes = [n0, n1], then this_post.nodes = [n0, n1, n]
-     * @throws IllegalArgumentException if the label of n equals the label of a node
-     * already contained in this graph
      */
     public void addNode(GraphNode n) {
         throw new NotImplementedException("addNode not yet implemented");
@@ -71,9 +69,9 @@ public final class Graph {
      * Deletes an edge from this graph.
      *
      * @param e the GraphEdge to be deleted
+     * @spec.requires e is already contained in this graph
      * @spec.modifies e.source and e.destination
      * @spec.effects deletes the edge from this graph
-     * @throws IllegalArgumentException if e is not already contained in this graph
      */
     public void deleteEdge(GraphEdge e) {
         throw new NotImplementedException("deleteEdge not yet implemented");
@@ -83,9 +81,9 @@ public final class Graph {
      * Deletes a node from this graph.
      *
      * @param n the GraphNode to be deleted
+     * @spec.requires n is already contained in this graph
      * @spec.modifies this.nodes
      * @spec.effects deletes the node from this graph
-     * @throws IllegalArgumentException if n is not already contained in this graph
      */
     public void deleteNode(GraphNode n) {
         throw new NotImplementedException("deleteNode not yet implemented");
@@ -115,8 +113,9 @@ public final class Graph {
      *
      * @param n1 the start node of this path
      * @param n2 the end node of this path
-     * @return a list of GraphNodes that represents the shortest path from n1 to n2.
-     * @throws IllegalArgumentException if n1 or n2 is not contained within the this graph.
+     * @spec.requires n1 and n2 are already contained within this graph
+     * @return a list of GraphNodes that represents the shortest path from n1 to n2,
+     * including n1 and n2.
      */
     public List<GraphNode> findPath(GraphNode n1, GraphNode n2) {
         throw new NotImplementedException("findPath not yet implemented");
