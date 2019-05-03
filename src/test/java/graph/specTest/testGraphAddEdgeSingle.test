@@ -1,0 +1,13 @@
+# Test Graph addEdge single file.
+# Tests if a singular edge can be
+# added to a graph.
+
+# Create a graph
+CreateGraph graph1
+
+# Add a pair of nodes
+AddNode graph1 n1
+AddNode graph1 n2
+
+# Add an edge
+AddEdge graph1 n1 n2 e1

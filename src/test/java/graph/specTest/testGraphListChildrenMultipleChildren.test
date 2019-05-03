@@ -1,0 +1,18 @@
+# Test Graph listChildren multiple children file.
+# Tests that given parent node with multiple
+# children, all its children will be printed.
+
+# Create a graph
+CreateGraph graph1
+
+# Add nodes
+AddNode graph1 n1
+AddNode graph1 n2
+AddNode graph1 n3
+
+# Add Edges
+AddEdge graph1 n1 n2 e1
+AddEdge graph1 n1 n3 e2
+
+# Print children of n1
+ListChildren graph1 n1

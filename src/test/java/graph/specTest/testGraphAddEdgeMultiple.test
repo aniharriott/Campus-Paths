@@ -1,0 +1,17 @@
+# Test Graph addEdge multiple file.
+# Tests if multiple edges can be
+# added to a graph when they use
+# different nodes.
+
+# Create a graph
+CreateGraph graph1
+
+# Add nodes
+AddNode graph1 n1
+AddNode graph1 n2
+AddNode graph1 n3
+AddNode graph1 n4
+
+# Add edges
+AddEdge graph1 n1 n2 e1
+AddEdge graph1 n3 n4 e2

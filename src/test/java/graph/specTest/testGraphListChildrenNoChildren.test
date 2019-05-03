@@ -1,0 +1,14 @@
+# Test Graph listChildren no children file.
+# Tests that no children will be listed is
+# there are no children nodes of the specified
+# node.
+
+# Create a graph
+CreateGraph graph1
+
+# Add a pair of nodes
+AddNode graph1 n1
+AddNode graph1 n2
+
+# Print the children from n1
+ListChildren graph1 n1

@@ -1,0 +1,14 @@
+# Test Graph addEdge same direction different name file.
+# Tests if two edges can be added that have the
+# same source and destination, but different names.
+
+# Create Graph
+created graph graph1
+
+# Add nodes
+added node n1 to graph1
+added node n2 to graph1
+
+# Add edges
+added edge e1 from n1 to n2 in graph1
+added edge e2 from n1 to n2 in graph1

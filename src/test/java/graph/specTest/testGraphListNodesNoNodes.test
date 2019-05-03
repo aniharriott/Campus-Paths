@@ -1,0 +1,9 @@
+# Test Graph listNodes no nodes file.
+# Tests that no nodes are printed
+# when there are no nodes in the graph.
+
+# Create graph
+CreateGraph graph1
+
+# Print nodes in the graph
+ListNodes graph1

@@ -1,0 +1,7 @@
+# Test Graph constructor multiple file.
+# Tests if creating a multiple graphs
+# at a time works.
+
+# Create graphs
+created graph graph1
+created graph graph2

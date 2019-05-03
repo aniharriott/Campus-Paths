@@ -1,0 +1,20 @@
+# Test Graph listChildren circle file.
+# Tests if only one child is printed
+# when the parent node has a path of
+# edges back to itself.
+
+# Create a graph
+CreateGraph graph1
+
+# Add nodes
+AddNode graph1 n1
+AddNode graph1 n2
+AddNode graph1 n3
+
+# Add edges
+AddEdge graph1 n1 n2 e1
+AddEdge graph1 n2 n3 e2
+AddEdge graph1 n3 n1 e3
+
+# Print children of n1
+ListChildren graph1 n1

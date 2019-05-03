@@ -1,0 +1,17 @@
+# Test Graph listChildren one child file.
+# Tests if a singular child from the given
+# node is printed when there is only that
+# child.
+
+# Create a graph
+CreateGraph graph1
+
+# Add a pair of nodes
+AddNode graph1 n1
+AddNode graph1 n2
+
+# Add an edge
+AddEdge graph1 n1 n2 e1
+
+# Print the children from n1
+ListChildren graph1 n1

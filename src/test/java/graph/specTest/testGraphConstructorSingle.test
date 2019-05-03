@@ -1,0 +1,6 @@
+# Test Graph constructor single file.
+# Tests if creating a single graph
+# works.
+
+# Create a graph
+CreateGraph graph1

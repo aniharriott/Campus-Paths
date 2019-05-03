@@ -1,0 +1,12 @@
+# Test Graph listNodes one node file.
+# Tests that one node is printed
+# when there is one node in the graph.
+
+# Create graph
+created graph graph1
+
+# Add node
+added node n1 to graph1
+
+# Print nodes in graph
+graph1 contains: n1

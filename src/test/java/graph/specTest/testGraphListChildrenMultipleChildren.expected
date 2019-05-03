@@ -1,0 +1,18 @@
+# Test Graph listChildren multiple children file.
+# Tests that given parent node with multiple
+# children, all its children will be printed.
+
+# Create a graph
+created graph graph1
+
+# Add nodes
+added node n1 to graph1
+added node n2 to graph1
+added node n3 to graph1
+
+# Add Edges
+added edge e1 from n1 to n2 in graph1
+added edge e2 from n1 to n3 in graph1
+
+# Print children of n1
+the children of n1 in graph1 are: n2(e1) n3(e2)

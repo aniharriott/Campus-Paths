@@ -1,0 +1,14 @@
+# Test Graph listNodes multiple nodes file.
+# Tests that multiple nodes are printed
+# when there are multiple nodes in the graph.
+
+# Create graph
+CreateGraph graph1
+
+# Add nodes
+AddNode graph1 n1
+AddNode graph1 n2
+AddNode graph1 n3
+
+# Print nodes in graph
+ListNodes graph1

@@ -1,0 +1,11 @@
+# Test Graph addNode same node different graph file.
+# Tests to see if the same node can be successfully
+# added to two different graphs.
+
+# Create graphs
+CreateGraph graph1
+CreateGraph graph2
+
+# Add node to both
+AddNode graph1 n1
+AddNode graph2 n1

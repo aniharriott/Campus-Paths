@@ -1,0 +1,10 @@
+# Test Graph addNode single file.
+# Tests if a singular node can
+# be added to the graph
+# successfully.
+
+# Create graph
+created graph graph1
+
+# Add node
+added node n1 to graph1

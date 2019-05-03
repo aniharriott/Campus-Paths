@@ -1,0 +1,18 @@
+# Test Graph listChildren multiple edges file.
+# Tests that there is a separate entry printed
+# for children nodes that have multiple edges
+# pointing to them from the parent.
+
+# Create graph
+CreateGraph graph1
+
+# Add nodes
+AddNode graph1 n1
+AddNode graph1 n2
+
+# Add edges
+AddEdge graph1 n1 n2 e1
+AddEdge graph1 n1 n2 e2
+
+# Print children from n1
+ListNodes graph1
