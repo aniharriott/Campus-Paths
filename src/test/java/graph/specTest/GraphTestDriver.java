@@ -20,7 +20,7 @@ public class GraphTestDriver {
 
             if (args.length == 0) {
                 td = new GraphTestDriver(new InputStreamReader(System.in),
-                                       new OutputStreamWriter(System.out));
+                        new OutputStreamWriter(System.out));
             } else {
 
                 String fileName = args[0];
@@ -28,7 +28,7 @@ public class GraphTestDriver {
 
                 if (tests.exists() || tests.canRead()) {
                     td = new GraphTestDriver(new FileReader(tests),
-                                           new OutputStreamWriter(System.out));
+                            new OutputStreamWriter(System.out));
                 } else {
                     System.err.println("Cannot read from " + tests.toString());
                     printUsage();
@@ -72,12 +72,12 @@ public class GraphTestDriver {
      * @throws IOException if the input or output sources encounter an IOException
      **/
     public void runTests()
-        throws IOException
+            throws IOException
     {
         String inputLine;
         while ((inputLine = input.readLine()) != null) {
             if ((inputLine.trim().length() == 0) ||
-                (inputLine.charAt(0) == '#')) {
+                    (inputLine.charAt(0) == '#')) {
                 // echo blank and comment lines
                 output.println(inputLine);
             }
@@ -168,7 +168,7 @@ public class GraphTestDriver {
     }
 
     private void addEdge(String graphName, String parentName, String childName,
-            String edgeLabel) {
+                         String edgeLabel) {
         // Insert your code here.
 
         // ___ = graphs.get(graphName);
