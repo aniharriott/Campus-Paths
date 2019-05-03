@@ -53,23 +53,12 @@ public final class GraphNode {
     }
 
     /**
-     * @param l the label of this node
-     * @param in the set of GraphEdges to be added as "in coming" to the node to be constructed
-     * @param out the set of GraphEdges to be added as "outgoing" to the node to be constructed
-     * @spec.effects constructs a new node with in coming edges in and outgoing edges out and label l
-     * */
-    public GraphNode(String l, Set<GraphEdge> in, Set<GraphEdge> out) {
-        throw new NotImplementedException("GraphNode constructor not yet implemented");
-    }
-
-    /**
      * Adds a GraphEdge to this node that points to it.
      *
      * @param e the in coming GraphEdge to be added
-     * @spec.requires e != null
+     * @spec.requires e != null, e cannot ba a duplicate to this node
      * @spec.modifies this.inComing
      * @spec.effects adds an in coming GraphEdge to this node
-     * @throws IllegalArgumentException if e is null or if e is a duplicate edge to this node
      */
     public void addInComing(GraphEdge e) {
         throw new NotImplementedException("addInComing not yet implemented");
@@ -79,10 +68,9 @@ public final class GraphNode {
      * Adds a GraphEdge to this node that points away from it.
      *
      * @param e the out going GraphEdge to be added
-     * @spec.requires e != null
+     * @spec.requires e != null, e cannot be a duplicate to this node
      * @spec.modifies this.outGoing
      * @spec.effects adds an out going GraphEdge to this node
-     * @throws IllegalArgumentException if e is null or if e is a duplicate edge to this node
      */
     public void addOutGoing(GraphEdge e) {
         throw new NotImplementedException("addOutGoing not yet implemented");
@@ -92,10 +80,10 @@ public final class GraphNode {
      * Deletes a GraphEdge from this node, either in coming or outgoing
      *
      * @param e the GraphEdge to be deleted
+     * @spec.requires e must already be contained in this node
      * @spec.modifies this
      * @spec.effects deletes the GraphEdge e from this node, either in inComing or outGoing
      * or both
-     * @throws IllegalArgumentException if e is not contained in this node
      */
     public void deleteEdge(GraphEdge e) {
         throw new NotImplementedException("deleteEdge not yet implemented");
@@ -149,10 +137,12 @@ public final class GraphNode {
     }
 
     /**
-     * Returns the edge between this and another node.
+     * Returns an edge between this and another node.
      *
      * @param other the GraphNode to find an edge to
+     * @spec.requires GraphNode other is a child of this
      * @return the GraphEdge that connects this GraphNode (parent) and another GraphNode (child)
+     * and is the first alphabetically if there are multiple.
      */
     public GraphEdge findEdge(GraphNode other) {
         throw new NotImplementedException("findEdge not yet implemented");
