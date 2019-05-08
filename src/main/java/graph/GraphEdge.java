@@ -1,23 +1,13 @@
 package graph;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 /**
  * <b>GraphEdge</b> is an immutable representation of an edge on a <b>Graph</b>.
  *
- * <p>GraphEdges are represented a label, their source <b>GraphNode</b>, and their destination
- * <b>GraphNode</b>. GraphEdges can have the same label as other GraphEdges in a single graph,
- * but they cannot also have the same source AND destination node.
+ * <p>GraphEdges are represented by their label and associated source node and destination node.
  *
- * <p>A GraphEdge cannot have a null source or destination node, but source and destination
- * can be the same.
+ * <p>A GraphEdge cannot have a null source node or destination node, but the node this edge
+ * points to and from can be the same.
  *
- * @spec.specfield label : String // The label of this edge
- * @spec.specfield source : GraphNode  // The GraphNode that this edge points from
- * @spec.specfield destination : GraphNode  // The GraphNode that this edge points to
- *
- * <p>Abstract Invariant:
- * An edge cannot have a null label, source, or destination.
  */
 
 public final class GraphEdge {
@@ -40,17 +30,24 @@ public final class GraphEdge {
     //      destination != null
 
     /**
+     * Constructs a new GraphEdge
+     *
      * @param l the label of the edge to be constructed
      * @param s the source node of the edge to be constructed
      * @param d the destination node of the edge to be constructed
      * @spec.requires l != null, s != null, and d != null
-     * @spec.modifies GraphNode s, GraphNode d
-     * @spec.effects Constructs a new GraphEdge e, with e.label = l, e.source = s, and
-     * e.destination = d. Adds itself to the set of in coming GraphEdges for GraphNode d,
-     * and adds itself to the set of out going GraphEdges for GraphNode s.
+     * @spec.effects Constructs a new GraphEdge e. Adds itself as an in coming edge for GraphNode d,
+     * and adds itself as an out going edge for GraphNode s.
      */
     public GraphEdge(String l, GraphNode s, GraphNode d) {
-        throw new NotImplementedException("GraphEdge constructor not yet implemented");
+        this.label = l;
+        this.source = new GraphNode(s.getLabel(), s.getInComing(), s.getOutGoing());
+        this.destination  = new GraphNode(d.getLabel(), d.getInComing(), d.getOutGoing());
+        // add to in coming edges of s
+        s.addInComing(this);
+        // add to out going edges of d
+        d.addOutGoing(this);
+        checkRep();
     }
 
     /**
@@ -59,25 +56,26 @@ public final class GraphEdge {
      * @return the label of this GraphEdge
      */
     public String getLabel() {
-        throw new NotImplementedException("getLabel not yet implemented");
+        return label;
     }
 
     /**
      * Gets the source of this GraphEdge.
      *
-     * @return the source of this GraphEdge
+     * @return the source node of this GraphEdge
      */
     public GraphNode getSource() {
-        throw new NotImplementedException("getSource not yet implemented");
+        return new GraphNode(source.getLabel(), source.getInComing(), source.getOutGoing());
     }
 
     /**
      * Gets the destination of this GraphEdge.
      *
-     * @return the destination of this GraphEdge
+     * @return the destination node of this GraphEdge
      */
     public GraphNode getDestination() {
-        throw new NotImplementedException("getDestination not yet implemented");
+        return new GraphNode(destination.getLabel(), destination.getInComing(),
+                destination.getOutGoing());
     }
 
     /**
@@ -89,7 +87,12 @@ public final class GraphEdge {
      */
     @Override
     public boolean equals(Object o) {
-        throw new NotImplementedException("equals not yet implemented");
+        if (!(o instanceof GraphEdge)) {
+            return false;
+        }
+        return this.label.equals(((GraphEdge) o).getLabel()) &&
+                this.source.equals(((GraphEdge) o).getSource()) &&
+                this.destination.equals(((GraphEdge) o).getDestination());
     }
 
     /**
@@ -99,11 +102,13 @@ public final class GraphEdge {
      */
     @Override
     public int hashCode() {
-        throw new NotImplementedException("hashCode not yet implemented");
+        return source.hashCode() ^ destination.hashCode() ^ label.hashCode();
     }
 
     /** Throws an exception if the representation invariant is violated. */
     private void checkRep() {
-        throw new NotImplementedException("checkRep not yet implemented");
+        assert label != null;
+        assert source != null;
+        assert destination != null;
     }
 }
