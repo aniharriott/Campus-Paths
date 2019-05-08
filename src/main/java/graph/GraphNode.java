@@ -1,26 +1,24 @@
 package graph;
 
+import com.sun.source.doctree.StartElementTree;
 import org.apache.commons.lang3.NotImplementedException;
+
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * <b>GraphNode</b> is an mutable representation of a node on a Graph.
  *
- * <p>GraphNodes are represented by their label, their in coming <b>GraphEdges</b>, and their out going
- * <b>GraphEdges</b>. A node is identifiable by its label which must be unique within a
- * single <b>Graph</b>.
+ * <p>GraphNodes are represented by their label and associated in coming edges and out going
+ * edges.
  *
- * <p>A GraphNode can have any number of GraphEdges associated with it, including zero.
- *
- * @spec.specfield label : String // The label of this node
- * @spec.specfield inComing : Set  // The GraphEdges that point to this node in alphabetical order
- * @spec.specfield outGoing : Set  // The GraphEdges that point away from this node in alphabetical order
+ * <p>A GraphNode can have any number of edges associated with it, including zero.
  *
  * <p>Abstract Invariant:
  * A node cannot be null.
  */
 
-public final class GraphNode {
+public class GraphNode {
 
     /** The label of this node */
     private final String label;
@@ -44,11 +42,32 @@ public final class GraphNode {
     //          outGoing is in alphabetical order
 
     /**
+     * Constructs a new node with no edges
+     *
      * @param l the label of this node
      * @spec.effects constructs a new node with no edges
      */
     public GraphNode(String l) {
-        throw new NotImplementedException("GraphNode constructor not yet implemented");
+        label = l;
+        inComing = new HashSet<GraphEdge>();
+        outGoing = new HashSet<GraphEdge>();
+        checkRep();
+    }
+
+    /**
+     * Constructs a node with edges
+     *
+     * @param l the label of this node
+     * @param in the in coming edges of this node
+     * @param out the outgoing edges of this node
+     * @spec.effects constructs a new node with the given label and edges
+     */
+    public GraphNode(String l, Set<GraphEdge> in, Set<GraphEdge> out){
+        this(l);
+        // copy the set parameters into this node
+        this.inComing.addAll(in);
+        this.outGoing.addAll(out);
+        checkRep();
     }
 
     /**
@@ -56,11 +75,21 @@ public final class GraphNode {
      *
      * @param e the in coming GraphEdge to be added
      * @spec.requires e != null, e cannot ba a duplicate to this node
-     * @spec.modifies this.inComing
+     * @spec.modifies this
      * @spec.effects adds an in coming GraphEdge to this node
+     * @throws IllegalArgumentException if e == null or if e is a duplicate of an in coming edge
+     * already associated with this node
      */
     public void addInComing(GraphEdge e) {
-        throw new NotImplementedException("addInComing not yet implemented");
+        if (e == null) {
+            throw new IllegalArgumentException("edge cannot be null");
+        }
+        for (GraphEdge edge : this.inComing) {
+            if (edge.equals(e)) {
+                throw new IllegalArgumentException("edge cannot be a duplicate of this mode");
+            }
+        }
+        this.inComing.add(e);
     }
 
     /**
@@ -68,11 +97,21 @@ public final class GraphNode {
      *
      * @param e the out going GraphEdge to be added
      * @spec.requires e != null, e cannot be a duplicate to this node
-     * @spec.modifies this.outGoing
+     * @spec.modifies this
      * @spec.effects adds an out going GraphEdge to this node
+     * @throws IllegalArgumentException if e == null or if e is a duplicate of an out going edge
+     * already associated with this node
      */
     public void addOutGoing(GraphEdge e) {
-        throw new NotImplementedException("addOutGoing not yet implemented");
+        if (e == null) {
+            throw new IllegalArgumentException("edge cannot be null");
+        }
+        for (GraphEdge edge : this.inComing) {
+            if (edge.equals(e)) {
+                throw new IllegalArgumentException("edge cannot be a duplicate of this mode");
+            }
+        }
+        this.outGoing.add(e);
     }
 
     /**
@@ -95,6 +134,7 @@ public final class GraphNode {
      * order
      */
     public Set<GraphNode> getChildren() {
+        // sorted set? might need a compareTo for edges?
         throw new NotImplementedException("getChildren not yet implemented");
     }
 
@@ -146,6 +186,10 @@ public final class GraphNode {
     public GraphEdge findEdge(GraphNode other) {
         throw new NotImplementedException("findEdge not yet implemented");
     }
+
+    /**
+     * equals method and hashcode method
+     */
 
     /** Throws an exception if the representation invariant is violated. */
     private void checkRep() {
