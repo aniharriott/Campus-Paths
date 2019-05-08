@@ -1,0 +1,18 @@
+CSE 331 Homework.  Answers to written questions.
+
+Anina Harriott
+
+Problem 1.
+
+ (a) A collection of edges would provide for a very simple and easy implementation, however it would make it more difficult
+     to keep track nodes and would create more computations when trying to find or add nodes. An adjacency list would
+     make it easier to find certain nodes and find what they connect to, however the implementation of this would be the
+     more complicated than just a collection of edges. An adjacency matrix would make finding a path between nodes the
+     most straightforward out of all the implementations, and it would hold the most information without additional computation
+     being necessary. However, an adjacency matrix is also very complicated to implement and contains a lot of unnecessary
+     information - the only relevant information about edges is what they connect to, it is not also necessary to know
+     every edge they do not connect to.
+
+ (b) I chose to implement the graph as a collection of nodes, where each node is associated with its in coming and out
+     going edges. The advantage of this is that it reduces the computations necessary to find paths, but a disadvantage
+     is that it is more complicated to implement and requires additional class definitions.
