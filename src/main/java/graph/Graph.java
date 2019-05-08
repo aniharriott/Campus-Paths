@@ -10,13 +10,11 @@ import org.apache.commons.lang3.NotImplementedException;
  *
  * <p>A Graph can be empty but it cannot be null.
  *
- * @spec.specfield nodes : Set  // The GraphNode contained in this graph in alphabetical order.
- *
  * <p>Abstract Invariant:
  * A graph cannot be null, and none of its nodes can be null.
  */
 
-public final class Graph {
+public class Graph {
 
     /** All the nodes in the graph in alphabetical order */
     private Set<GraphNode> nodes;
@@ -30,7 +28,9 @@ public final class Graph {
     //      for all indexes i, nodes.get(i) != null
 
     /**
-     * @spec.effects Constructs a new Graph g, with g.nodes = empty
+     * Constructs an empty graph.
+     *
+     * @spec.effects Constructs a new Graph g with no nodes.
      */
     public Graph() {
         throw new NotImplementedException("Graph constructor not yet implemented");
