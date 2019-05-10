@@ -134,9 +134,9 @@ public class Graph {
     }
 
     /**
-     * Returns a set of all the nodes in this Graph in alphabetical order.
+     * Returns a list of all the nodes in this Graph in alphabetical order.
      *
-     * @return a set of nodes equal to all the nodes in this graph
+     * @return a list of nodes equal to all the nodes in this graph
      */
     public List<GraphNode> listNodes() {
         List<GraphNode> n = new ArrayList<GraphNode>();
