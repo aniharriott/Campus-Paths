@@ -1,6 +1,8 @@
 package graph.implTest;
 
-import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.Timeout;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 import graph.*;
@@ -14,6 +16,8 @@ import java.util.*;
 
 public final class GraphNodeTest {
 
+    @Rule public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
+
     // 0
     private static final String label0 = "label0";
     private static GraphNode node0 = new GraphNode(label0);
@@ -22,10 +26,6 @@ public final class GraphNodeTest {
     private static final GraphNode node1b = new GraphNode("label1b");
     private static final GraphEdge e1 = new GraphEdge("e1", node1, node1b); // out
     private static final GraphEdge e1b = new GraphEdge("e1b", node1b, node1); // in
-    private static Set<GraphEdge> edges1_in = null;
-    private static Set<GraphEdge> edges1_out = null;
-    private static Set<GraphNode> parents1 = null;
-    private static Set<GraphNode> children1 = null;
     // many
     private static GraphNode nodeMulti = new GraphNode("multi");
     private static GraphNode nodeMultiB = new GraphNode("multiB");
@@ -34,20 +34,6 @@ public final class GraphNodeTest {
     private static final GraphEdge eM2 = new GraphEdge("eM2", nodeMultiB, nodeMulti); // in
     private static final GraphEdge eM3 = new GraphEdge("eM3", nodeMulti, nodeMultiC); // out
     private static final GraphEdge eM4 = new GraphEdge("eM4", nodeMultiC, nodeMulti); // in
-    private static Set<GraphEdge> edgesM_in = null;
-    private static Set<GraphEdge> edgesM_out = null;
-    private static Set<GraphNode> parents2 = null;
-    private static Set<GraphNode> children2 = null;
-
-    @BeforeClass
-    public static void setupBeforeTests() throws Exception {
-        edges1_in.add(e1b);
-        edges1_out.add(e1);
-        edgesM_in.add(eM2);
-        edgesM_in.add(eM4);
-        edgesM_out.add(eM1);
-        edgesM_out.add(eM3);
-    }
 
     /** Test to check that GraphNode.getLabel() is implemented correctly */
     @Test
@@ -58,92 +44,145 @@ public final class GraphNodeTest {
     /** Test to check that GraphNode.getInComing() is implemented correctly */
     @Test
     public void testGetInComing() {
-        assertTrue("node0.getInComing() should return an empty set when empty",
-                node0.getInComing().isEmpty());
-        assertEquals("node1.getInComing() when inComing has one edge", edges1_in,
-                node1.getInComing());
-        assertEquals("nodeMulti.getInComing() when inComing has many edges", edgesM_in,
-                nodeMulti.getInComing());
+        GraphNode n = new GraphNode("n");
+        List<GraphEdge> n_in = new ArrayList<>();
+        assertTrue("n.getInComing() should return an empty set when empty",
+                n.getInComing().isEmpty());
+        n.addInComing(e1);
+        n_in.add(e1);
+        assertEquals("n.getInComing() when inComing has one edge", n_in,
+                n.getInComing());
+        n.addInComing(e1b);
+        n_in.add(e1b);
+        assertEquals("n.getInComing() when inComing has many edges", n_in,
+                n.getInComing());
     }
 
     /** Test to check that GraphNode.getOutGoing() is implemented correctly */
     @Test
     public void testGetOutGoing() {
-        assertTrue("node0.getOutGoing() should return an empty set when empty",
-                node0.getOutGoing().isEmpty());
-        assertEquals("node1.getOutGoing() when outGoing has one edge", edges1_out,
-                node1.getOutGoing());
-        assertEquals("nodeMulti.getOutGoing() when outGoing has many edges", edgesM_out,
-                nodeMulti.getOutGoing());
+        GraphNode n = new GraphNode("n");
+        List<GraphEdge> n_out = new ArrayList<>();
+        assertTrue("n.getOutGoing() should return an empty set when empty",
+                n.getOutGoing().isEmpty());
+        n.addOutGoing(e1);
+        n_out.add(e1);
+        assertEquals("n.getOutGoing() when outGoing has one edge", n_out,
+                n.getOutGoing());
+        n.addOutGoing(e1b);
+        n_out.add(e1b);
+        assertEquals("n.getOutGoing() when outGoing has many edges", n_out,
+                n.getOutGoing());
     }
     /** Test to check that GraphNode.deleteEdge(GraphEdge) is implemented correctly */
     @Test
     public void testDeleteEdge() {
-        edgesM_in.remove(eM2);
-        nodeMulti.deleteEdge(eM2);
-        edgesM_out.remove(eM1);
-        nodeMulti.deleteEdge(eM1);
-        assertEquals("nodeMulti.deleteEdge(em2)", edgesM_in, nodeMulti.getInComing());
-        assertEquals("nodeMulti.deleteEdge(eM1)", edgesM_out, nodeMulti.getOutGoing());
-
-        edgesM_in.remove(eM4);
-        nodeMulti.deleteEdge(eM4);
-        edgesM_out.remove(eM3);
-        nodeMulti.deleteEdge(eM3);
-        assertTrue("nodeMulti.deleteEdge(em4)", nodeMulti.getInComing().isEmpty());
-        assertTrue("nodeMulti.deleteEdge(em3)", nodeMulti.getOutGoing().isEmpty());
+        GraphNode n = new GraphNode("n");
+        List<GraphEdge> edges = new ArrayList<>();
+        n.addInComing(eM3);
+        n.addInComing(eM4);
+        edges.add(eM3);
+        n.deleteEdge(eM4);
+        assertEquals("n.deleteEdge(eM4)", edges, n.getInComing());
+        n.addOutGoing(eM1);
+        n.addOutGoing(eM2);
+        edges.add(eM1);
+        edges.remove(eM3);
+        n.deleteEdge(eM2);
+        assertEquals("n.deleteEdge(eM2)", edges, n.getOutGoing());
+        n.deleteEdge(eM3);
+        assertTrue("nodeMulti.deleteEdge(em4)", n.getInComing().isEmpty());
+        n.deleteEdge(eM1);
+        assertTrue("nodeMulti.deleteEdge(em3)", n.getOutGoing().isEmpty());
     }
 
     /** Test to check that GraphNode.addInComing(GraphEdge) is implemented correctly */
     @Test
     public void testAddInComing() {
-        edgesM_in.add(eM4);
-        nodeMulti.addInComing(eM4);
-        assertEquals("nodeMulti.addInComing(eM4)", edgesM_in, nodeMulti.getInComing());
-        edgesM_in.add(eM2);
-        nodeMulti.addInComing(eM2);
-        assertEquals("nodeMulti.addInComing(eM2)", edgesM_in, nodeMulti.getInComing());
+        GraphNode multiple = new GraphNode("multiple");
+        List<GraphEdge> multi_in = new ArrayList<GraphEdge>();
+        multi_in.add(eM4);
+        multiple.addInComing(eM4);
+        assertEquals("multiple.addInComing(eM4)", multi_in, multiple.getInComing());
+        multi_in.add(eM2);
+        multiple.addInComing(eM2);
+        assertEquals("multiple.addInComing(eM2)", multi_in, multiple.getInComing());
     }
 
     /** Test to check that GraphNode.addOutGoing(GraphEdge) is implemented correctly */
     @Test
     public void testAddOutGoing() {
-        edgesM_out.add(eM3);
-        nodeMulti.addOutGoing(eM3);
-        assertEquals("nodeMulti.addOutGoing(eM3)", edgesM_out, nodeMulti.getOutGoing());
-        edgesM_out.add(eM1);
-        nodeMulti.addOutGoing(eM1);
-        assertEquals("nodeMulti.addOutGoing(eM1)", edgesM_out, nodeMulti.getOutGoing());
+        GraphNode multiple = new GraphNode("multiple");
+        List<GraphEdge> multi_out = new ArrayList<GraphEdge>();
+        multi_out.add(eM3);
+        multiple.addOutGoing(eM3);
+        assertEquals("multiple.addOutGoing(eM3)", multi_out, multiple.getOutGoing());
+        multi_out.add(eM1);
+        multiple.addOutGoing(eM1);
+        assertEquals("multiple.addOutGoing(eM1)", multi_out, multiple.getOutGoing());
     }
 
     /** Test to check that GraphNode.getParents() is implemented correctly */
     @Test
     public void testGetParents() {
-        assertTrue("node0.getParents() should be empty", node0.getParents().isEmpty());
-        parents1.add(node1b);
-        assertEquals("node1.getParents() should have one", parents1, node1.getParents());
-        parents2.add(nodeMultiB);
-        parents2.add(nodeMultiC);
-        assertEquals("nodeMulti.getParents() should have two", parents2, nodeMulti.getParents());
+        GraphNode n = new GraphNode("n");
+        List<GraphNode> parents = new ArrayList<>();
+        assertTrue("n.getParents() should be empty", n.getParents().isEmpty());
+        GraphEdge e = new GraphEdge("e", node0, n);
+        parents.add(node0);
+        assertEquals("n.getParents() should have one", parents, n.getParents());
+        GraphEdge e1 = new GraphEdge("e1", node1, n);
+        parents.add(node1);
+        assertEquals("n.getParents() should have two", parents, n.getParents());
     }
 
     /** Test to check that GraphNode.getChildren() is implemented correctly */
     @Test
     public void testGetChildren() {
-        assertTrue("node0.getChildren() should be empty", node0.getChildren().isEmpty());
-        children1.add(node1b);
-        assertEquals("node1.getChildren() should have one", children1, node1.getChildren());
-        children2.add(nodeMultiB);
-        children2.add(nodeMultiC);
-        assertEquals("nodeMulti.getChildren() should have two", children2, nodeMulti.getChildren());
+        GraphNode n = new GraphNode("n");
+        List<GraphNode> children = new ArrayList<>();
+        assertTrue("n.getChildren() should be empty", n.getChildren().isEmpty());
+        GraphEdge e = new GraphEdge("e", n, node0);
+        children.add(node0);
+        assertEquals("n.getChildren() should have one", children, n.getChildren());
+        GraphEdge e1 = new GraphEdge("e1", n, node1);
+        children.add(node1);
+        assertEquals("n.getChildren() should have two", children,
+                n.getChildren());
     }
 
-    /** Test to check that GraphNode.findEdge(GraphEdge) is implemented correctly */
+    /** Test to check that GraphNode.findEdges(GraphEdge) is implemented correctly */
     @Test
-    public void testFindEdge() {
-        assertEquals("node1 to node1b should be connected by e1", e1, node1.findEdge(node1b));
-        GraphEdge e1c = new GraphEdge("e1c", node1, node1b);
-        assertEquals("node1 to node1b should be alphabetically connected by e1", e1,
-                node1.findEdge(node1b));
+    public void testFindEdges() {
+        GraphNode n = new GraphNode("n");
+        GraphNode n1 = new GraphNode("n1");
+        GraphEdge e = new GraphEdge("e", n, n1);
+        assertEquals("n to n1 should be connected by e", e,
+                n.findEdges(n1).get(0));
+        GraphEdge e1 = new GraphEdge("e1", n, n1);
+        assertEquals("n to n1 should be alphabetically connected by e", e,
+                n.findEdges(n1).get(0));
+        assertEquals("n to n1 should also be connected by e1", e1,
+                n.findEdges(n1).get(1));
+    }
+
+    /** Test to check that GraphNode.hashCode is implemented correctly */
+    @Test
+    public void testHashCode() {
+        GraphNode n = new GraphNode("n");
+        GraphNode n1 = new GraphNode("n");
+        GraphNode n2 = new GraphNode("n2");
+        assertTrue("n.hashCode() should be true", n.hashCode() == (n1.hashCode()));
+        assertFalse("n.hashCode() should be false", n1.hashCode() == (n2.hashCode()));
+    }
+
+    /** Test to check that GraphNode.equals(GraphNode) is implemented correctly */
+    @Test
+    public void testEquals() {
+        GraphNode n = new GraphNode("n");
+        GraphNode n1 = new GraphNode("n");
+        GraphNode n2 = new GraphNode("n2");
+        assertTrue("e.equals(GraphNode)", n.equals(n1));
+        assertFalse("!e.equals(GraphNode", n.equals(n2));
     }
 }
