@@ -171,6 +171,14 @@ public class GraphTestDriver {
         Graph g = graphs.get(graphName);
         GraphNode n = new GraphNode(parentName);
         GraphNode n1 = new GraphNode(childName);
+        for (GraphNode node : g.listNodes()) {
+            if (node.getLabel().equals(n.getLabel())) {
+                n = node;
+            }
+            if (node.getLabel().equals(n1.getLabel())) {
+                n1 = node;
+            }
+        }
         g.addEdge(edgeLabel, n, n1);
         output.println("added edge " + edgeLabel + " from " + parentName + " to " +
                 childName + " in " + graphName);
@@ -207,19 +215,17 @@ public class GraphTestDriver {
 
     private void listChildren(String graphName, String parentName) {
         Graph g = graphs.get(graphName);
-        GraphNode parent = null;
+        output.print("the children of " + parentName + " in " + graphName + " are:");
+        GraphNode parent = new GraphNode(parentName);
         for (GraphNode n : g.listNodes()) {
-            parent = n;
-        }
-        output.println("the children of " + parentName + " in " + graphName + " are:");
-        if (parent != null) {
-            List<GraphNode> children = parent.getChildren();
-            for (GraphNode child : children) {
-                output.print(" " + child.getLabel());
-                GraphEdge connection = parent.findEdges(child).get(0);
-                output.print("(" + connection + ")");
+            if (n.getLabel().equals(parentName)) {
+                parent = n;
             }
         }
+        for (GraphEdge e : parent.getOutGoing()) {
+            output.print(" " + e.getDestination().getLabel() + "(" + e.getLabel() + ")");
+        }
+        output.println();
     }
 
     /**
