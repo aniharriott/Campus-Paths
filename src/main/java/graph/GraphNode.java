@@ -183,6 +183,8 @@ public class GraphNode {
         for (GraphEdge e : inComing) {
             returnList.add(e);
         }
+        Comparator<GraphEdge> byLabel = Comparator.comparing(GraphEdge::getLabel);
+        returnList.sort(byLabel);
         return returnList;
     }
 
@@ -196,6 +198,8 @@ public class GraphNode {
         for (GraphEdge e : outGoing) {
             returnList.add(e);
         }
+        Comparator<GraphEdge> byLabel = Comparator.comparing(GraphEdge::getLabel);
+        returnList.sort(byLabel);
         return returnList;
     }
 
