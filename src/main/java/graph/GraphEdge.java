@@ -44,9 +44,9 @@ public final class GraphEdge {
         this.source = new GraphNode(s.getLabel(), s.getInComing(), s.getOutGoing());
         this.destination  = new GraphNode(d.getLabel(), d.getInComing(), d.getOutGoing());
         // add to in coming edges of s
-        s.addInComing(this);
+        s.addOutGoing(this);
         // add to out going edges of d
-        d.addOutGoing(this);
+        d.addInComing(this);
         checkRep();
     }
 
@@ -55,9 +55,7 @@ public final class GraphEdge {
      *
      * @return the label of this GraphEdge
      */
-    public String getLabel() {
-        return label;
-    }
+    public String getLabel() { return label; }
 
     /**
      * Gets the source of this GraphEdge.
@@ -102,7 +100,7 @@ public final class GraphEdge {
      */
     @Override
     public int hashCode() {
-        return source.hashCode() ^ destination.hashCode() ^ label.hashCode();
+        return source.hashCode() ^ label.hashCode();
     }
 
     /** Throws an exception if the representation invariant is violated. */
