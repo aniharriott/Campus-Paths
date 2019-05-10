@@ -1,10 +1,8 @@
 package graph;
 
-import com.sun.source.doctree.StartElementTree;
-import org.apache.commons.lang3.NotImplementedException;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * <b>GraphNode</b> is an mutable representation of a node on a Graph.
@@ -15,17 +13,19 @@ import java.util.Set;
  * <p>A GraphNode can have any number of edges associated with it, including zero.
  *
  * <p>Abstract Invariant:
- * A node cannot be null.
+ * A node cannot be null, and none of its edges can be null.
  */
 
 public class GraphNode {
 
     /** The label of this node */
     private final String label;
-    /** The GraphEdges that point to this node in alphabetical order */
-    private Set<GraphEdge> inComing;
-    /** The GraphEdges that point away from this node in alphabetical order */
-    private Set<GraphEdge> outGoing;
+    /** The edges that point to this node in alphabetical order */
+    private List<GraphEdge> inComing;
+    /** The edges that point away from this node in alphabetical order */
+    private List<GraphEdge> outGoing;
+    /** boolean value used for testing levels */
+    private static final boolean DEBUG = false;
 
     // Abstraction Function:
     //      for any GraphNode n,
@@ -49,8 +49,8 @@ public class GraphNode {
      */
     public GraphNode(String l) {
         label = l;
-        inComing = new HashSet<GraphEdge>();
-        outGoing = new HashSet<GraphEdge>();
+        inComing = new ArrayList<GraphEdge>();
+        outGoing = new ArrayList<GraphEdge>();
         checkRep();
     }
 
@@ -60,11 +60,12 @@ public class GraphNode {
      * @param l the label of this node
      * @param in the in coming edges of this node
      * @param out the outgoing edges of this node
+     * @spec.requires no duplicate edges within in or within out
      * @spec.effects constructs a new node with the given label and edges
      */
-    public GraphNode(String l, Set<GraphEdge> in, Set<GraphEdge> out){
+    public GraphNode(String l, List<GraphEdge> in, List<GraphEdge> out){
         this(l);
-        // copy the set parameters into this node
+        // copy the List parameters into this node
         this.inComing.addAll(in);
         this.outGoing.addAll(out);
         checkRep();
@@ -81,15 +82,17 @@ public class GraphNode {
      * already associated with this node
      */
     public void addInComing(GraphEdge e) {
+        checkRep();
         if (e == null) {
             throw new IllegalArgumentException("edge cannot be null");
         }
         for (GraphEdge edge : this.inComing) {
             if (edge.equals(e)) {
-                throw new IllegalArgumentException("edge cannot be a duplicate of this mode");
+                throw new IllegalArgumentException("edge cannot be a duplicate of this node");
             }
         }
         this.inComing.add(e);
+        checkRep();
     }
 
     /**
@@ -103,96 +106,163 @@ public class GraphNode {
      * already associated with this node
      */
     public void addOutGoing(GraphEdge e) {
+        checkRep();
         if (e == null) {
             throw new IllegalArgumentException("edge cannot be null");
         }
-        for (GraphEdge edge : this.inComing) {
+        for (GraphEdge edge : this.outGoing) {
             if (edge.equals(e)) {
-                throw new IllegalArgumentException("edge cannot be a duplicate of this mode");
+                throw new IllegalArgumentException("edge cannot be a duplicate of this node");
             }
         }
         this.outGoing.add(e);
+        checkRep();
     }
 
     /**
-     * Deletes a GraphEdge from this node, either in coming or outgoing
+     * Deletes an edge from this node, either in coming or outgoing
      *
-     * @param e the GraphEdge to be deleted
+     * @param e the edge to be deleted
      * @spec.requires e must already be contained in this node
      * @spec.modifies this
-     * @spec.effects deletes the GraphEdge e from this node, either in inComing or outGoing
+     * @spec.effects deletes the edge e from this node, either in in coming or out going
      * or both
      */
     public void deleteEdge(GraphEdge e) {
-        throw new NotImplementedException("deleteEdge not yet implemented");
+        checkRep();
+        // look through the in coming edges
+        if (inComing.contains(e)) {
+            inComing.remove(e);
+        }
+        // look through the out going edges
+        if (outGoing.contains(e)) {
+            outGoing.remove(e);
+        }
+        checkRep();
     }
 
     /**
-     * Returns a set of all the GraphNodes that are children of this in alphabetical order.
+     * Returns a list of all the nodes that are children of this in alphabetical order.
      *
-     * @return a set of GraphNodes that contains all the children of this node in alphabetical
+     * @return a list of nodes that contains all the children of this node in alphabetical
      * order
      */
-    public Set<GraphNode> getChildren() {
-        // sorted set? might need a compareTo for edges?
-        throw new NotImplementedException("getChildren not yet implemented");
+    public List<GraphNode> getChildren() {
+        List<GraphNode> children = new ArrayList<GraphNode>();
+        for (GraphEdge e : outGoing) {
+            children.add(e.getDestination());
+        }
+        Comparator<GraphNode> byLabel = Comparator.comparing(GraphNode::getLabel);
+        children.sort(byLabel);
+        return children;
     }
 
     /**
-     * Returns a set of all the GraphNodes that are parents of this in alphabetical order.
+     * Returns a list of all the nodes that are parents of this in alphabetical order.
      *
-     * @return a set of GraphNodes that contains all the parents of this node in alphabetical
+     * @return a list of nodes that contains all the parents of this node in alphabetical
      * order
      */
-    public Set<GraphNode> getParents() {
-        throw new NotImplementedException("getParents not yet implemented");
+    public List<GraphNode> getParents() {
+        List<GraphNode> parents = new ArrayList<GraphNode>();
+        for (GraphEdge e : inComing) {
+            parents.add(e.getSource());
+        }
+        Comparator<GraphNode> byLabel = Comparator.comparing(GraphNode::getLabel);
+        parents.sort(byLabel);
+        return parents;
     }
 
     /**
      * Returns the in coming edges of this node.
      *
-     * @return a set of GraphEdges that is equal to this.inComing
+     * @return a list of edges that is equal to the in coming edges of this node
      */
-    public Set<GraphEdge> getInComing() {
-        throw new NotImplementedException("getInComing not yet implemented");
+    public List<GraphEdge> getInComing() {
+        List<GraphEdge> returnList = new ArrayList<GraphEdge>();
+        for (GraphEdge e : inComing) {
+            returnList.add(e);
+        }
+        return returnList;
     }
 
     /**
      * Returns the out going edges of this node.
      *
-     * @return a set of GraphEdges that is equal to this.outGoing
+     * @return a list of edges that is equal to the out going edges of this node
      */
-    public Set<GraphEdge> getOutGoing() {
-        throw new NotImplementedException("getOutGoing not yet implemented");
+    public List<GraphEdge> getOutGoing() {
+        List<GraphEdge> returnList = new ArrayList<GraphEdge>();
+        for (GraphEdge e : outGoing) {
+            returnList.add(e);
+        }
+        return returnList;
     }
 
     /**
      * Returns the label of this node.
      *
-     * @return a String 'label' that is equal to this.label
+     * @return a String 'label' that is equal to the label of this node
      */
-    public String getLabel() {
-        throw new NotImplementedException("getLabel not yet implemented");
-    }
+    public String getLabel() { return label; }
 
     /**
-     * Returns an edge between this and another node.
+     * Returns the edges between this and another node.
      *
-     * @param other the GraphNode to find an edge to
-     * @spec.requires GraphNode other is a child of this
-     * @return the GraphEdge that connects this GraphNode (parent) and another GraphNode (child)
-     * and is the first alphabetically if there are multiple.
+     * @param other the node to find an edge to
+     * @spec.requires node other is a child of this
+     * @return a list of edges that connect this node (parent) and another node (child)
+     * alphabetically sorted.
      */
-    public GraphEdge findEdge(GraphNode other) {
-        throw new NotImplementedException("findEdge not yet implemented");
+    public List<GraphEdge> findEdges(GraphNode other) {
+        List<GraphEdge> possibleEdges = new ArrayList<GraphEdge>();
+        for (GraphEdge e : other.getInComing()) {
+            if (e.getSource().equals(this)) {
+                possibleEdges.add(e);
+            }
+        }
+        Comparator<GraphEdge> byLabel = Comparator.comparing(GraphEdge::getLabel);
+        possibleEdges.sort(byLabel);
+        return possibleEdges;
     }
 
     /**
-     * equals method and hashcode method
+     * Standard equality operation.
+     *
+     * @param o the object to be compared for equality
+     * @return true if 'o' is an instance of a GraphNode and 'this' and 'o' have the same
+     *     label.
      */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof GraphNode)) {
+            return false;
+        }
+        return this.label.equals(((GraphNode) o).getLabel());
+    }
+
+    /**
+     * Standard hashCode function.
+     *
+     * @return an int that all objects equal to this will also
+     */
+    @Override
+    public int hashCode() {
+        return label.hashCode();
+    }
 
     /** Throws an exception if the representation invariant is violated. */
     private void checkRep() {
-        throw new NotImplementedException("checkRep not yet implemented");
+       assert label != null;
+       assert inComing != null;
+       assert outGoing != null;
+       if (DEBUG) {
+            for (GraphEdge e : inComing) {
+                assert e != null;
+            }
+           for (GraphEdge e : outGoing) {
+               assert e != null;
+           }
+       }
     }
 }
