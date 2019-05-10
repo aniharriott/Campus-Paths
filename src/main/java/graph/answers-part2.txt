@@ -16,3 +16,24 @@ Problem 1.
  (b) I chose to implement the graph as a collection of nodes, where each node is associated with its in coming and out
      going edges. The advantage of this is that it reduces the computations necessary to find paths, but a disadvantage
      is that it is more complicated to implement and requires additional class definitions.
+
+Problem 4.
+
+(tests)
+I did not add any new tests completely, but some of my implementation changed so I added additional cases. My findPath
+method in Graph changed to just find a single edge from one node to another, and to return null if there was not connection
+found, so I added a case for getting a null result. Aside from this I only edited my tests so that they would actually run
+properly, I was having issues with the scope of certain test variables. I also added an equals and hashCode tests for
+GraphEdge and GraphNode because I wanted to add those methods when I was implementing Graph. I felt most of the tests
+I started with were sufficient because they highlighted some issues that I needed to change in my implementation and covered
+all of the special cases and boundary cases of input I could think of.
+
+(implementation)
+In my findPath method for Graph I changed it to just find a single edge from one node to another because I felt the more
+complicated algorithm for finding a path was something that a client would want to choose how to implement. I also
+changed my addEdge method for my graph to return the edge that it created and added, because I realized when I was going
+through my tests that otherwise I would not have access to that edge object, however I was satisfied with the rest of the
+way my addEdge method worked. I also changed all of the Set<> throughout my classes to List<> because I felt the consistency
+was easier to work with when implementing, and I preferred them for sorting and iterating through. I also added an equals
+and hashCode method for my GraphNode class because I noticed my need for comparing them based on label alone when
+implementing Graph.
