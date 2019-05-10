@@ -13,4 +13,4 @@ added node n3 to graph1
 
 # Add edges
 added edge e1 from n1 to n2 in graph1
-added edge e1 from n1 to n3 in graph1
+added edge e2 from n1 to n3 in graph1
