@@ -101,10 +101,13 @@ public final class GraphNodeTest {
     public void testAddInComing() {
         GraphNode multiple = new GraphNode("multiple");
         List<GraphEdge> multi_in = new ArrayList<GraphEdge>();
+        Comparator<GraphEdge> byLabel = Comparator.comparing(GraphEdge::getLabel);
         multi_in.add(eM4);
+        multi_in.sort(byLabel);
         multiple.addInComing(eM4);
         assertEquals("multiple.addInComing(eM4)", multi_in, multiple.getInComing());
         multi_in.add(eM2);
+        multi_in.sort(byLabel);
         multiple.addInComing(eM2);
         assertEquals("multiple.addInComing(eM2)", multi_in, multiple.getInComing());
     }
@@ -114,10 +117,13 @@ public final class GraphNodeTest {
     public void testAddOutGoing() {
         GraphNode multiple = new GraphNode("multiple");
         List<GraphEdge> multi_out = new ArrayList<GraphEdge>();
+        Comparator<GraphEdge> byLabel = Comparator.comparing(GraphEdge::getLabel);
         multi_out.add(eM3);
+        multi_out.sort(byLabel);
         multiple.addOutGoing(eM3);
         assertEquals("multiple.addOutGoing(eM3)", multi_out, multiple.getOutGoing());
         multi_out.add(eM1);
+        multi_out.sort(byLabel);
         multiple.addOutGoing(eM1);
         assertEquals("multiple.addOutGoing(eM1)", multi_out, multiple.getOutGoing());
     }
