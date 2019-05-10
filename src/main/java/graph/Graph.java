@@ -48,7 +48,7 @@ public class Graph {
      * the edge to be added cannot be a duplicate
      * @spec.modifies this
      * @spec.effects Creates a new edge and adds it to this graph
-     * @returns the edge created
+     * @return the edge created
      * @throws IllegalArgumentException if either node passed is not already contained in
      * this graph
      */
