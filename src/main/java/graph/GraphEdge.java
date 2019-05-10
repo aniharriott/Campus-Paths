@@ -43,9 +43,9 @@ public final class GraphEdge {
         this.label = l;
         this.source = new GraphNode(s.getLabel(), s.getInComing(), s.getOutGoing());
         this.destination  = new GraphNode(d.getLabel(), d.getInComing(), d.getOutGoing());
-        // add to in coming edges of s
+        // add to out going edges of s
         s.addOutGoing(this);
-        // add to out going edges of d
+        // add to in coming edges of d
         d.addInComing(this);
         checkRep();
     }
