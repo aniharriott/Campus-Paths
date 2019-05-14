@@ -11,13 +11,15 @@
 
 package marvel;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 /** Parser utility to load the Marvel Comics dataset. */
 public class MarvelParser {
@@ -28,10 +30,48 @@ public class MarvelParser {
    *
    * @spec.requires filename is a valid file path
    * @param filename the file that will be read
+   * @return a Map of key type String and value type Set<String>, where the keys are the character
+   * names and the corresponding value is a set of the comic books that character has appeared in,
+   * or null if the parsing was unsuccessful.
    */
-  // TODO: Pick your return type and document it
-  public static void parseData(String filename) {
-    // TODO: Complete this method
-    // Hint: You might want to create a new class to use with the CSV Parser
+  public static Map <String, Set<String>> parseData(String filename) {
+    try {
+      Reader reader = Files.newBufferedReader(Paths.get(filename));
+
+      CsvToBean<Character> csvToBean = new CsvToBeanBuilder(reader)
+              .withType(Character.class)
+              .withIgnoreLeadingWhiteSpace(true)
+              .withSeparator('\t')
+              .build();
+
+      Map<String, Set<String>> characterMap = new HashMap<>();
+      Iterator<Character> csvUserIterator = csvToBean.iterator();
+
+      // populates the map
+      while (csvUserIterator.hasNext()) {
+        Character csvChar = csvUserIterator.next();
+        String charName = csvChar.getName();
+        if (characterMap.containsKey(charName)) {
+          characterMap.get(charName).add(csvChar.getBook());
+        } else {
+          Set<String> nextSet = new HashSet<>();
+          nextSet.add(csvChar.getBook());
+          characterMap.put(charName, nextSet);
+        }
+      }
+
+      return characterMap;
+    }
+    catch (FileNotFoundException e) {
+      e.printStackTrace();
+      System.out.println(filename + ": file not found");
+      System.exit(1);
+    }
+    catch(IOException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+
+    return null;
   }
 }
