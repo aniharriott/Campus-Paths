@@ -45,4 +45,13 @@ public class Character {
     public String getBook() {
         return this.book;
     }
+
+    /**
+     * set the book of the character
+     *
+     * @param book book of the character
+     */
+    public void setBook(String book) {
+        this.book = book;
+    }
 }
