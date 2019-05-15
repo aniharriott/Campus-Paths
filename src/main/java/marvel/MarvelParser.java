@@ -30,8 +30,8 @@ public class MarvelParser {
    *
    * @spec.requires filename is a valid file path
    * @param filename the file that will be read
-   * @return a Map of key type String and value type Set<String>, where the keys are the character
-   * names and the corresponding value is a set of the comic books that character has appeared in,
+   * @return a Map of key type String and value type Set<String>, where the keys are the book
+   * names and the corresponding value is a set of the characters that have appeared in that book,
    * or null if the parsing was unsuccessful.
    */
   public static Map <String, Set<String>> parseData(String filename) {
@@ -50,13 +50,15 @@ public class MarvelParser {
       // populates the map
       while (csvUserIterator.hasNext()) {
         Character csvChar = csvUserIterator.next();
-        String charName = csvChar.getName();
-        if (characterMap.containsKey(charName)) {
-          characterMap.get(charName).add(csvChar.getBook());
+        assert !csvChar.getBook().equals("");
+        assert !csvChar.getName().equals("");
+        String book = csvChar.getBook();
+        if (characterMap.containsKey(book)) {
+          characterMap.get(book).add(csvChar.getName());
         } else {
           Set<String> nextSet = new HashSet<>();
-          nextSet.add(csvChar.getBook());
-          characterMap.put(charName, nextSet);
+          nextSet.add(csvChar.getName());
+          characterMap.put(book, nextSet);
         }
       }
 
