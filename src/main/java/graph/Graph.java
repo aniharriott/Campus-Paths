@@ -83,22 +83,26 @@ public class Graph {
      * @param n the GraphNode to be added
      * @spec.requires n != null, n cannot equal any other node in this graph
      * @spec.modifies this
-     * @spec.effects If this has nodes n0, n1, then this_post has nodes n0, n1, n
-     * @throws IllegalArgumentException if n = null or n is already contained in this graph
+     * @spec.effects If this has nodes n0, n1, then this_post has nodes n0, n1, n. If
+     * n is already in the graph it will not be added again.
+     * @throws IllegalArgumentException if n = null
      */
     public void addNode(GraphNode n) {
         checkRep();
         if (n == null) {
             throw new IllegalArgumentException("node cannot be null");
         }
+        boolean there = false;
         for (GraphNode node : nodes) {
             if (node.getLabel().equals(n.getLabel())) {
-                throw new IllegalArgumentException("node cannot be a duplicate in this graph");
+                there = true;
             }
         }
-        nodes.add(n);
-        edges.addAll(n.getInComing());
-        edges.addAll(n.getOutGoing());
+        if (!there) {
+            nodes.add(n);
+            edges.addAll(n.getInComing());
+            edges.addAll(n.getOutGoing());
+        }
         checkRep();
     }
 
