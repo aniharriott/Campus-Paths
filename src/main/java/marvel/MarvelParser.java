@@ -38,7 +38,7 @@ public class MarvelParser {
     try {
       Reader reader = Files.newBufferedReader(Paths.get(filename));
 
-      CsvToBean<Character> csvToBean = new CsvToBeanBuilder(reader)
+      CsvToBean<Character> csvToBean = new CsvToBeanBuilder<Character>(reader)
               .withType(Character.class)
               .withIgnoreLeadingWhiteSpace(true)
               .withSeparator('\t')
