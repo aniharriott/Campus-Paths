@@ -1,8 +1,7 @@
 package graph;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <b>GraphNode</b> is an mutable representation of a node on a Graph.
@@ -21,9 +20,9 @@ public class GraphNode {
     /** The label of this node */
     private final String label;
     /** The edges that point to this node in alphabetical order */
-    private List<GraphEdge> inComing;
+    private Set<GraphEdge> inComing;
     /** The edges that point away from this node in alphabetical order */
-    private List<GraphEdge> outGoing;
+    private Set<GraphEdge> outGoing;
     /** boolean value used for testing levels */
     private static final boolean DEBUG = false;
 
@@ -35,11 +34,11 @@ public class GraphNode {
     // Representation Invariant:
     //      label != null
     //      inComing != null,
-    //          for all indexes i in inComing, inComing.get(i) != null
-    //          inComing is in alphabetical order
+    //          for all objects i in inComing, i != null
+    //          inComing does not contain duplicate edges
     //      outGoing != null,
-    //          for all indexes i in outGoing, outGoing.get(i) != null
-    //          outGoing is in alphabetical order
+    //          for objects i in outGoing, i != null
+    //          outGoing does not contain duplicate edges
 
     /**
      * Constructs a new node with no edges
@@ -49,8 +48,8 @@ public class GraphNode {
      */
     public GraphNode(String l) {
         label = l;
-        inComing = new ArrayList<GraphEdge>();
-        outGoing = new ArrayList<GraphEdge>();
+        inComing = new HashSet<GraphEdge>();
+        outGoing = new HashSet<GraphEdge>();
         checkRep();
     }
 
@@ -63,9 +62,9 @@ public class GraphNode {
      * @spec.requires no duplicate edges within in or within out
      * @spec.effects constructs a new node with the given label and edges
      */
-    public GraphNode(String l, List<GraphEdge> in, List<GraphEdge> out){
+    public GraphNode(String l, Set<GraphEdge> in, Set<GraphEdge> out){
         this(l);
-        // copy the List parameters into this node
+        //copy the List parameters into this node
         this.inComing.addAll(in);
         this.outGoing.addAll(out);
         checkRep();
@@ -130,77 +129,59 @@ public class GraphNode {
      */
     public void deleteEdge(GraphEdge e) {
         checkRep();
-        // look through the in coming edges
-        if (inComing.contains(e)) {
-            inComing.remove(e);
-        }
-        // look through the out going edges
-        if (outGoing.contains(e)) {
-            outGoing.remove(e);
-        }
+        // remove if in in coming edges
+        inComing.remove(e);
+        // remove if in out going edges
+        outGoing.remove(e);
         checkRep();
     }
 
     /**
-     * Returns a list of all the nodes that are children of this in alphabetical order.
+     * Returns a set of all the nodes that are children of this.
      *
-     * @return a list of nodes that contains all the children of this node in alphabetical
-     * order
+     * @return a set of nodes that contains all the children of this node
      */
-    public List<GraphNode> getChildren() {
-        List<GraphNode> children = new ArrayList<GraphNode>();
+    public Set<GraphNode> getChildren() {
+        Set<GraphNode> children = new HashSet<GraphNode>();
         for (GraphEdge e : outGoing) {
             children.add(e.getDestination());
         }
-        Comparator<GraphNode> byLabel = Comparator.comparing(GraphNode::getLabel);
-        children.sort(byLabel);
         return children;
     }
 
     /**
-     * Returns a list of all the nodes that are parents of this in alphabetical order.
+     * Returns a set of all the nodes that are parents of this.
      *
-     * @return a list of nodes that contains all the parents of this node in alphabetical
-     * order
+     * @return a set of nodes that contains all the parents of this node
      */
-    public List<GraphNode> getParents() {
-        List<GraphNode> parents = new ArrayList<GraphNode>();
+    public Set<GraphNode> getParents() {
+        Set<GraphNode> parents = new HashSet<GraphNode>();
         for (GraphEdge e : inComing) {
             parents.add(e.getSource());
         }
-        Comparator<GraphNode> byLabel = Comparator.comparing(GraphNode::getLabel);
-        parents.sort(byLabel);
         return parents;
     }
 
     /**
      * Returns the in coming edges of this node.
      *
-     * @return a list of edges that is equal to the in coming edges of this node
+     * @return a set of edges that is equal to the in coming edges of this node
      */
-    public List<GraphEdge> getInComing() {
-        List<GraphEdge> returnList = new ArrayList<GraphEdge>();
-        for (GraphEdge e : inComing) {
-            returnList.add(e);
-        }
-        Comparator<GraphEdge> byLabel = Comparator.comparing(GraphEdge::getLabel);
-        returnList.sort(byLabel);
-        return returnList;
+    public Set<GraphEdge> getInComing() {
+        Set<GraphEdge> returnSet = new HashSet<GraphEdge>();
+        returnSet.addAll(inComing);
+        return returnSet;
     }
 
     /**
      * Returns the out going edges of this node.
      *
-     * @return a list of edges that is equal to the out going edges of this node
+     * @return a set of edges that is equal to the out going edges of this node
      */
-    public List<GraphEdge> getOutGoing() {
-        List<GraphEdge> returnList = new ArrayList<GraphEdge>();
-        for (GraphEdge e : outGoing) {
-            returnList.add(e);
-        }
-        Comparator<GraphEdge> byLabel = Comparator.comparing(GraphEdge::getLabel);
-        returnList.sort(byLabel);
-        return returnList;
+    public Set<GraphEdge> getOutGoing() {
+        Set<GraphEdge> returnSet = new HashSet<GraphEdge>();
+        returnSet.addAll(outGoing);
+        return returnSet;
     }
 
     /**
@@ -215,18 +196,15 @@ public class GraphNode {
      *
      * @param other the node to find an edge to
      * @spec.requires node other is a child of this
-     * @return a list of edges that connect this node (parent) and another node (child)
-     * alphabetically sorted.
+     * @return a set of edges that connect this node (parent) and another node (child).
      */
-    public List<GraphEdge> findEdges(GraphNode other) {
-        List<GraphEdge> possibleEdges = new ArrayList<GraphEdge>();
+    public Set<GraphEdge> findEdges(GraphNode other) {
+        Set<GraphEdge> possibleEdges = new HashSet<GraphEdge>();
         for (GraphEdge e : other.getInComing()) {
             if (e.getSource().equals(this)) {
                 possibleEdges.add(e);
             }
         }
-        Comparator<GraphEdge> byLabel = Comparator.comparing(GraphEdge::getLabel);
-        possibleEdges.sort(byLabel);
         return possibleEdges;
     }
 
@@ -257,16 +235,16 @@ public class GraphNode {
 
     /** Throws an exception if the representation invariant is violated. */
     private void checkRep() {
-       assert label != null;
-       assert inComing != null;
-       assert outGoing != null;
-       if (DEBUG) {
+        if (DEBUG) {
+            assert label != null;
+            assert inComing != null;
+            assert outGoing != null;
             for (GraphEdge e : inComing) {
                 assert e != null;
             }
-           for (GraphEdge e : outGoing) {
-               assert e != null;
-           }
-       }
+            for (GraphEdge e : outGoing) {
+                assert e != null;
+            }
+        }
     }
 }

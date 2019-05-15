@@ -1,8 +1,7 @@
 package graph;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Comparator;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * <b>Graph</b> represents a mutable directed graph represented by
@@ -17,16 +16,24 @@ import java.util.Comparator;
 public class Graph {
 
     /** All the nodes in the graph */
-    private List<GraphNode> nodes;
+    private Set<GraphNode> nodes;
+    /** All the edges in the graph */
+    private Set<GraphEdge> edges;
     /** boolean value used for testing levels */
     private static final boolean DEBUG = false;
 
     // Abstraction Function:
     //      for any Graph g,
     //          nodes = all the nodes in this graph
+    //          edges = all the edges in this graph
     // Representation Invariant:
     //      nodes != null
-    //      for all indexes i, nodes.get(i) != null
+    //          nodes cannot contain duplicates
+    //          for all objects n in nodes, n != null
+    //      edges != null
+    //          edges cannot contain edges that point to or from nodes not
+    //              contained in this graph
+    //          for all objects e in edges, e != null
 
     /**
      * Constructs an empty graph.
@@ -34,33 +41,40 @@ public class Graph {
      * @spec.effects Constructs a new Graph g with no nodes.
      */
     public Graph() {
-        nodes = new ArrayList<GraphNode>();
+        nodes = new HashSet<GraphNode>();
+        edges = new HashSet<GraphEdge>();
         checkRep();
     }
 
     /**
-     * Adds a new edge to this Graph.
+     * Adds an edge to this Graph.
      *
-     * @param l the label of the edge to be added
-     * @param n1 the source node of the edge to be added
-     * @param n2 the destination node of the edge to be added
+     * @param e the edge to be added to the graph
      * @spec.requires both nodes passed must already be contained in this graph, and
      * the edge to be added cannot be a duplicate
      * @spec.modifies this
-     * @spec.effects Creates a new edge and adds it to this graph
-     * @return the edge created
+     * @spec.effects adds an edge to this graph
      * @throws IllegalArgumentException if either node passed is not already contained in
      * this graph
      */
-    public GraphEdge addEdge(String l, GraphNode n1, GraphNode n2) {
+    public void addEdge(GraphEdge e) {
         checkRep();
-        if(!nodes.contains(n1) || !nodes.contains(n2)) {
+        boolean added = false;
+        for (GraphNode n : nodes) {
+            if (e.getSource().equals(n)) {
+                n.addOutGoing(e);
+                added = true;
+            }
+            if (e.getDestination().equals(n)) {
+                n.addInComing(e);
+                added = true;
+            }
+        }
+        if (!added) {
             throw new IllegalArgumentException("nodes must already be contained in this graph");
         }
-        // create edge
-        GraphEdge e = new GraphEdge(l, n1, n2);
+        edges.add(e);
         checkRep();
-        return e;
     }
 
     /**
@@ -83,6 +97,8 @@ public class Graph {
             }
         }
         nodes.add(n);
+        edges.addAll(n.getInComing());
+        edges.addAll(n.getOutGoing());
         checkRep();
     }
 
@@ -97,14 +113,15 @@ public class Graph {
     public void deleteEdge(GraphEdge e) {
         checkRep();
         for (GraphNode n : nodes) {
-            List<GraphEdge> in = n.getInComing();
-            List<GraphEdge> out = n.getOutGoing();
+            Set<GraphEdge> in = n.getInComing();
+            Set<GraphEdge> out = n.getOutGoing();
             if (in.contains(e)) {
                 n.deleteEdge(e);
             } else if (out.contains(e)) {
                 n.deleteEdge(e);
             }
         }
+        edges.remove(e);
         checkRep();
     }
 
@@ -134,62 +151,48 @@ public class Graph {
     }
 
     /**
-     * Returns a list of all the nodes in this Graph in alphabetical order.
+     * Returns a set of all the nodes in this Graph in alphabetical order.
      *
-     * @return a list of nodes equal to all the nodes in this graph
+     * @return a set of nodes equal to all the nodes in this graph
      */
-    public List<GraphNode> listNodes() {
-        List<GraphNode> n = new ArrayList<GraphNode>();
+    public Set<GraphNode> listNodes() {
+        Set<GraphNode> n = new HashSet<GraphNode>();
         n.addAll(nodes);
-        Comparator<GraphNode> byLabel = Comparator.comparing(GraphNode::getLabel);
-        n.sort(byLabel);
         return n;
     }
 
     /**
-     * Returns a list of all the edges in this Graph in alphabetical order.
+     * Returns a set of all the edges in this Graph in alphabetical order.
      *
-     * @return a list of edges equal to all the edges contained in this graph
+     * @return a set of edges equal to all the edges contained in this graph
      */
-    public List<GraphEdge> listEdges() {
-        List<GraphEdge> edges = new ArrayList<GraphEdge>();
-        for (GraphNode n : nodes) {
-            for (GraphEdge e : n.getInComing()) {
-                if (!edges.contains(e)) {
-                    edges.add(e);
-                }
-            }
-            for (GraphEdge e : n.getOutGoing()) {
-                if (!edges.contains(e)) {
-                    edges.add(e);
-                }
-            }
-        }
-        Comparator<GraphEdge> byLabel = Comparator.comparing(GraphEdge::getLabel);
-        edges.sort(byLabel);
-        return edges;
+    public Set<GraphEdge> listEdges() {
+        Set<GraphEdge> e = new HashSet<GraphEdge>();
+        e.addAll(edges);
+        return e;
     }
 
     /**
-     * Returns the edge (first alphabetically) between the nodes.
+     * Returns the edges between the nodes.
      *
-     * @param n1 the start node of this connection.
-     * @param n2 the end node of this connection
+     * @param n1 the start node of these connections.
+     * @param n2 the end node of these connections.
      * @spec.requires n1 and n2 are already contained within this graph
-     * @return an edge that represents the first connection (alphabetically) between n1 to n2,
+     * @return a set of edges that represent the connections between n1 to n2,
      * if they are not connected or either node is not already in the graph, returns null.
      */
-    public GraphEdge findConnection(GraphNode n1, GraphNode n2) {
+    public Set<GraphEdge> findConnections(GraphNode n1, GraphNode n2) {
         if (!nodes.contains(n1) || !nodes.contains(n2) || !n1.getChildren().contains(n2)) {
             return null;
         }
-        return n1.findEdges(n2).get(0);
+        return n1.findEdges(n2);
     }
 
     /** Throws an exception if the representation invariant is violated. */
     private void checkRep() {
-        assert nodes != null;
         if (DEBUG) {
+            assert nodes != null;
+
             for (GraphNode n : nodes) {
                 assert n != null;
             }

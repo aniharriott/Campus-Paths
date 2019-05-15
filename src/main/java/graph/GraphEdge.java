@@ -41,12 +41,12 @@ public final class GraphEdge {
      */
     public GraphEdge(String l, GraphNode s, GraphNode d) {
         this.label = l;
-        this.source = new GraphNode(s.getLabel(), s.getInComing(), s.getOutGoing());
-        this.destination  = new GraphNode(d.getLabel(), d.getInComing(), d.getOutGoing());
+        this.source = s; //new GraphNode(s.getLabel(), s.getInComing(), s.getOutGoing());
+        this.destination = d; //new GraphNode(d.getLabel(), d.getInComing(), d.getOutGoing());
         // add to out going edges of s
-        s.addOutGoing(this);
+        //s.addOutGoing(this);
         // add to in coming edges of d
-        d.addInComing(this);
+        //d.addInComing(this);
         checkRep();
     }
 
