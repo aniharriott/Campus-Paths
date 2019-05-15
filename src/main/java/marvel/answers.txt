@@ -1,8 +1,20 @@
 CSE 331 Homework.  Answers to written questions.
 Edit this file to supply your answers.
 
-Name:  <replace this with your name>
+Name:  Anina Harriott
 
 Briefly describe any changes made to your Graph ADT from HW 3-4 and why
 those changes were made below.  (See the HW6 assignment for details.)
+
+I changed the implementation of my GraphEdge constructor and the addEdge method of my Graph so that an edge that is created
+is not added to its source nodes and destination nodes in coming and out going edges until it is added to the graph those
+nodes are in. I did this so that the addEdge method in my graph was more singular in the function it performed, and so that
+a graph could have the rep invariant that it would have no edges pointing to or from nodes not in the graph.
+
+I also changed my Graph and added another field that keeps track of the edges in the graph. I did this because it helps
+to reduce iteration when there is a need to identify what edges are in the graph, and it made my addEdge method more
+singular in its function. It also means that my client no longer needs to track what edges are in the graph.
+
+The addEdge function in my graph also no longer creates and adds a new edge, it just adds. I did this because the
+method should have a more singular function.
 
