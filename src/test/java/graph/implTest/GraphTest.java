@@ -24,13 +24,13 @@ public final class GraphTest {
 
     // 1
     public static Graph g1 = new Graph();
-    public static List<GraphNode> nodes1 = new ArrayList<GraphNode>();
+    public static Set<GraphNode> nodes1 = new HashSet<GraphNode>();
     public static GraphNode n1 = new GraphNode("n1");
 
     // 2
     public static Graph g2 = new Graph();
-    public static List<GraphNode> nodes2 = new ArrayList<GraphNode>();
-    public static List<GraphEdge> edges2 = new ArrayList<GraphEdge>();
+    public static Set<GraphNode> nodes2 = new HashSet<GraphNode>();
+    public static Set<GraphEdge> edges2 = new HashSet<GraphEdge>();
     public static GraphNode n2a = new GraphNode("n2a");
     public static GraphNode n2b = new GraphNode("n2b");
     public static GraphEdge e2 = new GraphEdge("e2", n2a, n2b);
@@ -38,8 +38,8 @@ public final class GraphTest {
 
     // many
     public static Graph gM = new Graph();
-    public static List<GraphNode> nodesM = new ArrayList<GraphNode>();
-    public static List<GraphEdge> edgesM = new ArrayList<GraphEdge>();
+    public static Set<GraphNode> nodesM = new HashSet<GraphNode>();
+    public static Set<GraphEdge> edgesM = new HashSet<GraphEdge>();
     public static GraphNode m1 = new GraphNode("m1");
     public static GraphNode m2 = new GraphNode("m2");
     public static GraphNode m3 = new GraphNode("m3");
@@ -94,9 +94,12 @@ public final class GraphTest {
         g.addNode(n);
         g.addNode(n1);
         g.addNode(n2);
-        g.addEdge("e", n, n1);
-        g.addEdge("e1", n1, n2);
-        g.addEdge("e2", n2, n);
+        GraphEdge e = new GraphEdge("e", n, n1);
+        g.addEdge(e);
+        GraphEdge e1 = new GraphEdge("e1", n1, n2);
+        g.addEdge(e1);
+        GraphEdge e2 = new GraphEdge("e2", n2, n);
+        g.addEdge(e2);
         assertEquals("g.addEdge of e, e1, e2 should have 3 edges", 3, g.listEdges().size());
     }
 
@@ -110,21 +113,24 @@ public final class GraphTest {
         assertTrue("g.listEdges() should return an empty list", g.listEdges().isEmpty());
         GraphNode n1 = new GraphNode("n1");
         g.addNode(n1);
-        g.addEdge("e", n, n1);
+        GraphEdge e = new GraphEdge("e", n, n1);
+        g.addEdge(e);
         assertEquals("g.listEdges() should have one edge",
                 1, g.listEdges().size());
         GraphNode n2 = new GraphNode("n2");
         g.addNode(n2);
-        g.addEdge("e1", n1, n2);
-        g.addEdge("e2", n2, n);
+        GraphEdge e1 = new GraphEdge("e1", n1, n2);
+        g.addEdge(e1);
+        GraphEdge e2 = new GraphEdge("e2", n2, n);
+        g.addEdge(e2);
         assertEquals("g.listEdges() should have three edges",
                 3, g.listEdges().size());
 
     }
 
-    /** Test to check that Graph.findConnection(GraphNode, GraphNode) is implemented correctly */
+    /** Test to check that Graph.findConnections(GraphNode, GraphNode) is implemented correctly */
     @Test
-    public void testFindConnection() {
+    public void testFindConnections() {
         Graph g = new Graph();
         GraphNode n = new GraphNode("n");
         GraphNode n1 = new GraphNode("n1");
@@ -132,9 +138,11 @@ public final class GraphTest {
         g.addNode(n);
         g.addNode(n1);
         g.addNode(n2);
-        GraphEdge e = g.addEdge("e", n, n1);
-        assertEquals("g.findConnection(n, n1) should give e2", e, g.findConnection(n, n1));
-        assertEquals("g.findConnection(n1, n2) should give null", null, g.findConnection(n1, n2));
+        GraphEdge e = new GraphEdge("e", n, n1);
+        g.addEdge(e);
+        assertTrue("g.findConnection(n, n1) should give e2", g.findConnections(n, n1).contains(e));
+        assertEquals("g.findConnection(n1, n2) should give null", null,
+                g.findConnections(n1, n2));
     }
 
     /** Test to check that Graph.deleteEdge(GraphEdge) is implemented correctly */
@@ -147,8 +155,10 @@ public final class GraphTest {
         g.addNode(n);
         g.addNode(n1);
         g.addNode(n2);
-        GraphEdge e = g.addEdge("e", n, n1);
-        GraphEdge e1 = g.addEdge("e1", n1, n2);
+        GraphEdge e = new GraphEdge("e", n, n1);
+        g.addEdge(e);
+        GraphEdge e1 = new GraphEdge("e1", n1, n2);
+        g.addEdge(e1);
         g.deleteEdge(e);
         assertEquals("g.deleteEdge(e) should have one edges left", 1, g.listEdges().size());
         g.deleteEdge(e1);
@@ -163,7 +173,8 @@ public final class GraphTest {
         GraphNode n1 = new GraphNode("n1");
         g.addNode(n);
         g.addNode(n1);
-        GraphEdge e = g.addEdge("e", n, n1);
+        GraphEdge e = new GraphEdge("e", n, n1);
+        g.addEdge(e);
         g.deleteEdge(e);
         assertEquals("none of the nodes should have been deleted by deleteEdge",
                  2, g.listNodes().size());
@@ -191,12 +202,14 @@ public final class GraphTest {
         GraphNode n1 = new GraphNode("n1");
         g.addNode(n);
         g.addNode(n1);
-        GraphEdge e = g.addEdge("e", n, n1);
+        GraphEdge e = new GraphEdge("e", n, n1);
+        g.addEdge(e);
         g.deleteNode(n);
         assertTrue("deleting parent node should also delete edges from it",
                 g.listEdges().isEmpty());
         g.addNode(n);
-        g.addEdge("e1", n1, n);
+        GraphEdge e1 = new GraphEdge("e1", n1, n);
+        g.addEdge(e1);
         g.deleteNode(n);
         assertTrue("deleting child node should also delete edges to it",
                 g.listEdges().isEmpty());

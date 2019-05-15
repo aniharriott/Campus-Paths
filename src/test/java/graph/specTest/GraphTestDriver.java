@@ -3,6 +3,7 @@ package graph.specTest;
 import java.io.*;
 import java.util.*;
 import graph.*;
+import org.apache.commons.collections.comparators.ComparableComparator;
 
 /**
  * This class implements a testing driver which reads test scripts
@@ -179,7 +180,8 @@ public class GraphTestDriver {
                 n1 = node;
             }
         }
-        g.addEdge(edgeLabel, n, n1);
+        GraphEdge e = new GraphEdge(edgeLabel, n, n1);
+        g.addEdge(e);
         output.println("added edge " + edgeLabel + " from " + parentName + " to " +
                 childName + " in " + graphName);
     }
@@ -195,9 +197,11 @@ public class GraphTestDriver {
 
     private void listNodes(String graphName) {
         Graph g = graphs.get(graphName);
-        List<GraphNode> nodes = g.listNodes();
+        List<GraphNode> sortedList = new ArrayList<GraphNode>(g.listNodes());
+        Comparator<GraphNode> byLabel = Comparator.comparing(GraphNode::getLabel);
+        sortedList.sort(byLabel);
         output.print(graphName + " contains:");
-        for (GraphNode n : nodes) {
+        for (GraphNode n : sortedList) {
             output.print(" " + n.getLabel());
         }
         output.println();
@@ -217,12 +221,18 @@ public class GraphTestDriver {
         Graph g = graphs.get(graphName);
         output.print("the children of " + parentName + " in " + graphName + " are:");
         GraphNode parent = new GraphNode(parentName);
-        for (GraphNode n : g.listNodes()) {
+        List<GraphNode> sortedNodes = new ArrayList<GraphNode>(g.listNodes());
+        Comparator<GraphNode> nodeLabel = Comparator.comparing(GraphNode::getLabel);
+        sortedNodes.sort(nodeLabel);
+        for (GraphNode n : sortedNodes) {
             if (n.getLabel().equals(parentName)) {
                 parent = n;
             }
         }
-        for (GraphEdge e : parent.getOutGoing()) {
+        List<GraphEdge> sortedEdges = new ArrayList<GraphEdge>(parent.getOutGoing());
+        Comparator<GraphEdge> edgeLabel = Comparator.comparing(GraphEdge::getLabel);
+        sortedEdges.sort(edgeLabel);
+        for (GraphEdge e : sortedEdges) {
             output.print(" " + e.getDestination().getLabel() + "(" + e.getLabel() + ")");
         }
         output.println();
