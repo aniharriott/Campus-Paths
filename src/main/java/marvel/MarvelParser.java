@@ -38,31 +38,29 @@ public class MarvelParser {
     try {
       Reader reader = Files.newBufferedReader(Paths.get(filename));
 
-      CsvToBean<Character> csvToBean = new CsvToBeanBuilder<Character>(reader)
-              .withType(Character.class)
+      CsvToBean<MarvelBean> csvToBean = new CsvToBeanBuilder<MarvelBean>(reader)
+              .withType(MarvelBean.class)
               .withIgnoreLeadingWhiteSpace(true)
               .withSeparator('\t')
               .build();
 
-      Map<String, Set<String>> characterMap = new HashMap<>();
-      Iterator<Character> csvUserIterator = csvToBean.iterator();
+      Map<String, Set<String>> marvelMap = new HashMap<>();
+      Iterator<MarvelBean> csvMarvelIterator = csvToBean.iterator();
 
       // populates the map
-      while (csvUserIterator.hasNext()) {
-        Character csvChar = csvUserIterator.next();
-        assert !csvChar.getBook().equals("");
-        assert !csvChar.getName().equals("");
-        String book = csvChar.getBook();
-        if (characterMap.containsKey(book)) {
-          characterMap.get(book).add(csvChar.getName());
+      while (csvMarvelIterator.hasNext()) {
+        MarvelBean bean = csvMarvelIterator.next();
+        String book = bean.getBook();
+        if (marvelMap.containsKey(book)) {
+          marvelMap.get(book).add(bean.getHero());
         } else {
           Set<String> nextSet = new HashSet<>();
-          nextSet.add(csvChar.getName());
-          characterMap.put(book, nextSet);
+          nextSet.add(bean.getHero());
+          marvelMap.put(book, nextSet);
         }
       }
 
-      return characterMap;
+      return marvelMap;
     }
     catch (FileNotFoundException e) {
       e.printStackTrace();
