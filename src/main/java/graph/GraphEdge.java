@@ -89,8 +89,8 @@ public final class GraphEdge {
             return false;
         }
         return this.label.equals(((GraphEdge) o).getLabel()) &&
-                this.source.equals(((GraphEdge) o).getSource()) &&
-                this.destination.equals(((GraphEdge) o).getDestination());
+                this.source.getLabel().equals(((GraphEdge) o).getSource().getLabel()) &&
+                this.destination.getLabel().equals(((GraphEdge) o).getDestination().getLabel());
     }
 
     /**
