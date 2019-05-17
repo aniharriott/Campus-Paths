@@ -63,7 +63,7 @@ public final class GraphEdge {
      * @return the source node of this GraphEdge
      */
     public GraphNode getSource() {
-        return new GraphNode(source.getLabel(), source.getInComing(), source.getOutGoing());
+        return source;
     }
 
     /**
@@ -72,8 +72,7 @@ public final class GraphEdge {
      * @return the destination node of this GraphEdge
      */
     public GraphNode getDestination() {
-        return new GraphNode(destination.getLabel(), destination.getInComing(),
-                destination.getOutGoing());
+        return destination;
     }
 
     /**
@@ -89,8 +88,8 @@ public final class GraphEdge {
             return false;
         }
         return this.label.equals(((GraphEdge) o).getLabel()) &&
-                this.source.getLabel().equals(((GraphEdge) o).getSource().getLabel()) &&
-                this.destination.getLabel().equals(((GraphEdge) o).getDestination().getLabel());
+                this.source.equals(((GraphEdge) o).getSource()) &&
+                this.destination.equals(((GraphEdge) o).getDestination());
     }
 
     /**
