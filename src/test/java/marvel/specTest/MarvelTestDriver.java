@@ -172,14 +172,16 @@ public class MarvelTestDriver {
         }
       }
       output.println(node1 + " to " + nodes.get(0).getLabel() + " via " + edge);
-      for (int i = 1; i < nodes.size() - 1; i++) {
-        GraphNode one = nodes.get(i);
-        GraphNode two = nodes.get(i+1);
-        List<GraphEdge> e = new ArrayList<>(one.findEdges(two));
-        Comparator<GraphEdge> edgeLabel = Comparator.comparing(GraphEdge::getLabel);
-        e.sort(edgeLabel);
-        GraphEdge connector = e.get(0);
-        output.println(one.getLabel() + " to " + two.getLabel() + " via " + connector.getLabel());
+      if (nodes.size() > 1) {
+        for (int i = 1; i < nodes.size() - 1; i++) {
+          GraphNode one = nodes.get(i);
+          GraphNode two = nodes.get(i + 1);
+          List<GraphEdge> e = new ArrayList<>(one.findEdges(two));
+          Comparator<GraphEdge> edgeLabel = Comparator.comparing(GraphEdge::getLabel);
+          e.sort(edgeLabel);
+          GraphEdge connector = e.get(0);
+          output.println(one.getLabel() + " to " + two.getLabel() + " via " + connector.getLabel());
+        }
       }
     }
   }

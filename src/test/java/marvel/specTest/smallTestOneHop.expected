@@ -1,0 +1,10 @@
+# Find a path with only one "hop" (edge) using smallTest.
+
+created graph small
+added node a to small
+added node b to small
+added edge one from a to b in small
+added edge one from b to a in small
+
+path from a to b:
+a to b via one
