@@ -24,6 +24,8 @@ import java.nio.file.Paths;
 /** Parser utility to load the Marvel Comics dataset. */
 public class MarvelParser {
 
+  // Not an ADT
+
   /**
    * Reads the Marvel Universe dataset. Each line of the input file contains a character name and a
    * comic book the character appeared in, separated by a tab character
@@ -49,6 +51,7 @@ public class MarvelParser {
 
       // populates the map
       while (csvMarvelIterator.hasNext()) {
+        // make the bean
         MarvelBean bean = csvMarvelIterator.next();
         String book = bean.getBook();
         if (marvelMap.containsKey(book)) {
