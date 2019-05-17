@@ -59,19 +59,16 @@ public class Graph {
      */
     public void addEdge(GraphEdge e) {
         checkRep();
-        boolean added = false;
-        for (GraphNode n : nodes) {
-            if (e.getSource().equals(n)) {
-                n.addOutGoing(e);
-                added = true;
-            }
-            if (e.getDestination().equals(n)) {
-                n.addInComing(e);
-                added = true;
-            }
-        }
-        if (!added) {
+        if (!nodes.contains(e.getDestination()) || !nodes.contains(e.getSource())) {
             throw new IllegalArgumentException("nodes must already be contained in this graph");
+        }
+        for (GraphNode n : nodes) {
+            if (n.equals(e.getSource())) {
+                n.addOutGoing(e);
+            }
+            if (n.equals(e.getDestination())) {
+                n.addInComing(e);
+            }
         }
         edges.add(e);
         checkRep();
