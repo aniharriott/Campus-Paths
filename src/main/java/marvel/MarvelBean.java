@@ -19,6 +19,16 @@ public class MarvelBean {
     @CsvBindByName
     private String book;
 
+    /** boolean value for debugging */
+    private boolean DEBUG = false;
+
+    // Abstraction Function:
+    //  hero = the hero's name
+    //  book = the book the hero appears in
+    // Rep Invariant:
+    //  hero != null
+    //  book != null
+
     /**
      * get the name of the hero
      *
@@ -35,6 +45,7 @@ public class MarvelBean {
      */
     public void setHero(String hero) {
         this.hero = hero;
+        checkRep();
     }
 
     /**
@@ -53,5 +64,14 @@ public class MarvelBean {
      */
     public void setBook(String book) {
         this.book = book;
+        checkRep();
+    }
+
+    /** Checks if the rep invariant is violated **/
+    private void checkRep() {
+        if (DEBUG) {
+            assert hero != null;
+            assert book != null;
+        }
     }
 }

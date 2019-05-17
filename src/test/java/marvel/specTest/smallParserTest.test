@@ -1,0 +1,5 @@
+# Test parser on smallTest.tsv
+
+LoadGraph small smallTest.tsv
+
+ListChildren small a

@@ -159,29 +159,22 @@ public class MarvelTestDriver {
     output.println("path from " + node1 + " to " + node2 + ":");
     if (nodes == null) {
       output.println("no path found");
-    } else if (nodes.get(0).getLabel().equals("Bad start node")) {
-      output.println("unknown character " + node1);
-    } else if (nodes.get(0).getLabel().equals("Bad destination node") ||
-            nodes.get(1).getLabel().equals("Bad destination node")) {
-      output.println("unknown character "+ node2);
-    } else if (!nodes.isEmpty()){
-      String edge = "";
-      for(GraphEdge e : nodes.get(0).getInComing()) {
-        if (e.getSource().getLabel().equals(node1)) {
-          edge = e.getLabel();
+    } //else if (nodes.get(0).getLabel().equals("Bad start node")) {
+    //  output.println("unknown character " + node1);
+    //} else if (nodes.get(0).getLabel().equals("Bad destination node") ||
+    //        nodes.get(1).getLabel().equals("Bad destination node")) {
+    //  output.println("unknown character " + node2);
+    //}
+    else if (!nodes.isEmpty()){
+      nodes.add(0, new GraphNode(node1));
+      for(int i = 0; i < nodes.size()-1; i++) {
+        output.print(nodes.get(i).getLabel() + " to " + nodes.get(i+1).getLabel());
+        for(GraphEdge e : nodes.get(i+1).getInComing()) {
+          if (e.getSource().getLabel().equals(nodes.get(i).getLabel())) {
+            output.print(" via " + e.getLabel());
+          }
         }
-      }
-      output.println(node1 + " to " + nodes.get(0).getLabel() + " via " + edge);
-      if (nodes.size() > 1) {
-        for (int i = 1; i < nodes.size() - 1; i++) {
-          GraphNode one = nodes.get(i);
-          GraphNode two = nodes.get(i + 1);
-          List<GraphEdge> e = new ArrayList<>(one.findEdges(two));
-          Comparator<GraphEdge> edgeLabel = Comparator.comparing(GraphEdge::getLabel);
-          e.sort(edgeLabel);
-          GraphEdge connector = e.get(0);
-          output.println(one.getLabel() + " to " + two.getLabel() + " via " + connector.getLabel());
-        }
+        output.println();
       }
     }
   }

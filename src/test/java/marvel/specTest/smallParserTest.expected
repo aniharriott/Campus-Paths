@@ -1,0 +1,5 @@
+# Test parser on smallTest.tsv
+
+loaded graph small
+
+the children of a in small are: b(one)
