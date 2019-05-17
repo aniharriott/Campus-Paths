@@ -76,19 +76,13 @@ public class GraphNode {
      * @param e the in coming GraphEdge to be added
      * @spec.requires e != null, e cannot ba a duplicate to this node
      * @spec.modifies this
-     * @spec.effects adds an in coming GraphEdge to this node
-     * @throws IllegalArgumentException if e == null or if e is a duplicate of an in coming edge
-     * already associated with this node
+     * @spec.effects adds an in coming GraphEdge to this node, a duplicate will not be added
+     * @throws IllegalArgumentException if e == null
      */
     public void addInComing(GraphEdge e) {
         checkRep();
         if (e == null) {
             throw new IllegalArgumentException("edge cannot be null");
-        }
-        for (GraphEdge edge : this.inComing) {
-            if (edge.equals(e)) {
-                throw new IllegalArgumentException("edge cannot be a duplicate of this node");
-            }
         }
         this.inComing.add(e);
         checkRep();
@@ -100,19 +94,13 @@ public class GraphNode {
      * @param e the out going GraphEdge to be added
      * @spec.requires e != null, e cannot be a duplicate to this node
      * @spec.modifies this
-     * @spec.effects adds an out going GraphEdge to this node
-     * @throws IllegalArgumentException if e == null or if e is a duplicate of an out going edge
-     * already associated with this node
+     * @spec.effects adds an out going GraphEdge to this node, a duplicate will not be added
+     * @throws IllegalArgumentException if e == null
      */
     public void addOutGoing(GraphEdge e) {
         checkRep();
         if (e == null) {
             throw new IllegalArgumentException("edge cannot be null");
-        }
-        for (GraphEdge edge : this.outGoing) {
-            if (edge.equals(e)) {
-                throw new IllegalArgumentException("edge cannot be a duplicate of this node");
-            }
         }
         this.outGoing.add(e);
         checkRep();
