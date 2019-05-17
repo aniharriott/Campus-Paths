@@ -1,16 +1,14 @@
 package marvel;
 
 import graph.*;
-import org.apache.commons.collections.ArrayStack;
-
 import java.util.*;
 
 public class MarvelPaths {
 
+    // Not an ADT
 
     public void main (String[] args) {
-        //Map<String, Set<String>> map = MarvelParser.parseData("src/test/resources/marvel/data/staffSuperheroes.tsv");
-        //Graph graph = makeGraph(map);
+
     }
 
     public static Graph makeGraph(Map<String, List<String>> map) {
@@ -31,33 +29,13 @@ public class MarvelPaths {
                 }
             }
         }
-
-
-
-
-        /**for (String book : map.keySet()) {
-            // add nodes : the hero names from the set in the map
-            Set<String> heroNames = map.get(book);
-            for (String n : heroNames) {
-                GraphNode hero = new GraphNode(n);
-                g.addNode(hero);
-            }
-            // add edges : the string keys from the map
-            for (String sourceName : map.get(book)) {
-                GraphNode source = new GraphNode(sourceName);
-                for (String destinationName : map.get(book)) {
-                    GraphNode destination = new GraphNode(destinationName);
-                    GraphEdge e = new GraphEdge(book , source, destination);
-                    g.addEdge(e);
-                }
-            }
-        }*/
         return g;
     }
 
     public static List<GraphNode> findPath(String s, String d, Graph g) {
         GraphNode start = null;
         GraphNode dest = null;
+        // get the destination and source nodes asked for
         for (GraphNode n : g.listNodes()) {
             if (n.getLabel().equals(s)) {
                 start = n;
@@ -67,6 +45,7 @@ public class MarvelPaths {
             }
         }
 
+        // if the nodes passed aren't in the graph
         List<GraphNode> temp = new LinkedList<>();
         if (start == null) {
             temp.add(new GraphNode("Bad start node"));
@@ -79,7 +58,6 @@ public class MarvelPaths {
         }
 
         Comparator<GraphNode> nodeLabel = Comparator.comparing(GraphNode::getLabel);
-        Comparator<GraphEdge> edgeLabel = Comparator.comparing(GraphEdge::getLabel);
 
         Queue<GraphNode> worklist = new LinkedList<>();
         Map<GraphNode, List<GraphNode>> paths = new HashMap<>();
@@ -87,6 +65,8 @@ public class MarvelPaths {
         worklist.add(start);
         paths.put(start, new LinkedList<GraphNode>()); // a path from a node to itself will be empty
 
+        // Invariant : worklist contains unvistited nodes, map contains visited nodes and their
+        // path of nodes from the start node
         while (!worklist.isEmpty()) {
             GraphNode currentNode = worklist.remove();
             if (currentNode.equals(dest)) {
