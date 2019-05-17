@@ -34,7 +34,7 @@ public class MarvelParser {
    * names and the corresponding value is a set of the characters that have appeared in that book,
    * or null if the parsing was unsuccessful.
    */
-  public static Map <String, Set<String>> parseData(String filename) {
+  public static Map <String, List<String>> parseData(String filename) {
     try {
       Reader reader = Files.newBufferedReader(Paths.get(filename));
 
@@ -44,7 +44,7 @@ public class MarvelParser {
               .withSeparator('\t')
               .build();
 
-      Map<String, Set<String>> marvelMap = new HashMap<>();
+      Map<String, List<String>> marvelMap = new HashMap<>();
       Iterator<MarvelBean> csvMarvelIterator = csvToBean.iterator();
 
       // populates the map
@@ -54,7 +54,7 @@ public class MarvelParser {
         if (marvelMap.containsKey(book)) {
           marvelMap.get(book).add(bean.getHero());
         } else {
-          Set<String> nextSet = new HashSet<>();
+          List<String> nextSet = new LinkedList<>();
           nextSet.add(bean.getHero());
           marvelMap.put(book, nextSet);
         }
