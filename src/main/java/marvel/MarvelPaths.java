@@ -7,8 +7,40 @@ public class MarvelPaths {
 
     // Not an ADT
 
-    public void main (String[] args) {
+    public static void main (String[] args) {
+        Map<String, List<String>> m = MarvelParser.parseData("src/test/resources/marvel/data/marvel.tsv");
+        Graph g = makeGraph(m);
+        Scanner console = new Scanner(System.in);
+        System.out.println("Welcome to marvel path finder!");
+        System.out.println("Please type the name of the " +
+                "character you want your path to start at: ");
+        String start = console.nextLine();
+        System.out.println("Please type the name of the character you " +
+                "want your path to end at: ");
+        String end = console.nextLine();
+        List<GraphNode> path = findPath(start, end, g);
 
+        System.out.println("path from " + start + " to " + end + ":");
+        if (path == null) {
+            System.out.println("no path found");
+        } //else if (nodes.get(0).getLabel().equals("Bad start node")) {
+        //  output.println("unknown character " + node1);
+        //} else if (nodes.get(0).getLabel().equals("Bad destination node") ||
+        //        nodes.get(1).getLabel().equals("Bad destination node")) {
+        //  output.println("unknown character " + node2);
+        //}
+        else if (!path.isEmpty()){
+            path.add(0, new GraphNode(start));
+            for(int i = 0; i < path.size()-1; i++) {
+                System.out.print(path.get(i).getLabel() + " to " + path.get(i+1).getLabel());
+                for(GraphEdge e : path.get(i+1).getInComing()) {
+                    if (e.getSource().getLabel().equals(path.get(i).getLabel())) {
+                        System.out.print(" via " + e.getLabel());
+                    }
+                }
+                System.out.println();
+            }
+        }
     }
 
     public static Graph makeGraph(Map<String, List<String>> map) {

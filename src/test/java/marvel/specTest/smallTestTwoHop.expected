@@ -1,0 +1,7 @@
+# Find a path with two "hop" (edge) using smallTest.
+
+loaded graph small
+
+path from a to c:
+a to b via one
+b to c via two

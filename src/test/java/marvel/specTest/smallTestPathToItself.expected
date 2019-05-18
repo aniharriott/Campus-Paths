@@ -1,0 +1,5 @@
+# Find a path to itself using smallTest.
+
+loaded graph small
+
+path from a to a:

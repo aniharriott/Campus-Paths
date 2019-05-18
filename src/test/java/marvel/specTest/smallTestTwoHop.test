@@ -1,0 +1,5 @@
+# Find a path with two "hop" (edge) using smallTest.
+
+LoadGraph small smallTest.tsv
+
+FindPath small a c

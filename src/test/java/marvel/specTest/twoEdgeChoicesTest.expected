@@ -1,0 +1,6 @@
+# Find the alphabetic by edge path between valid characters using twoEdgeChoices
+
+loaded graph choices
+
+path from a to b:
+a to b via alpha

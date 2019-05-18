@@ -1,0 +1,6 @@
+# Find a path between invalid using smallTest.
+
+loaded graph small
+
+path from a to d:
+unknown character d

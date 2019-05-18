@@ -1,0 +1,6 @@
+# Find the shortest path between valid characters using shortestPath
+
+loaded graph short
+
+path from a to c:
+a to c via three

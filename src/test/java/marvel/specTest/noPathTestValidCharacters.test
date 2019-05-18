@@ -1,0 +1,5 @@
+# Find no path between valid characters using noPath.
+
+LoadGraph noPath noPath.tsv
+
+FindPath noPath a d

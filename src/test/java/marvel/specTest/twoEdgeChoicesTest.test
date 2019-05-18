@@ -1,0 +1,5 @@
+# Find the alphabetic by edge path between valid characters using twoEdgeChoices
+
+LoadGraph choices twoEdgeChoices.tsv
+
+FindPath noPath a b

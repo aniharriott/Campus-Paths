@@ -1,0 +1,5 @@
+# Find the shortest path between valid characters using shortestPath
+
+LoadGraph short shortestPath.tsv
+
+FindPath short a c

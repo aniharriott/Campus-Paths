@@ -1,0 +1,6 @@
+# Find no path between valid characters using noPath.
+
+loaded graph noPath
+
+path from a to d:
+no path found

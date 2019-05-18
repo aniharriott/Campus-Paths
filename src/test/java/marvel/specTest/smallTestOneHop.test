@@ -1,5 +1,9 @@
 # Find a path with only one "hop" (edge) using smallTest.
 
-LoadGraph small smallTest.tsv
+CreateGraph small
+AddNode small a
+AddNode small b
+AddEdge small a b one
+AddEdge small b a one
 
 FindPath small a b
