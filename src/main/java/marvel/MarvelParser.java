@@ -32,7 +32,7 @@ public class MarvelParser {
    *
    * @spec.requires filename is a valid file path
    * @param filename the file that will be read
-   * @return a Map of key type String and value type Set<String>, where the keys are the book
+   * @return a Map of key type String and value type list, where the keys are the book
    * names and the corresponding value is a set of the characters that have appeared in that book,
    * or null if the parsing was unsuccessful.
    */
@@ -64,7 +64,7 @@ public class MarvelParser {
       }
 
       return marvelMap;
-    }
+        }
     catch (FileNotFoundException e) {
       e.printStackTrace();
       System.out.println(filename + ": file not found");

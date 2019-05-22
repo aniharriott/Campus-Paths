@@ -2,4 +2,4 @@
 
 LoadGraph small smallTest.tsv
 
-FindPath small a c
+FindPath a c small
