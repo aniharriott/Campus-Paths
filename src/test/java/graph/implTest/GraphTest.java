@@ -20,32 +20,32 @@ public final class GraphTest {
     @Rule public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
     // 0
-    public static Graph g0 = new Graph();
+    public static Graph<String, String> g0 = new Graph<String, String>();
 
     // 1
-    public static Graph g1 = new Graph();
-    public static Set<GraphNode> nodes1 = new HashSet<GraphNode>();
-    public static GraphNode n1 = new GraphNode("n1");
+    public static Graph<String, String> g1 = new Graph<String, String>();
+    public static Set<GraphNode<String, String>> nodes1 = new HashSet<GraphNode<String, String>>();
+    public static GraphNode<String, String> n1 = new GraphNode<String, String>("n1");
 
     // 2
-    public static Graph g2 = new Graph();
-    public static Set<GraphNode> nodes2 = new HashSet<GraphNode>();
-    public static Set<GraphEdge> edges2 = new HashSet<GraphEdge>();
-    public static GraphNode n2a = new GraphNode("n2a");
-    public static GraphNode n2b = new GraphNode("n2b");
-    public static GraphEdge e2 = new GraphEdge("e2", n2a, n2b);
-    public static GraphEdge path2 = e2;
+    public static Graph<String, String> g2 = new Graph<String, String>();
+    public static Set<GraphNode<String, String>> nodes2 = new HashSet<GraphNode<String, String>>();
+    public static Set<GraphEdge<String, String>> edges2 = new HashSet<GraphEdge<String, String>>();
+    public static GraphNode<String, String> n2a = new GraphNode<String, String>("n2a");
+    public static GraphNode<String, String> n2b = new GraphNode<String, String>("n2b");
+    public static GraphEdge<String, String> e2 = new GraphEdge<String, String>("e2", n2a, n2b);
+    public static GraphEdge<String, String> path2 = e2;
 
     // many
-    public static Graph gM = new Graph();
-    public static Set<GraphNode> nodesM = new HashSet<GraphNode>();
-    public static Set<GraphEdge> edgesM = new HashSet<GraphEdge>();
-    public static GraphNode m1 = new GraphNode("m1");
-    public static GraphNode m2 = new GraphNode("m2");
-    public static GraphNode m3 = new GraphNode("m3");
-    public static GraphEdge eM1 = new GraphEdge("eM1", m1, m2);
-    public static GraphEdge eM2 = new GraphEdge("eM2", m2, m3);
-    public static GraphEdge eM3 = new GraphEdge("eM1", m3, m1);
+    public static Graph<String, String> gM = new Graph<String, String>();
+    public static Set<GraphNode<String, String>> nodesM = new HashSet<GraphNode<String, String>>();
+    public static Set<GraphEdge<String, String>> edgesM = new HashSet<GraphEdge<String, String>>();
+    public static GraphNode<String, String> m1 = new GraphNode<String, String>("m1");
+    public static GraphNode<String, String> m2 = new GraphNode<String, String>("m2");
+    public static GraphNode<String, String> m3 = new GraphNode<String, String>("m3");
+    public static GraphEdge<String, String> eM1 = new GraphEdge<String, String>("eM1", m1, m2);
+    public static GraphEdge<String, String> eM2 = new GraphEdge<String, String>("eM2", m2, m3);
+    public static GraphEdge<String, String> eM3 = new GraphEdge<String, String>("eM1", m3, m1);
 
     @BeforeClass
     public static void setupBeforeTests() throws Exception {
@@ -87,18 +87,18 @@ public final class GraphTest {
     /** Test to check that Graph.addEdge(GraphEdge) is implemented correctly */
     @Test
     public void testAddEdge() {
-        Graph g = new Graph();
-        GraphNode n = new GraphNode("n");
-        GraphNode n1 = new GraphNode("n1");
-        GraphNode n2 = new GraphNode("n2");
+        Graph<String, String> g = new Graph<String, String>();
+        GraphNode<String, String> n = new GraphNode<String, String>("n");
+        GraphNode<String, String> n1 = new GraphNode<String, String>("n1");
+        GraphNode<String, String> n2 = new GraphNode<String, String>("n2");
         g.addNode(n);
         g.addNode(n1);
         g.addNode(n2);
-        GraphEdge e = new GraphEdge("e", n, n1);
+        GraphEdge<String, String> e = new GraphEdge<String, String>("e", n, n1);
         g.addEdge(e);
-        GraphEdge e1 = new GraphEdge("e1", n1, n2);
+        GraphEdge<String, String> e1 = new GraphEdge<String, String>("e1", n1, n2);
         g.addEdge(e1);
-        GraphEdge e2 = new GraphEdge("e2", n2, n);
+        GraphEdge<String, String> e2 = new GraphEdge<String, String>("e2", n2, n);
         g.addEdge(e2);
         assertEquals("g.addEdge of e, e1, e2 should have 3 edges", 3, g.listEdges().size());
     }
@@ -106,22 +106,22 @@ public final class GraphTest {
     /** Test to check that Graph.listEdges() is implemented correctly */
     @Test
     public void testListEdges() {
-        Graph g = new Graph();
+        Graph<String, String> g = new Graph<String, String>();
         assertTrue("g.listEdges() should return an empty list", g.listEdges().isEmpty());
-        GraphNode n = new GraphNode("n");
+        GraphNode<String, String> n = new GraphNode<String, String>("n");
         g.addNode(n);
         assertTrue("g.listEdges() should return an empty list", g.listEdges().isEmpty());
-        GraphNode n1 = new GraphNode("n1");
+        GraphNode<String, String> n1 = new GraphNode<String, String>("n1");
         g.addNode(n1);
-        GraphEdge e = new GraphEdge("e", n, n1);
+        GraphEdge<String, String> e = new GraphEdge<String, String>("e", n, n1);
         g.addEdge(e);
         assertEquals("g.listEdges() should have one edge",
                 1, g.listEdges().size());
-        GraphNode n2 = new GraphNode("n2");
+        GraphNode<String, String> n2 = new GraphNode<String, String>("n2");
         g.addNode(n2);
-        GraphEdge e1 = new GraphEdge("e1", n1, n2);
+        GraphEdge<String, String> e1 = new GraphEdge<String, String>("e1", n1, n2);
         g.addEdge(e1);
-        GraphEdge e2 = new GraphEdge("e2", n2, n);
+        GraphEdge<String, String> e2 = new GraphEdge<String, String>("e2", n2, n);
         g.addEdge(e2);
         assertEquals("g.listEdges() should have three edges",
                 3, g.listEdges().size());
@@ -131,14 +131,14 @@ public final class GraphTest {
     /** Test to check that Graph.findConnections(GraphNode, GraphNode) is implemented correctly */
     @Test
     public void testFindConnections() {
-        Graph g = new Graph();
-        GraphNode n = new GraphNode("n");
-        GraphNode n1 = new GraphNode("n1");
-        GraphNode n2 = new GraphNode("n2");
+        Graph<String, String> g = new Graph<String, String>();
+        GraphNode<String, String> n = new GraphNode<String, String>("n");
+        GraphNode<String, String> n1 = new GraphNode<String, String>("n1");
+        GraphNode<String, String> n2 = new GraphNode<String, String>("n2");
         g.addNode(n);
         g.addNode(n1);
         g.addNode(n2);
-        GraphEdge e = new GraphEdge("e", n, n1);
+        GraphEdge<String, String> e = new GraphEdge<String, String>("e", n, n1);
         g.addEdge(e);
         assertTrue("g.findConnection(n, n1) should give e2", g.findConnections(n, n1).contains(e));
         assertEquals("g.findConnection(n1, n2) should give null", null,
@@ -148,16 +148,16 @@ public final class GraphTest {
     /** Test to check that Graph.deleteEdge(GraphEdge) is implemented correctly */
     @Test
     public void testDeleteEdge() {
-        Graph g = new Graph();
-        GraphNode n = new GraphNode("n");
-        GraphNode n1 = new GraphNode("n1");
-        GraphNode n2 = new GraphNode("n2");
+        Graph<String, String> g = new Graph<String, String>();
+        GraphNode<String, String> n = new GraphNode<String, String>("n");
+        GraphNode<String, String> n1 = new GraphNode<String, String>("n1");
+        GraphNode<String, String> n2 = new GraphNode<String, String>("n2");
         g.addNode(n);
         g.addNode(n1);
         g.addNode(n2);
-        GraphEdge e = new GraphEdge("e", n, n1);
+        GraphEdge<String, String> e = new GraphEdge<String, String>("e", n, n1);
         g.addEdge(e);
-        GraphEdge e1 = new GraphEdge("e1", n1, n2);
+        GraphEdge<String, String> e1 = new GraphEdge<String, String>("e1", n1, n2);
         g.addEdge(e1);
         g.deleteEdge(e);
         assertEquals("g.deleteEdge(e) should have one edges left", 1, g.listEdges().size());
@@ -168,12 +168,12 @@ public final class GraphTest {
     /** Test to check that only edges (and not nodes) were deleted from the Graph */
     @Test
     public void testOnlyEdgesDeleted() {
-        Graph g = new Graph();
-        GraphNode n = new GraphNode("n");
-        GraphNode n1 = new GraphNode("n1");
+        Graph<String, String> g = new Graph<String, String>();
+        GraphNode<String, String> n = new GraphNode<String, String>("n");
+        GraphNode<String, String> n1 = new GraphNode<String, String>("n1");
         g.addNode(n);
         g.addNode(n1);
-        GraphEdge e = new GraphEdge("e", n, n1);
+        GraphEdge<String, String> e = new GraphEdge<String, String>("e", n, n1);
         g.addEdge(e);
         g.deleteEdge(e);
         assertEquals("none of the nodes should have been deleted by deleteEdge",
@@ -197,18 +197,18 @@ public final class GraphTest {
     /** Test to check that deleting nodes will delete their edges as well */
     @Test
     public void testDeleteEdgeWithNode() {
-        Graph g = new Graph();
-        GraphNode n = new GraphNode("n");
-        GraphNode n1 = new GraphNode("n1");
+        Graph<String, String> g = new Graph<String, String>();
+        GraphNode<String, String> n = new GraphNode<String, String>("n");
+        GraphNode<String, String> n1 = new GraphNode<String, String>("n1");
         g.addNode(n);
         g.addNode(n1);
-        GraphEdge e = new GraphEdge("e", n, n1);
+        GraphEdge<String, String> e = new GraphEdge<String, String>("e", n, n1);
         g.addEdge(e);
         g.deleteNode(n);
         assertTrue("deleting parent node should also delete edges from it",
                 g.listEdges().isEmpty());
         g.addNode(n);
-        GraphEdge e1 = new GraphEdge("e1", n1, n);
+        GraphEdge<String, String> e1 = new GraphEdge<String, String>("e1", n1, n);
         g.addEdge(e1);
         g.deleteNode(n);
         assertTrue("deleting child node should also delete edges to it",

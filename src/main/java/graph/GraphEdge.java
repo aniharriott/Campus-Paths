@@ -10,14 +10,14 @@ package graph;
  *
  */
 
-public final class GraphEdge {
+public final class GraphEdge<T, NodeType> {
 
     /** The label of this edge */
-    private final String label;
+    private final T label;
     /** The node this edge points from (the source) */
-    private final GraphNode source;
+    private final GraphNode<NodeType, T> source;
     /** The node the edge points to (the destination) */
-    private final GraphNode destination;
+    private final GraphNode<NodeType, T> destination;
 
     // Abstraction Function:
     //      for any GraphEdge e,
@@ -39,7 +39,7 @@ public final class GraphEdge {
      * @spec.effects Constructs a new GraphEdge e. Adds itself as an in coming edge for GraphNode d,
      * and adds itself as an out going edge for GraphNode s.
      */
-    public GraphEdge(String l, GraphNode s, GraphNode d) {
+    public GraphEdge(T l, GraphNode<NodeType, T> s, GraphNode<NodeType, T> d) {
         this.label = l;
         this.source = s; //new GraphNode(s.getLabel(), s.getInComing(), s.getOutGoing());
         this.destination = d; //new GraphNode(d.getLabel(), d.getInComing(), d.getOutGoing());
@@ -55,14 +55,14 @@ public final class GraphEdge {
      *
      * @return the label of this GraphEdge
      */
-    public String getLabel() { return label; }
+    public T getLabel() { return label; }
 
     /**
      * Gets the source of this GraphEdge.
      *
      * @return the source node of this GraphEdge
      */
-    public GraphNode getSource() {
+    public GraphNode<NodeType, T> getSource() {
         return source;
     }
 
@@ -71,7 +71,7 @@ public final class GraphEdge {
      *
      * @return the destination node of this GraphEdge
      */
-    public GraphNode getDestination() {
+    public GraphNode<NodeType, T> getDestination() {
         return destination;
     }
 

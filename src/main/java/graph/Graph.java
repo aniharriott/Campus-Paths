@@ -13,12 +13,12 @@ import java.util.HashSet;
  * A graph cannot be null, and none of its nodes can be null.
  */
 
-public class Graph {
+public class Graph<NodeType, EdgeType> {
 
     /** All the nodes in the graph */
-    private Set<GraphNode> nodes;
+    private Set<GraphNode<NodeType, EdgeType>> nodes;
     /** All the edges in the graph */
-    private Set<GraphEdge> edges;
+    private Set<GraphEdge<EdgeType, NodeType>> edges;
     /** boolean value used for testing levels */
     private static final boolean DEBUG = false;
 
@@ -41,8 +41,8 @@ public class Graph {
      * @spec.effects Constructs a new Graph g with no nodes.
      */
     public Graph() {
-        nodes = new HashSet<GraphNode>();
-        edges = new HashSet<GraphEdge>();
+        nodes = new HashSet<GraphNode<NodeType, EdgeType>>();
+        edges = new HashSet<GraphEdge<EdgeType, NodeType>>();
         checkRep();
     }
 
@@ -57,12 +57,12 @@ public class Graph {
      * @throws IllegalArgumentException if either node passed is not already contained in
      * this graph
      */
-    public void addEdge(GraphEdge e) {
+    public void addEdge(GraphEdge<EdgeType, NodeType> e) {
         checkRep();
         if (!nodes.contains(e.getDestination()) || !nodes.contains(e.getSource())) {
             throw new IllegalArgumentException("nodes must already be contained in this graph");
         }
-        for (GraphNode n : nodes) {
+        for (GraphNode<NodeType, EdgeType> n : nodes) {
             if (n.equals(e.getSource())) {
                 n.addOutGoing(e);
             }
@@ -84,13 +84,13 @@ public class Graph {
      * n is already in the graph it will not be added again.
      * @throws IllegalArgumentException if n = null
      */
-    public void addNode(GraphNode n) {
+    public void addNode(GraphNode<NodeType, EdgeType> n) {
         checkRep();
         if (n == null) {
             throw new IllegalArgumentException("node cannot be null");
         }
         boolean there = false;
-        for (GraphNode node : nodes) {
+        for (GraphNode<NodeType, EdgeType> node : nodes) {
             if (node.getLabel().equals(n.getLabel())) {
                 there = true;
             }
@@ -111,11 +111,11 @@ public class Graph {
      * @spec.modifies this
      * @spec.effects deletes the edge from this graph
      */
-    public void deleteEdge(GraphEdge e) {
+    public void deleteEdge(GraphEdge<EdgeType, NodeType> e) {
         checkRep();
-        for (GraphNode n : nodes) {
-            Set<GraphEdge> in = n.getInComing();
-            Set<GraphEdge> out = n.getOutGoing();
+        for (GraphNode<NodeType, EdgeType> n : nodes) {
+            Set<GraphEdge<EdgeType, NodeType>> in = n.getInComing();
+            Set<GraphEdge<EdgeType, NodeType>> out = n.getOutGoing();
             if (in.contains(e)) {
                 n.deleteEdge(e);
             } else if (out.contains(e)) {
@@ -135,15 +135,15 @@ public class Graph {
      * @spec.effects deletes the node from this graph
      * @throws IllegalArgumentException if n is not contained in this graph
      */
-    public void deleteNode(GraphNode n) {
+    public void deleteNode(GraphNode<NodeType, EdgeType> n) {
         checkRep();
         if (!nodes.contains(n)){
             throw new IllegalArgumentException("node must be contained in this graph");
         } else {
-            for (GraphEdge e : n.getInComing()) {
+            for (GraphEdge<EdgeType, NodeType> e : n.getInComing()) {
                 deleteEdge(e);
             }
-            for (GraphEdge e : n.getOutGoing()) {
+            for (GraphEdge<EdgeType, NodeType> e : n.getOutGoing()) {
                 deleteEdge(e);
             }
             nodes.remove(n);
@@ -156,8 +156,8 @@ public class Graph {
      *
      * @return a set of nodes equal to all the nodes in this graph
      */
-    public Set<GraphNode> listNodes() {
-        Set<GraphNode> n = new HashSet<GraphNode>();
+    public Set<GraphNode<NodeType, EdgeType>> listNodes() {
+        Set<GraphNode<NodeType, EdgeType>> n = new HashSet<GraphNode<NodeType, EdgeType>>();
         n.addAll(nodes);
         return n;
     }
@@ -167,8 +167,8 @@ public class Graph {
      *
      * @return a set of edges equal to all the edges contained in this graph
      */
-    public Set<GraphEdge> listEdges() {
-        Set<GraphEdge> e = new HashSet<GraphEdge>();
+    public Set<GraphEdge<EdgeType, NodeType>> listEdges() {
+        Set<GraphEdge<EdgeType, NodeType>> e = new HashSet<GraphEdge<EdgeType, NodeType>>();
         e.addAll(edges);
         return e;
     }
@@ -182,7 +182,8 @@ public class Graph {
      * @return a set of edges that represent the connections between n1 to n2,
      * if they are not connected or either node is not already in the graph, returns null.
      */
-    public Set<GraphEdge> findConnections(GraphNode n1, GraphNode n2) {
+    public Set<GraphEdge<EdgeType, NodeType>> findConnections(GraphNode<NodeType, EdgeType> n1,
+                                                              GraphNode<NodeType, EdgeType> n2) {
         if (!nodes.contains(n1) || !nodes.contains(n2) || !n1.getChildren().contains(n2)) {
             return null;
         }
@@ -194,7 +195,7 @@ public class Graph {
         if (DEBUG) {
             assert nodes != null;
 
-            for (GraphNode n : nodes) {
+            for (GraphNode<NodeType, EdgeType> n : nodes) {
                 assert n != null;
             }
         }

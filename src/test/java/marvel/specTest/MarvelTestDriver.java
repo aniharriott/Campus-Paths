@@ -57,7 +57,7 @@ public class MarvelTestDriver {
   /**
    * String -> Graph: maps the names of graphs to the actual graph
    **/
-  private final Map<String, Graph> graphs = new HashMap<String, Graph>();
+  private final Map<String, Graph<String, String>> graphs = new HashMap<String, Graph<String, String>>();
   private final PrintWriter output;
   private final BufferedReader input;
 
@@ -136,7 +136,7 @@ public class MarvelTestDriver {
 
   private void loadGraph(String graphName, String filename) {
     Map<String, List<String>> map = MarvelParser.parseData(filename);
-    Graph g = MarvelPaths.makeGraph(map);
+    Graph<String, String> g = MarvelPaths.makeGraph(map);
     graphs.put(graphName, g);
     output.println("loaded graph " + graphName);
   }
@@ -154,8 +154,8 @@ public class MarvelTestDriver {
   private void findPath(String graphName, String node1, String node2) {
     node1 = node1.replace('_', ' ');
     node2 = node2.replace('_', ' ');
-    Graph g = graphs.get(graphName);
-    List<GraphNode> nodes = MarvelPaths.findPath(node1, node2, g);
+    Graph<String, String> g = graphs.get(graphName);
+    List<GraphNode<String, String>> nodes = MarvelPaths.findPath(node1, node2, g);
     output.println("path from " + node1 + " to " + node2 + ":");
     if (nodes == null) {
       output.println("no path found");
@@ -168,10 +168,10 @@ public class MarvelTestDriver {
       output.println("unknown character " + node2);
     }
     else if (!nodes.isEmpty()){
-      nodes.add(0, new GraphNode(node1));
+      nodes.add(0, new GraphNode<String, String>(node1));
       for(int i = 0; i < nodes.size()-1; i++) {
         output.print(nodes.get(i).getLabel() + " to " + nodes.get(i+1).getLabel());
-        for(GraphEdge e : nodes.get(i+1).getInComing()) {
+        for(GraphEdge<String, String> e : nodes.get(i+1).getInComing()) {
           if (e.getSource().getLabel().equals(nodes.get(i).getLabel())) {
             output.print(" via " + e.getLabel());
           }
@@ -191,7 +191,7 @@ public class MarvelTestDriver {
   }
 
   private void createGraph(String graphName) {
-    Graph g = new Graph();
+    Graph<String, String> g = new Graph<String, String>();
     graphs.put(graphName, g);
     output.println("created graph " + graphName);
   }
@@ -208,8 +208,8 @@ public class MarvelTestDriver {
   }
 
   private void addNode(String graphName, String nodeName) {
-    Graph g = graphs.get(graphName);
-    GraphNode n = new GraphNode(nodeName);
+    Graph<String, String> g = graphs.get(graphName);
+    GraphNode<String, String> n = new GraphNode<String, String>(nodeName);
     g.addNode(n);
     output.println("added node " + nodeName + " to " + graphName);
   }
@@ -229,10 +229,10 @@ public class MarvelTestDriver {
 
   private void addEdge(String graphName, String parentName, String childName,
                        String edgeLabel) {
-    Graph g = graphs.get(graphName);
-    GraphNode n = new GraphNode(parentName);
-    GraphNode n1 = new GraphNode(childName);
-    for (GraphNode node : g.listNodes()) {
+    Graph<String, String> g = graphs.get(graphName);
+    GraphNode<String, String> n = new GraphNode<String, String>(parentName);
+    GraphNode<String, String> n1 = new GraphNode<String, String>(childName);
+    for (GraphNode<String, String> node : g.listNodes()) {
       if (node.getLabel().equals(n.getLabel())) {
         n = node;
       }
@@ -240,7 +240,7 @@ public class MarvelTestDriver {
         n1 = node;
       }
     }
-    GraphEdge e = new GraphEdge(edgeLabel, n, n1);
+    GraphEdge<String, String> e = new GraphEdge<String, String>(edgeLabel, n, n1);
     g.addEdge(e);
     output.println("added edge " + edgeLabel + " from " + parentName + " to " +
             childName + " in " + graphName);
@@ -256,12 +256,12 @@ public class MarvelTestDriver {
   }
 
   private void listNodes(String graphName) {
-    Graph g = graphs.get(graphName);
-    List<GraphNode> sortedList = new ArrayList<GraphNode>(g.listNodes());
-    Comparator<GraphNode> byLabel = Comparator.comparing(GraphNode::getLabel);
+    Graph<String, String> g = graphs.get(graphName);
+    List<GraphNode<String, String>> sortedList = new ArrayList<GraphNode<String, String>>(g.listNodes());
+    Comparator<GraphNode<String, String>> byLabel = Comparator.comparing(GraphNode<String, String>::getLabel);
     sortedList.sort(byLabel);
     output.print(graphName + " contains:");
-    for (GraphNode n : sortedList) {
+    for (GraphNode<String, String> n : sortedList) {
       output.print(" " + n.getLabel());
     }
     output.println();
@@ -278,16 +278,16 @@ public class MarvelTestDriver {
   }
 
   private void listChildren(String graphName, String parentName) {
-    Graph g = graphs.get(graphName);
+    Graph<String, String> g = graphs.get(graphName);
     output.print("the children of " + parentName + " in " + graphName + " are:");
-    GraphNode parent = new GraphNode(parentName);
-    for (GraphNode n : g.listNodes()) {
+    GraphNode<String, String> parent = new GraphNode<String, String>(parentName);
+    for (GraphNode<String, String> n : g.listNodes()) {
       if (n.getLabel().equals(parentName)) {
         parent = n;
       }
     }
     List<String> children = new LinkedList<>();
-    for (GraphEdge e : parent.getOutGoing()) {
+    for (GraphEdge<String, String> e : parent.getOutGoing()) {
       if (!e.getDestination().equals(parent)){
         children.add(" " + e.getDestination().getLabel() + "(" + e.getLabel() + ")");
       }

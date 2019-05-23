@@ -53,7 +53,7 @@ public class GraphTestDriver {
     }
 
     /** String -> Graph: maps the names of graphs to the actual graph **/
-    private final Map<String, Graph> graphs = new HashMap<String, Graph>();
+    private final Map<String, Graph<String, String>> graphs = new HashMap<String, Graph<String, String>>();
     private final PrintWriter output;
     private final BufferedReader input;
 
@@ -131,7 +131,7 @@ public class GraphTestDriver {
     }
 
     private void createGraph(String graphName) {
-        Graph g = new Graph();
+        Graph<String, String> g = new Graph<String, String>();
         graphs.put(graphName, g);
         output.println("created graph " + graphName);
     }
@@ -148,8 +148,8 @@ public class GraphTestDriver {
     }
 
     private void addNode(String graphName, String nodeName) {
-        Graph g = graphs.get(graphName);
-        GraphNode n = new GraphNode(nodeName);
+        Graph<String, String> g = graphs.get(graphName);
+        GraphNode<String, String> n = new GraphNode<String, String>(nodeName);
         g.addNode(n);
         output.println("added node " + nodeName + " to " + graphName);
     }
@@ -169,10 +169,10 @@ public class GraphTestDriver {
 
     private void addEdge(String graphName, String parentName, String childName,
                          String edgeLabel) {
-        Graph g = graphs.get(graphName);
-        GraphNode n = new GraphNode(parentName);
-        GraphNode n1 = new GraphNode(childName);
-        for (GraphNode node : g.listNodes()) {
+        Graph<String, String> g = graphs.get(graphName);
+        GraphNode<String, String> n = new GraphNode<String, String>(parentName);
+        GraphNode<String, String> n1 = new GraphNode<String, String>(childName);
+        for (GraphNode<String, String> node : g.listNodes()) {
             if (node.getLabel().equals(n.getLabel())) {
                 n = node;
             }
@@ -180,7 +180,7 @@ public class GraphTestDriver {
                 n1 = node;
             }
         }
-        GraphEdge e = new GraphEdge(edgeLabel, n, n1);
+        GraphEdge<String, String> e = new GraphEdge<String, String>(edgeLabel, n, n1);
         g.addEdge(e);
         output.println("added edge " + edgeLabel + " from " + parentName + " to " +
                 childName + " in " + graphName);
@@ -196,12 +196,12 @@ public class GraphTestDriver {
     }
 
     private void listNodes(String graphName) {
-        Graph g = graphs.get(graphName);
-        List<GraphNode> sortedList = new ArrayList<GraphNode>(g.listNodes());
-        Comparator<GraphNode> byLabel = Comparator.comparing(GraphNode::getLabel);
+        Graph<String, String> g = graphs.get(graphName);
+        List<GraphNode<String, String>> sortedList = new ArrayList<GraphNode<String, String>>(g.listNodes());
+        Comparator<GraphNode<String, String>> byLabel = Comparator.comparing(GraphNode<String, String>::getLabel);
         sortedList.sort(byLabel);
         output.print(graphName + " contains:");
-        for (GraphNode n : sortedList) {
+        for (GraphNode<String, String> n : sortedList) {
             output.print(" " + n.getLabel());
         }
         output.println();
@@ -218,21 +218,21 @@ public class GraphTestDriver {
     }
 
     private void listChildren(String graphName, String parentName) {
-        Graph g = graphs.get(graphName);
+        Graph<String, String> g = graphs.get(graphName);
         output.print("the children of " + parentName + " in " + graphName + " are:");
-        GraphNode parent = new GraphNode(parentName);
-        List<GraphNode> sortedNodes = new ArrayList<GraphNode>(g.listNodes());
-        Comparator<GraphNode> nodeLabel = Comparator.comparing(GraphNode::getLabel);
+        GraphNode<String, String> parent = new GraphNode<String, String>(parentName);
+        List<GraphNode<String, String>> sortedNodes = new ArrayList<GraphNode<String, String>>(g.listNodes());
+        Comparator<GraphNode<String, String>> nodeLabel = Comparator.comparing(GraphNode<String, String>::getLabel);
         sortedNodes.sort(nodeLabel);
-        for (GraphNode n : sortedNodes) {
+        for (GraphNode<String, String> n : sortedNodes) {
             if (n.getLabel().equals(parentName)) {
                 parent = n;
             }
         }
-        List<GraphEdge> sortedEdges = new ArrayList<GraphEdge>(parent.getOutGoing());
-        Comparator<GraphEdge> edgeLabel = Comparator.comparing(GraphEdge::getLabel);
+        List<GraphEdge<String, String>> sortedEdges = new ArrayList<GraphEdge<String, String>>(parent.getOutGoing());
+        Comparator<GraphEdge<String, String>> edgeLabel = Comparator.comparing(GraphEdge<String, String>::getLabel);
         sortedEdges.sort(edgeLabel);
-        for (GraphEdge e : sortedEdges) {
+        for (GraphEdge<String, String> e : sortedEdges) {
             output.print(" " + e.getDestination().getLabel() + "(" + e.getLabel() + ")");
         }
         output.println();

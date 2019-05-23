@@ -18,17 +18,17 @@ public final class GraphEdgeTest {
 
     @Rule public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
-    private static GraphEdge e = null;
+    private static GraphEdge<String, String> e = null;
     private static String l = "edge";
-    private static GraphNode n1 = new GraphNode("n1");
-    private static GraphNode n2 = new GraphNode("n2");
-    private static GraphNode n3 = new GraphNode("n1");
-    private static GraphNode n4 = new GraphNode("n2");
-    private static GraphEdge e2 = new GraphEdge(l, n3, n4);
+    private static GraphNode<String, String> n1 = new GraphNode<String, String>("n1");
+    private static GraphNode<String, String> n2 = new GraphNode<String, String>("n2");
+    private static GraphNode<String, String> n3 = new GraphNode<String, String>("n1");
+    private static GraphNode<String, String> n4 = new GraphNode<String, String>("n2");
+    private static GraphEdge<String, String> e2 = new GraphEdge<String, String>(l, n3, n4);
 
     @BeforeClass
     public static void setupBeforeTests() throws Exception {
-        e = new GraphEdge(l, n1, n2);
+        e = new GraphEdge<String, String>(l, n1, n2);
     }
 
     /** Test to check that GraphEdge.getLabel() is implemented correctly */
@@ -52,9 +52,11 @@ public final class GraphEdgeTest {
     /** Test to check that GraphEdge.hashCode is implemented correctly */
     @Test
     public void testHashCode() {
-        GraphEdge e3 = new GraphEdge(l, n2, n1);
-        GraphEdge e4 = new GraphEdge("e4", new GraphNode("x"), new GraphNode("y"));
-        GraphEdge e5 = new GraphEdge("e5", n1, new GraphNode("z"));
+        GraphEdge<String, String> e3 = new GraphEdge<String, String>(l, n2, n1);
+        GraphEdge<String, String> e4 = new GraphEdge<String, String>("e4",
+                new GraphNode<String, String>("x"), new GraphNode<String, String>("y"));
+        GraphEdge<String, String> e5 = new GraphEdge<String, String>("e5", n1,
+                new GraphNode<String, String>("z"));
         assertTrue("e.hashCode() should be true", e.hashCode() == (e2.hashCode()));
         assertFalse("e.hashCode() should be false", e.hashCode() == (e3.hashCode()));
         assertFalse("e.hashCode() should be false", e.hashCode() == (e4.hashCode()));
@@ -64,7 +66,8 @@ public final class GraphEdgeTest {
     /** Test to check that GraphEdge.equals(GraphEdge) is implemented correctly */
     @Test
     public void testEquals() {
-        GraphEdge e3 = new GraphEdge(l, new GraphNode("x"), new GraphNode("y"));
+        GraphEdge<String, String> e3 = new GraphEdge<String, String>(l,
+                new GraphNode<String, String>("x"), new GraphNode<String, String>("y"));
         assertTrue("e.equals(GraphEdge)", e.equals(e2));
         assertFalse("!e.equal(GraphEdge", e.equals(e3));
     }

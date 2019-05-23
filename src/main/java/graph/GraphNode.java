@@ -15,14 +15,14 @@ import java.util.Set;
  * A node cannot be null, and none of its edges can be null.
  */
 
-public class GraphNode {
+public class GraphNode<T, EdgeType> {
 
     /** The label of this node */
-    private final String label;
+    private final T label;
     /** The edges that point to this node in alphabetical order */
-    private Set<GraphEdge> inComing;
+    private Set<GraphEdge<EdgeType, T>> inComing;
     /** The edges that point away from this node in alphabetical order */
-    private Set<GraphEdge> outGoing;
+    private Set<GraphEdge<EdgeType, T>> outGoing;
     /** boolean value used for testing levels */
     private static final boolean DEBUG = false;
 
@@ -46,10 +46,10 @@ public class GraphNode {
      * @param l the label of this node
      * @spec.effects constructs a new node with no edges
      */
-    public GraphNode(String l) {
+    public GraphNode(T l) {
         label = l;
-        inComing = new HashSet<GraphEdge>();
-        outGoing = new HashSet<GraphEdge>();
+        inComing = new HashSet<GraphEdge<EdgeType, T>>();
+        outGoing = new HashSet<GraphEdge<EdgeType, T>>();
         checkRep();
     }
 
@@ -62,7 +62,7 @@ public class GraphNode {
      * @spec.requires no duplicate edges within in or within out
      * @spec.effects constructs a new node with the given label and edges
      */
-    public GraphNode(String l, Set<GraphEdge> in, Set<GraphEdge> out){
+    public GraphNode(T l, Set<GraphEdge<EdgeType, T>> in, Set<GraphEdge<EdgeType, T>> out){
         this(l);
         //copy the List parameters into this node
         this.inComing.addAll(in);
@@ -79,7 +79,7 @@ public class GraphNode {
      * @spec.effects adds an in coming GraphEdge to this node, a duplicate will not be added
      * @throws IllegalArgumentException if e == null
      */
-    public void addInComing(GraphEdge e) {
+    public void addInComing(GraphEdge<EdgeType, T> e) {
         checkRep();
         if (e == null) {
             throw new IllegalArgumentException("edge cannot be null");
@@ -97,7 +97,7 @@ public class GraphNode {
      * @spec.effects adds an out going GraphEdge to this node, a duplicate will not be added
      * @throws IllegalArgumentException if e == null
      */
-    public void addOutGoing(GraphEdge e) {
+    public void addOutGoing(GraphEdge<EdgeType, T> e) {
         checkRep();
         if (e == null) {
             throw new IllegalArgumentException("edge cannot be null");
@@ -115,7 +115,7 @@ public class GraphNode {
      * @spec.effects deletes the edge e from this node, either in in coming or out going
      * or both
      */
-    public void deleteEdge(GraphEdge e) {
+    public void deleteEdge(GraphEdge<EdgeType, T> e) {
         checkRep();
         // remove if in in coming edges
         inComing.remove(e);
@@ -129,9 +129,9 @@ public class GraphNode {
      *
      * @return a set of nodes that contains all the children of this node
      */
-    public Set<GraphNode> getChildren() {
-        Set<GraphNode> children = new HashSet<GraphNode>();
-        for (GraphEdge e : outGoing) {
+    public Set<GraphNode<T, EdgeType>> getChildren() {
+        Set<GraphNode<T, EdgeType>> children = new HashSet<GraphNode<T, EdgeType>>();
+        for (GraphEdge<EdgeType, T> e : outGoing) {
             children.add(e.getDestination());
         }
         return children;
@@ -142,9 +142,9 @@ public class GraphNode {
      *
      * @return a set of nodes that contains all the parents of this node
      */
-    public Set<GraphNode> getParents() {
-        Set<GraphNode> parents = new HashSet<GraphNode>();
-        for (GraphEdge e : inComing) {
+    public Set<GraphNode<T, EdgeType>> getParents() {
+        Set<GraphNode<T, EdgeType>> parents = new HashSet<GraphNode<T, EdgeType>>();
+        for (GraphEdge<EdgeType, T> e : inComing) {
             parents.add(e.getSource());
         }
         return parents;
@@ -155,8 +155,8 @@ public class GraphNode {
      *
      * @return a set of edges that is equal to the in coming edges of this node
      */
-    public Set<GraphEdge> getInComing() {
-        Set<GraphEdge> returnSet = new HashSet<GraphEdge>();
+    public Set<GraphEdge<EdgeType, T>> getInComing() {
+        Set<GraphEdge<EdgeType, T>> returnSet = new HashSet<GraphEdge<EdgeType, T>>();
         returnSet.addAll(inComing);
         return returnSet;
     }
@@ -166,8 +166,8 @@ public class GraphNode {
      *
      * @return a set of edges that is equal to the out going edges of this node
      */
-    public Set<GraphEdge> getOutGoing() {
-        Set<GraphEdge> returnSet = new HashSet<GraphEdge>();
+    public Set<GraphEdge<EdgeType, T>> getOutGoing() {
+        Set<GraphEdge<EdgeType, T>> returnSet = new HashSet<GraphEdge<EdgeType, T>>();
         returnSet.addAll(outGoing);
         return returnSet;
     }
@@ -177,7 +177,7 @@ public class GraphNode {
      *
      * @return a String 'label' that is equal to the label of this node
      */
-    public String getLabel() { return label; }
+    public T getLabel() { return label; }
 
     /**
      * Returns the edges between this and another node.
@@ -186,9 +186,9 @@ public class GraphNode {
      * @spec.requires node other is a child of this
      * @return a set of edges that connect this node (parent) and another node (child).
      */
-    public Set<GraphEdge> findEdges(GraphNode other) {
-        Set<GraphEdge> possibleEdges = new HashSet<GraphEdge>();
-        for (GraphEdge e : other.getInComing()) {
+    public Set<GraphEdge<EdgeType, T>> findEdges(GraphNode<T, EdgeType> other) {
+        Set<GraphEdge<EdgeType, T>> possibleEdges = new HashSet<GraphEdge<EdgeType, T>>();
+        for (GraphEdge<EdgeType, T> e : other.getInComing()) {
             if (e.getSource().equals(this)) {
                 possibleEdges.add(e);
             }
@@ -227,10 +227,10 @@ public class GraphNode {
             assert label != null;
             assert inComing != null;
             assert outGoing != null;
-            for (GraphEdge e : inComing) {
+            for (GraphEdge<EdgeType, T> e : inComing) {
                 assert e != null;
             }
-            for (GraphEdge e : outGoing) {
+            for (GraphEdge<EdgeType, T> e : outGoing) {
                 assert e != null;
             }
         }
