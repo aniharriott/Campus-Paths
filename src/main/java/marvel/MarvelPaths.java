@@ -40,9 +40,11 @@ public class MarvelPaths {
             path.add(0, node1);
             for (int i = 0; i < path.size()-1; i++) {
                 System.out.print(path.get(i).getLabel() + " to " + path.get(i+1).getLabel());
+                boolean printed = false;
                 for(GraphEdge<String, String> e : path.get(i).getOutGoing()) {
-                    if (e.getDestination().equals(path.get(i+1))) {
+                    if (!printed && e.getDestination().equals(path.get(i+1))) {
                         System.out.print(" via " + e.getLabel());
+                        printed = true;
                     }
                 }
                 System.out.println();

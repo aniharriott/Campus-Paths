@@ -2,4 +2,4 @@
 
 LoadGraph choices twoEdgeChoices.tsv
 
-FindPath noPath a b
+FindPath choices a b
