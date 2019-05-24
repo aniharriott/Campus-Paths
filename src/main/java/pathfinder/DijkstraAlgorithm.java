@@ -14,7 +14,6 @@ public class DijkstraAlgorithm {
         // add path from start to itself to active
         Path<GraphNode<String, Double>> self = new Path<GraphNode<String, Double>>(start);
         active.add(self);
-        //finished.add(self.getEnd());
         while(!active.isEmpty()) {
             // minPath = lowest cost active path
             Path<GraphNode<String, Double>> minPath = active.remove();
@@ -23,10 +22,10 @@ public class DijkstraAlgorithm {
                 return minPath;
             }
             if (finished.contains(minDest)) {
-            for (GraphEdge<Double, String> e : minDest.getOutGoing()) {
-                if (!finished.contains(e.getDestination())) {
-                    Path<GraphNode<String, Double>> newPath = minPath.extend(e.getDestination(), e.getLabel());
-                    active.add(newPath);
+                for (GraphEdge<Double, String> e : minDest.getOutGoing()) {
+                    if (!finished.contains(e.getDestination())) {
+                        Path<GraphNode<String, Double>> newPath = minPath.extend(e.getDestination(), e.getLabel());
+                        active.add(newPath);
                     }
                 }
             }

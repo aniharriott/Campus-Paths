@@ -167,11 +167,16 @@ public class PathfinderTestDriver {
       if (path == null) {
         output.println("no path found");
       }
-      while (path.iterator().hasNext()) {
+      Double totalCost = 0.0;
+      while ((path != null) && path.iterator().hasNext()) {
         Path<GraphNode<String, Double>>.Segment curr = path.iterator().next();
-        System.out.println(curr.getStart().getLabel());
-        output.println(curr.getStart().getLabel() + " to " + curr.getEnd().getLabel() + " with weight " + curr.getCost());
+        //System.out.println(curr.getStart().getLabel());
+        totalCost = totalCost + curr.getCost();
+        Double cost = (curr.getCost()*1000)/1000;
+        output.println(curr.getStart().getLabel() + " to " + curr.getEnd().getLabel() +
+                String.format(" with weight of %.3f", cost));
       }
+      output.println(String.format("total cost: %.3f", totalCost));
     }
   }
 
