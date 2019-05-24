@@ -148,27 +148,32 @@ public class PathfinderTestDriver {
     GraphNode<String, Double> start = g.getNode(node1);
     GraphNode<String, Double> dest = g.getNode(node2);
     output.println("path from " + node1 + " to " + node2 + ":");
-    if (start == null) {
+    if ((start == null && dest == null) && (!node1.equals(node2))) {
       output.println("unknown node " + node1);
-    }
-    if ((dest != start) && (dest == null)) {
       output.println("unknown node " + node2);
-    }
-    if ((start != null) && (dest != null)) {
+    } else if (start == null && (!node1.equals(node2))) {
+      output.println("unknown node " + node1);
+    } else if (dest == null && (!node1.equals(node2))) {
+      output.println("unknown node " + node2);
+    } else if (start == null && (node1.equals(node2))) {
+      output.println("unknown node " + node1);
+    } else {
       Path<String> path = DijkstraAlgorithm.findMinPath(node1, node2, g);
       if (path == null) {
         output.println("no path found");
+      } else {
+        double totalCost = 0.0;
+        Iterator<Path<String>.Segment> pathIterator = path.iterator();
+        while (pathIterator.hasNext()) {
+          Path<String>.Segment curr = pathIterator.next();
+          //System.out.println(curr.getStart());
+          totalCost = totalCost + curr.getCost();
+          double cost = (curr.getCost() * 1000) / 1000;
+          output.println(curr.getStart() + " to " + curr.getEnd() +
+                  String.format(" with weight %.3f", cost));
+        }
+        output.println(String.format("total cost: %.3f", totalCost));
       }
-      double totalCost = 0.0;
-      while ((path != null) && path.iterator().hasNext()) {
-        Path<String>.Segment curr = path.iterator().next();
-        //System.out.println(curr.getStart());
-        totalCost = totalCost + curr.getCost();
-        Double cost = (curr.getCost()*1000)/1000;
-        output.println(curr.getStart() + " to " + curr.getEnd() +
-                String.format(" with weight of %.3f", cost));
-      }
-      output.println(String.format("total cost: %.3f", totalCost));
     }
   }
 

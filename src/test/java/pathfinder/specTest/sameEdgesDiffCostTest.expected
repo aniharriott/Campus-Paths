@@ -9,5 +9,5 @@ added edge 6.000 from n1 to n2 in graph1
 added edge 16.000 from n1 to n2 in graph1
 
 path from n1 to n2:
-n1 to n2 with weight 16.000
-total cost: 16.000
+n1 to n2 with weight 6.000
+total cost: 6.000

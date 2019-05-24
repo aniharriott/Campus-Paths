@@ -20,13 +20,14 @@ public class DijkstraAlgorithm {
                 return minPath;
             }
             if (finished.contains(minDest)) {
+                continue;
+            }
                 for (GraphEdge<EdgeType, NodeType> e : g.getEdges(minDest)) {
                     if (!finished.contains(e.getDestination().getLabel())) {
                         Path<NodeType> newPath = minPath.extend(e.getDestination().getLabel(), (double)e.getLabel());
                         active.add(newPath);
                     }
                 }
-            }
             finished.add(minDest);
         }
         // no path exists from start to dest
