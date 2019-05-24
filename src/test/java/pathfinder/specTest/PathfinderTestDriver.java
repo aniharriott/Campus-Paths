@@ -148,16 +148,13 @@ public class PathfinderTestDriver {
     GraphNode<String, Double> start = g.getNode(node1);
     GraphNode<String, Double> dest = g.getNode(node2);
     output.println("path from " + node1 + " to " + node2 + ":");
-    if ((start == null && dest == null) && (!node1.equals(node2))) {
+    if (start == null) {
       output.println("unknown node " + node1);
+    }
+    if (dest == null && !node1.equals(node2)) {
       output.println("unknown node " + node2);
-    } else if (start == null && (!node1.equals(node2))) {
-      output.println("unknown node " + node1);
-    } else if (dest == null && (!node1.equals(node2))) {
-      output.println("unknown node " + node2);
-    } else if (start == null && (node1.equals(node2))) {
-      output.println("unknown node " + node1);
-    } else {
+    }
+    if (start != null && dest != null) {
       Path<String> path = DijkstraAlgorithm.findMinPath(node1, node2, g);
       if (path == null) {
         output.println("no path found");
@@ -168,9 +165,8 @@ public class PathfinderTestDriver {
           Path<String>.Segment curr = pathIterator.next();
           //System.out.println(curr.getStart());
           totalCost = totalCost + curr.getCost();
-          double cost = (curr.getCost() * 1000) / 1000;
           output.println(curr.getStart() + " to " + curr.getEnd() +
-                  String.format(" with weight %.3f", cost));
+                  String.format(" with weight %.3f", curr.getCost()));
         }
         output.println(String.format("total cost: %.3f", totalCost));
       }
