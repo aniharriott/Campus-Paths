@@ -167,8 +167,9 @@ public class PathfinderTestDriver {
       if (path == null) {
         output.println("no path found");
       }
-      while ((path != null) && path.iterator().hasNext()) {
+      while (path.iterator().hasNext()) {
         Path<GraphNode<String, Double>>.Segment curr = path.iterator().next();
+        System.out.println(curr.getStart().getLabel());
         output.println(curr.getStart().getLabel() + " to " + curr.getEnd().getLabel() + " with weight " + curr.getCost());
       }
     }

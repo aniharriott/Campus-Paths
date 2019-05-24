@@ -168,11 +168,17 @@ public class MarvelTestDriver {
       output.println("unknown character " + node2);
     }
     else if (!nodes.isEmpty()){
-      nodes.add(0, new GraphNode<String, String>(node1));
-      for(int i = 0; i < nodes.size()-1; i++) {
+      GraphNode<String, String> start = null;
+      for (GraphNode<String, String> n : g.listNodes()) {
+        if (n.getLabel().equals(node1)) {
+          start = n;
+        }
+      }
+      nodes.add(0, start);
+      for (int i = 0; i < nodes.size()-1; i++) {
         output.print(nodes.get(i).getLabel() + " to " + nodes.get(i+1).getLabel());
-        for(GraphEdge<String, String> e : nodes.get(i+1).getInComing()) {
-          if (e.getSource().getLabel().equals(nodes.get(i).getLabel())) {
+        for(GraphEdge<String, String> e : nodes.get(i).getOutGoing()) {
+          if (e.getDestination().equals(nodes.get(i+1))) {
             output.print(" via " + e.getLabel());
           }
         }

@@ -35,9 +35,9 @@ javadoc {
 test {
   exclude 'setup/**'
   exclude 'poly/**'
-   exclude 'graph/**'
-   exclude 'marvel/**'
-  // exclude 'pathfinder/**'
+   //exclude 'graph/**'
+   //exclude 'marvel/**'
+   //exclude 'pathfinder/**'
 }
 
 tasks.withType(Test) {

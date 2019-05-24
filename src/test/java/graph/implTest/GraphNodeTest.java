@@ -43,21 +43,21 @@ public final class GraphNodeTest {
     }
 
     /** Test to check that GraphNode.getInComing() is implemented correctly */
-    @Test
-    public void testGetInComing() {
-        GraphNode<String, String> n = new GraphNode<String, String>("n");
-        Set<GraphEdge<String, String>> n_in = new HashSet<>();
-        assertTrue("n.getInComing() should return an empty set when empty",
-                n.getInComing().isEmpty());
-        n.addInComing(e1);
-        n_in.add(e1);
-        assertEquals("n.getInComing() when inComing has one edge", n_in,
-                n.getInComing());
-        n.addInComing(e1b);
-        n_in.add(e1b);
-        assertEquals("n.getInComing() when inComing has many edges", n_in,
-                n.getInComing());
-    }
+    //@Test
+    //public void testGetInComing() {
+    //    GraphNode<String, String> n = new GraphNode<String, String>("n");
+    //    Set<GraphEdge<String, String>> n_in = new HashSet<>();
+    //    assertTrue("n.getInComing() should return an empty set when empty",
+    //            n.getInComing().isEmpty());
+    //    n.addInComing(e1);
+    //    n_in.add(e1);
+    //    assertEquals("n.getInComing() when inComing has one edge", n_in,
+    //            n.getInComing());
+    //    n.addInComing(e1b);
+    //    n_in.add(e1b);
+    //    assertEquals("n.getInComing() when inComing has many edges", n_in,
+    //            n.getInComing());
+    //}
 
     /** Test to check that GraphNode.getOutGoing() is implemented correctly */
     @Test
@@ -80,11 +80,11 @@ public final class GraphNodeTest {
     public void testDeleteEdge() {
         GraphNode<String, String> n = new GraphNode<String, String>("n");
         Set<GraphEdge<String, String>> edges = new HashSet<>();
-        n.addInComing(eM3);
-        n.addInComing(eM4);
+        //n.addInComing(eM3);
+        //n.addInComing(eM4);
         edges.add(eM3);
         n.deleteEdge(eM4);
-        assertEquals("n.deleteEdge(eM4)", edges, n.getInComing());
+        //assertEquals("n.deleteEdge(eM4)", edges, n.getInComing());
         n.addOutGoing(eM1);
         n.addOutGoing(eM2);
         edges.add(eM1);
@@ -92,23 +92,23 @@ public final class GraphNodeTest {
         n.deleteEdge(eM2);
         assertEquals("n.deleteEdge(eM2)", edges, n.getOutGoing());
         n.deleteEdge(eM3);
-        assertTrue("nodeMulti.deleteEdge(em4)", n.getInComing().isEmpty());
+        //assertTrue("nodeMulti.deleteEdge(em4)", n.getInComing().isEmpty());
         n.deleteEdge(eM1);
         assertTrue("nodeMulti.deleteEdge(em3)", n.getOutGoing().isEmpty());
     }
 
     /** Test to check that GraphNode.addInComing(GraphEdge) is implemented correctly */
-    @Test
-    public void testAddInComing() {
-        GraphNode<String, String> multiple = new GraphNode<String, String>("multiple");
-        Set<GraphEdge<String, String>> multi_in = new HashSet<GraphEdge<String, String>>();
-        multi_in.add(eM4);
-        multiple.addInComing(eM4);
-        assertEquals("multiple.addInComing(eM4)", multi_in, multiple.getInComing());
-        multi_in.add(eM2);
-        multiple.addInComing(eM2);
-        assertEquals("multiple.addInComing(eM2)", multi_in, multiple.getInComing());
-    }
+    //@Test
+    //public void testAddInComing() {
+    //    GraphNode<String, String> multiple = new GraphNode<String, String>("multiple");
+    //    Set<GraphEdge<String, String>> multi_in = new HashSet<GraphEdge<String, String>>();
+    //    multi_in.add(eM4);
+    //    multiple.addInComing(eM4);
+    //    assertEquals("multiple.addInComing(eM4)", multi_in, multiple.getInComing());
+    //    multi_in.add(eM2);
+     //   multiple.addInComing(eM2);
+     //   assertEquals("multiple.addInComing(eM2)", multi_in, multiple.getInComing());
+    //}
 
     /** Test to check that GraphNode.addOutGoing(GraphEdge) is implemented correctly */
     @Test
@@ -124,24 +124,24 @@ public final class GraphNodeTest {
     }
 
     /** Test to check that GraphNode.getParents() is implemented correctly */
-    @Test
-    public void testGetParents() {
-        Graph<String, String> g = new Graph<String, String>();
-        GraphNode<String, String> n = new GraphNode<String, String>("n");
-        g.addNode(n);
-        g.addNode(node0);
-        g.addNode(node1);
-        Set<GraphNode<String, String>> parents = new HashSet<>();
-        assertTrue("n.getParents() should be empty", n.getParents().isEmpty());
-        GraphEdge<String, String> e = new GraphEdge<String, String>("e", node0, n);
-        g.addEdge(e);
-        parents.add(node0);
-        assertEquals("n.getParents() should have one", parents, n.getParents());
-        GraphEdge<String, String> e1 = new GraphEdge<String, String>("e1", node1, n);
-        g.addEdge(e1);
-        parents.add(node1);
-        assertEquals("n.getParents() should have two", parents, n.getParents());
-    }
+    //@Test
+    //public void testGetParents() {
+    //    Graph<String, String> g = new Graph<String, String>();
+    //    GraphNode<String, String> n = new GraphNode<String, String>("n");
+    //    g.addNode(n);
+    //    g.addNode(node0);
+    //    g.addNode(node1);
+    //    Set<GraphNode<String, String>> parents = new HashSet<>();
+    //    assertTrue("n.getParents() should be empty", n.getParents().isEmpty());
+     //   GraphEdge<String, String> e = new GraphEdge<String, String>("e", node0, n);
+     //   g.addEdge(e);
+     //   parents.add(node0);
+    //    assertEquals("n.getParents() should have one", parents, n.getParents());
+     //   GraphEdge<String, String> e1 = new GraphEdge<String, String>("e1", node1, n);
+    //    g.addEdge(e1);
+    //    parents.add(node1);
+    //    assertEquals("n.getParents() should have two", parents, n.getParents());
+    //}
 
     /** Test to check that GraphNode.getChildren() is implemented correctly */
     @Test

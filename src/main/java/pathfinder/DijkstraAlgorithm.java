@@ -14,7 +14,7 @@ public class DijkstraAlgorithm {
         // add path from start to itself to active
         Path<GraphNode<String, Double>> self = new Path<GraphNode<String, Double>>(start);
         active.add(self);
-        finished.add(self.getEnd());
+        //finished.add(self.getEnd());
         while(!active.isEmpty()) {
             // minPath = lowest cost active path
             Path<GraphNode<String, Double>> minPath = active.remove();

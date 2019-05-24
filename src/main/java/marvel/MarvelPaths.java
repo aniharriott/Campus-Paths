@@ -19,22 +19,29 @@ public class MarvelPaths {
                 "want your path to end at: ");
         String end = console.nextLine();
         List<GraphNode<String, String>> path = findPath(start, end, g);
-
         System.out.println("path from " + start + " to " + end + ":");
         if (path == null) {
             System.out.println("no path found");
-        } //else if (nodes.get(0).getLabel().equals("Bad start node")) {
-        //  output.println("unknown character " + node1);
-        //} else if (nodes.get(0).getLabel().equals("Bad destination node") ||
-        //        nodes.get(1).getLabel().equals("Bad destination node")) {
-        //  output.println("unknown character " + node2);
-        //}
+        } else if ((path.size() >= 1) && path.get(0).getLabel().equals("Bad start node")) {
+            System.out.println("unknown character " + start);
+        } else if ((path.size() >= 1) && path.get(0).getLabel().equals("Bad destination node")) {
+            System.out.println("unknown character " + end);
+        } else if ((path.size() - 1 >= 1) && (path.get(0).getLabel().equals("Bad destination node") ||
+                path.get(1).getLabel().equals("Bad destination node"))) {
+            System.out.println("unknown character " + start);
+        }
         else if (!path.isEmpty()){
-            path.add(0, new GraphNode<String, String>(start));
-            for(int i = 0; i < path.size()-1; i++) {
+            GraphNode<String, String> node1 = null;
+            for (GraphNode<String, String> n : g.listNodes()) {
+                if (n.getLabel().equals(start)) {
+                    node1 = n;
+                }
+            }
+            path.add(0, node1);
+            for (int i = 0; i < path.size()-1; i++) {
                 System.out.print(path.get(i).getLabel() + " to " + path.get(i+1).getLabel());
-                for(GraphEdge<String, String> e : path.get(i+1).getInComing()) {
-                    if (e.getSource().getLabel().equals(path.get(i).getLabel())) {
+                for(GraphEdge<String, String> e : path.get(i).getOutGoing()) {
+                    if (e.getDestination().equals(path.get(i+1))) {
                         System.out.print(" via " + e.getLabel());
                     }
                 }

@@ -2,6 +2,10 @@ package graph;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * <b>Graph</b> represents a mutable directed graph represented by
@@ -16,7 +20,7 @@ import java.util.HashSet;
 public class Graph<NodeType, EdgeType> {
 
     /** All the nodes in the graph */
-    private Set<GraphNode<NodeType, EdgeType>> nodes;
+    private Map<NodeType, GraphNode<NodeType, EdgeType>> nodes;
     /** All the edges in the graph */
     private Set<GraphEdge<EdgeType, NodeType>> edges;
     /** boolean value used for testing levels */
@@ -41,7 +45,7 @@ public class Graph<NodeType, EdgeType> {
      * @spec.effects Constructs a new Graph g with no nodes.
      */
     public Graph() {
-        nodes = new HashSet<GraphNode<NodeType, EdgeType>>();
+        nodes = new HashMap<NodeType, GraphNode<NodeType, EdgeType>>();
         edges = new HashSet<GraphEdge<EdgeType, NodeType>>();
         checkRep();
     }
@@ -50,26 +54,28 @@ public class Graph<NodeType, EdgeType> {
      * Adds an edge to this Graph.
      *
      * @param e the edge to be added to the graph
-     * @spec.requires both nodes passed must already be contained in this graph, and
+     * @spec.requires both nodes of edge must already be contained in this graph, and
      * the edge to be added cannot be a duplicate
      * @spec.modifies this
      * @spec.effects adds an edge to this graph
-     * @throws IllegalArgumentException if either node passed is not already contained in
+     * @throws IllegalArgumentException if either node of edge is not already contained in
      * this graph
      */
     public void addEdge(GraphEdge<EdgeType, NodeType> e) {
         checkRep();
-        if (!nodes.contains(e.getDestination()) || !nodes.contains(e.getSource())) {
+        if (!nodes.containsKey(e.getDestination().getLabel()) || !nodes.containsKey(e.getSource().getLabel())) {
             throw new IllegalArgumentException("nodes must already be contained in this graph");
         }
-        for (GraphNode<NodeType, EdgeType> n : nodes) {
-            if (n.equals(e.getSource())) {
-                n.addOutGoing(e);
-            }
-            if (n.equals(e.getDestination())) {
-                n.addInComing(e);
-            }
-        }
+        (nodes.get(e.getSource().getLabel())).addOutGoing(e);
+        //(nodes.get(e.getDestination().getLabel())).addInComing(e);
+        //for (GraphNode<NodeType, EdgeType> n : nodes) {
+        //    if (n.equals(e.getSource())) {
+        //        n.addOutGoing(e);
+        //    }
+        //    if (n.equals(e.getDestination())) {
+        //        n.addInComing(e);
+        //    }
+        //}
         edges.add(e);
         checkRep();
     }
@@ -89,15 +95,14 @@ public class Graph<NodeType, EdgeType> {
         if (n == null) {
             throw new IllegalArgumentException("node cannot be null");
         }
-        boolean there = false;
-        for (GraphNode<NodeType, EdgeType> node : nodes) {
-            if (node.getLabel().equals(n.getLabel())) {
-                there = true;
-            }
-        }
-        if (!there) {
-            nodes.add(n);
-            edges.addAll(n.getInComing());
+        //for (GraphNode<NodeType, EdgeType> node : nodes) {
+        //    if (node.getLabel().equals(n.getLabel())) {
+        //        there = true;
+        //    }
+        //}
+        if (!nodes.containsKey(n.getLabel())) {
+            nodes.put(n.getLabel(), n);
+            //edges.addAll(n.getInComing());
             edges.addAll(n.getOutGoing());
         }
         checkRep();
@@ -113,15 +118,17 @@ public class Graph<NodeType, EdgeType> {
      */
     public void deleteEdge(GraphEdge<EdgeType, NodeType> e) {
         checkRep();
-        for (GraphNode<NodeType, EdgeType> n : nodes) {
-            Set<GraphEdge<EdgeType, NodeType>> in = n.getInComing();
-            Set<GraphEdge<EdgeType, NodeType>> out = n.getOutGoing();
-            if (in.contains(e)) {
-                n.deleteEdge(e);
-            } else if (out.contains(e)) {
-                n.deleteEdge(e);
-            }
-        }
+        (nodes.get(e.getDestination().getLabel())).deleteEdge(e);
+        (nodes.get(e.getSource().getLabel())).deleteEdge(e);
+        //for (GraphNode<NodeType, EdgeType> n : nodes) {
+        //    Set<GraphEdge<EdgeType, NodeType>> in = n.getInComing();
+        //    Set<GraphEdge<EdgeType, NodeType>> out = n.getOutGoing();
+        //    if (in.contains(e)) {
+        //        n.deleteEdge(e);
+        //    } else if (out.contains(e)) {
+        //        n.deleteEdge(e);
+        //    }
+        //}
         edges.remove(e);
         checkRep();
     }
@@ -137,16 +144,21 @@ public class Graph<NodeType, EdgeType> {
      */
     public void deleteNode(GraphNode<NodeType, EdgeType> n) {
         checkRep();
-        if (!nodes.contains(n)){
+        if (!nodes.containsKey(n.getLabel())){
             throw new IllegalArgumentException("node must be contained in this graph");
         } else {
-            for (GraphEdge<EdgeType, NodeType> e : n.getInComing()) {
-                deleteEdge(e);
-            }
+            //for (GraphEdge<EdgeType, NodeType> e : n.getInComing()) {
+            //    deleteEdge(e);
+            //}
             for (GraphEdge<EdgeType, NodeType> e : n.getOutGoing()) {
                 deleteEdge(e);
             }
-            nodes.remove(n);
+            for (GraphEdge<EdgeType, NodeType> e : edges) {
+                if (e.getDestination().equals(n)){
+                    edges.remove(e);
+                }
+            }
+            nodes.remove(n.getLabel());
         }
         checkRep();
     }
@@ -158,7 +170,7 @@ public class Graph<NodeType, EdgeType> {
      */
     public Set<GraphNode<NodeType, EdgeType>> listNodes() {
         Set<GraphNode<NodeType, EdgeType>> n = new HashSet<GraphNode<NodeType, EdgeType>>();
-        n.addAll(nodes);
+        n.addAll(nodes.values());
         return n;
     }
 
@@ -184,7 +196,7 @@ public class Graph<NodeType, EdgeType> {
      */
     public Set<GraphEdge<EdgeType, NodeType>> findConnections(GraphNode<NodeType, EdgeType> n1,
                                                               GraphNode<NodeType, EdgeType> n2) {
-        if (!nodes.contains(n1) || !nodes.contains(n2) || !n1.getChildren().contains(n2)) {
+        if (!nodes.containsKey(n1.getLabel()) || !nodes.containsKey(n2.getLabel()) || !n1.getChildren().contains(n2)) {
             return null;
         }
         return n1.findEdges(n2);
@@ -194,10 +206,9 @@ public class Graph<NodeType, EdgeType> {
     private void checkRep() {
         if (DEBUG) {
             assert nodes != null;
-
-            for (GraphNode<NodeType, EdgeType> n : nodes) {
-                assert n != null;
-            }
+            //for (GraphNode<NodeType, EdgeType> n : nodes) {
+            //    assert n != null;
+            //}
         }
     }
 }
