@@ -1,0 +1,13 @@
+# Test that findMinPath will return node not found
+
+created graph graph1
+
+added node n1 to graph1
+added node n2 to graph1
+added node n3 to graph1
+
+added edge 6.000 from n1 to n2 in graph1
+added edge 16.000 from n1 to n2 in graph1
+
+path from n4 to n4:
+unknown node n4

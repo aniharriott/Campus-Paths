@@ -205,10 +205,10 @@ public class GraphNode<T, EdgeType> {
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof GraphNode)) {
+        if (!(o instanceof GraphNode<?, ?>)) {
             return false;
         }
-        return this.label.equals(((GraphNode) o).getLabel());
+        return this.label.equals(((GraphNode<?, ?>) o).getLabel());
     }
 
     /**

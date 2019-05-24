@@ -84,12 +84,12 @@ public final class GraphEdge<T, NodeType> {
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof GraphEdge)) {
+        if (!(o instanceof GraphEdge<?, ?>)) {
             return false;
         }
-        return this.label.equals(((GraphEdge) o).getLabel()) &&
-                this.source.equals(((GraphEdge) o).getSource()) &&
-                this.destination.equals(((GraphEdge) o).getDestination());
+        return this.label.equals(((GraphEdge<?, ?>) o).getLabel()) &&
+                this.source.equals(((GraphEdge<?, ?>) o).getSource()) &&
+                this.destination.equals(((GraphEdge<?, ?>) o).getDestination());
     }
 
     /**
