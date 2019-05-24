@@ -145,16 +145,8 @@ public class PathfinderTestDriver {
 
   private void findPath(String graphName, String node1, String node2) {
     Graph<String, Double> g = graphs.get(graphName);
-    GraphNode<String, Double> start = null;
-    GraphNode<String, Double> dest = null;
-    for (GraphNode<String, Double> n : g.listNodes()) {
-      if (n.getLabel().equals(node1)) {
-        start = n;
-      }
-      if (n.getLabel().equals(node2)) {
-        dest = n;
-      }
-    }
+    GraphNode<String, Double> start = g.getNode(node1);
+    GraphNode<String, Double> dest = g.getNode(node2);
     output.println("path from " + node1 + " to " + node2 + ":");
     if (start == null) {
       output.println("unknown node " + node1);
@@ -163,17 +155,17 @@ public class PathfinderTestDriver {
       output.println("unknown node " + node2);
     }
     if ((start != null) && (dest != null)) {
-      Path<GraphNode<String, Double>> path = DijkstraAlgorithm.findMinPath(start, dest);
+      Path<String> path = DijkstraAlgorithm.findMinPath(node1, node2, g);
       if (path == null) {
         output.println("no path found");
       }
-      Double totalCost = 0.0;
+      double totalCost = 0.0;
       while ((path != null) && path.iterator().hasNext()) {
-        Path<GraphNode<String, Double>>.Segment curr = path.iterator().next();
-        //System.out.println(curr.getStart().getLabel());
+        Path<String>.Segment curr = path.iterator().next();
+        //System.out.println(curr.getStart());
         totalCost = totalCost + curr.getCost();
         Double cost = (curr.getCost()*1000)/1000;
-        output.println(curr.getStart().getLabel() + " to " + curr.getEnd().getLabel() +
+        output.println(curr.getStart() + " to " + curr.getEnd() +
                 String.format(" with weight of %.3f", cost));
       }
       output.println(String.format("total cost: %.3f", totalCost));
@@ -239,10 +231,10 @@ public class PathfinderTestDriver {
         n1 = node;
       }
     }
-    Double label = Double.valueOf(edgeLabel);
+    double label = Double.valueOf(edgeLabel);
     GraphEdge<Double, String> e = new GraphEdge<Double, String>(label, n, n1);
     g.addEdge(e);
-    output.println("added edge " + edgeLabel + " from " + parentName + " to " +
+    output.println(String.format("added edge %.3f", label) + " from " + parentName + " to " +
             childName + " in " + graphName);
   }
 

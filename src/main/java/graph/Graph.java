@@ -185,6 +185,14 @@ public class Graph<NodeType, EdgeType> {
         return e;
     }
 
+    public Set<GraphEdge<EdgeType, NodeType>> getEdges(NodeType n) {
+        return new HashSet<>(nodes.get(n).getOutGoing());
+    }
+
+    public GraphNode<NodeType, EdgeType> getNode(NodeType n) {
+        return nodes.get(n);
+    }
+
     /**
      * Returns the edges between the nodes.
      *
