@@ -1,0 +1,4 @@
+I changed the way data was stored in my Graph. I made it so that the nodes are stored in a map of node labels
+to node objects, and only "out going" edges are stored in the graph - all in one set. This made my graph a lot faster.
+I also added two methods to my graph, getEdges and getNode, so that I could more easily access specific nodes in the graph
+and the edges of a specific node. This made the use of my graph much simpler in other classes.

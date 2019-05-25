@@ -6,10 +6,10 @@ import java.util.*;
 /**
  * DijkstrasAlgorithm represents a class that can find the lowest cost path in a graph based on
  * path weight.
- *
- *
  */
 public class DijkstraAlgorithm {
+
+    // Not an ADT
 
     /**
      * Finds the lowest cost path between two nodes in the graph based on path weight.
@@ -29,6 +29,7 @@ public class DijkstraAlgorithm {
         // add path from start to itself to active
         Path<NodeType> self = new Path<NodeType>(start);
         active.add(self);
+        // Invariant: active = nodes not visited yet, finished = nodes visited
         while(!active.isEmpty()) {
             // minPath = lowest cost active path
             Path<NodeType> minPath = active.remove();
