@@ -12,8 +12,14 @@
 package pathfinder;
 
 import pathfinder.datastructures.*;
+import pathfinder.parser.CampusBuilding;
+import pathfinder.parser.CampusPath;
+import pathfinder.parser.CampusPathsParser;
 
 import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import graph.*;
 
 /*
 In the pathfinder homework, the text user interface calls these methods to talk
@@ -32,6 +38,10 @@ different ways, without requiring a lot of work to change things over.
  */
 public class ModelConnector {
 
+  private Graph<Point, Double> graph;
+  private List<CampusBuilding> buildings;
+  private List<CampusPath> paths;
+
   /**
    * Creates a new {@link ModelConnector} and initializes it to contain data about
    * pathways and buildings or locations of interest on the campus of the University
@@ -39,13 +49,50 @@ public class ModelConnector {
    * and prepared, and any method may be called on this object to query the data.
    */
   public ModelConnector() {
-    // TODO: You'll want to do things like read in the campus data and assemble your graph.
-    // Remember the tenets of design that you've learned. You shouldn't necessarily do everything
-    // you need for the model in this one constructor, factor code out to helper methods or
-    // classes to work with your design best. The only thing that needs to remain the
-    // same is the name of this class and the four method signatures below, because the
-    // Pathfinder application calls these methods in order to talk to your model.
-    // Change and add anything else as you'd like.
+    graph = new Graph<>();
+    // parse campus buildings --> nodes
+    buildings = CampusPathsParser.parseCampusBuildings();
+    // parse campus paths --> edges
+    paths = CampusPathsParser.parseCampusPaths();
+    // add intersections as nodes to graph
+    for (CampusPath p : paths) {
+      Point intersection1 = new Point(p.getX1(), p.getY1());
+      Point intersection2 = new Point(p.getX2(), p.getY2());
+      if (graph.getNode(intersection1) == null) {
+        GraphNode<Point, Double> node1 = new GraphNode<>(intersection1);
+        graph.addNode(node1);
+      }
+      if (graph.getNode(intersection2) == null) {
+        GraphNode<Point, Double> node2 = new GraphNode<>(intersection2);
+        graph.addNode(node2);
+      }
+    }
+    // add paths edges to graph
+    for (CampusPath p : paths) {
+      Double label =p.getDistance();
+      GraphEdge<Double, Point> edge = new GraphEdge<>(label, getSource(p), getDest(p));
+      graph.addEdge(edge);
+    }
+  }
+
+  private GraphNode<Point, Double> getSource(CampusPath p) {
+    GraphNode<Point, Double> source = null;
+    for (GraphNode<Point, Double> n : graph.listNodes()){
+      if (n.getLabel().getX() == p.getX1() && n.getLabel().getY() == p.getY1()) {
+        source = n;
+      }
+    }
+    return source;
+  }
+
+  private GraphNode<Point, Double> getDest(CampusPath p) {
+    GraphNode<Point, Double> dest = null;
+    for (GraphNode<Point, Double> n : graph.listNodes()){
+      if (n.getLabel().getX() == p.getX2() && n.getLabel().getY() == p.getY2()) {
+        dest = n;
+      }
+    }
+    return dest;
   }
 
   /**
@@ -53,9 +100,13 @@ public class ModelConnector {
    * @return {@literal true} iff the short name provided exists in this campus map.
    */
   public boolean shortNameExists(String shortName) {
-    // TODO: Implement this method to talk to your model, then remove the exception below.
-
-    throw new RuntimeException("shortNameExists not implemented yet.");
+    boolean exists = false;
+    for (CampusBuilding b : buildings) {
+      if (b.getShortName().equals(shortName)) {
+        exists = true;
+      }
+    }
+    return exists;
   }
 
   /**
@@ -64,18 +115,27 @@ public class ModelConnector {
    * @throws IllegalArgumentException if the short name provided does not exist.
    */
   public String longNameForShort(String shortName) {
-    // TODO: Implement this method to talk to your model, then remove the exception below.
-
-    throw new RuntimeException("longNameForShort not implemented yet.");
+    if (!shortNameExists(shortName)) {
+      throw new IllegalArgumentException("name does not exist");
+    }
+    String name = null;
+    for (CampusBuilding b : buildings) {
+      if (b.getShortName().equals(shortName)){
+        name = b.getLongName();
+      }
+    }
+    return name;
   }
 
   /**
    * @return The mapping from all the buildings' short names to their long names in this campus map.
    */
   public Map<String, String> buildingNames() {
-    // TODO: Implement this method to talk to your model, then remove the exception below.
-
-    throw new RuntimeException("buildingNames not implemented yet.");
+    Map<String, String> names = new HashMap<>();
+    for (CampusBuilding b : buildings) {
+      names.put(b.getShortName(), b.getLongName());
+    }
+    return names;
   }
 
   /**
@@ -90,9 +150,26 @@ public class ModelConnector {
    *                                  this campus map.
    */
   public Path<Point> findShortestPath(String startShortName, String endShortName) {
-    // TODO: Implement this method to talk to your model, then remove the exception below.
+    if (startShortName == null || endShortName == null || !shortNameExists(startShortName) || ! shortNameExists(endShortName)){
+      throw new IllegalArgumentException("short names must be valid");
+    }
+    // Dijkstra's algorithm
+    // make a start point
+    CampusBuilding s = getBuilding(startShortName);
+    CampusBuilding d = getBuilding(endShortName);
+    Point start = new Point(s.getX(), s.getY());
+    // make an end point
+    Point end = new Point(d.getX(), d.getY());
+    return DijkstraAlgorithm.findMinPath(start, end, graph);
+  }
 
-    throw new RuntimeException("findShortestPath not implemented yet.");
+  private CampusBuilding getBuilding (String shortName) {
+    for (CampusBuilding b : buildings) {
+      if (b.getShortName().equals(shortName)) {
+        return b;
+      }
+    }
+    return null;
   }
 
 }
