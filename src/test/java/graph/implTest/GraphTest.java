@@ -214,4 +214,26 @@ public final class GraphTest {
         assertTrue("deleting child node should also delete edges to it",
                 g.listEdges().isEmpty());
     }
+
+    /** Test to check get edges works */
+    @Test
+    public void testGetEdges() {
+        Graph<String, String> g = new Graph<String, String>();
+        GraphNode<String, String> n = new GraphNode<String, String>("n");
+        GraphNode<String, String> n1 = new GraphNode<String, String>("n1");
+        g.addNode(n);
+        g.addNode(n1);
+        GraphEdge<String, String> e = new GraphEdge<String, String>("e", n, n1);
+        g.addEdge(e);
+        assertEquals("not enough edges", 1, g.getEdges("n").size());
+    }
+
+    /** Test to check that get node works */
+    @Test
+    public void testGetNode() {
+        Graph<String, String> g = new Graph<String, String>();
+        GraphNode<String, String> n = new GraphNode<String, String>("n");
+        g.addNode(n);
+        assertEquals("these nodes aren't equal", n, g.getNode("n"));
+    }
 }

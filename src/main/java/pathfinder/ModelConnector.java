@@ -38,9 +38,10 @@ different ways, without requiring a lot of work to change things over.
  */
 public class ModelConnector {
 
+  /** graph of the campus map data */
   private Graph<Point, Double> graph;
+  /** list of all the campus buildings */
   private List<CampusBuilding> buildings;
-  private List<CampusPath> paths;
 
   /**
    * Creates a new {@link ModelConnector} and initializes it to contain data about
@@ -53,7 +54,7 @@ public class ModelConnector {
     // parse campus buildings --> nodes
     buildings = CampusPathsParser.parseCampusBuildings();
     // parse campus paths --> edges
-    paths = CampusPathsParser.parseCampusPaths();
+    List<CampusPath> paths = CampusPathsParser.parseCampusPaths();
     // add intersections as nodes to graph
     for (CampusPath p : paths) {
       Point intersection1 = new Point(p.getX1(), p.getY1());
@@ -75,6 +76,12 @@ public class ModelConnector {
     }
   }
 
+  /**
+   * Finds the source of the given path.
+   *
+   * @param p the path to examine
+   * @return the source of this path, returns null if not found.
+   */
   private GraphNode<Point, Double> getSource(CampusPath p) {
     GraphNode<Point, Double> source = null;
     for (GraphNode<Point, Double> n : graph.listNodes()){
@@ -85,6 +92,12 @@ public class ModelConnector {
     return source;
   }
 
+  /**
+   * Finds the destination of the given path.
+   *
+   * @param p the path to examine
+   * @return the destination of this path, returns null if not found.
+   */
   private GraphNode<Point, Double> getDest(CampusPath p) {
     GraphNode<Point, Double> dest = null;
     for (GraphNode<Point, Double> n : graph.listNodes()){
@@ -150,7 +163,8 @@ public class ModelConnector {
    *                                  this campus map.
    */
   public Path<Point> findShortestPath(String startShortName, String endShortName) {
-    if (startShortName == null || endShortName == null || !shortNameExists(startShortName) || ! shortNameExists(endShortName)){
+    if (startShortName == null || endShortName == null || !shortNameExists(startShortName)
+            || ! shortNameExists(endShortName)){
       throw new IllegalArgumentException("short names must be valid");
     }
     // Dijkstra's algorithm
@@ -163,6 +177,12 @@ public class ModelConnector {
     return DijkstraAlgorithm.findMinPath(start, end, graph);
   }
 
+  /**
+   * Finds the building in this map of the given short name.
+   *
+   * @param shortName the short name of the building to be found
+   * @return the building with the short name given, returns null if not found.
+   */
   private CampusBuilding getBuilding (String shortName) {
     for (CampusBuilding b : buildings) {
       if (b.getShortName().equals(shortName)) {

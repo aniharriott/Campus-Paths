@@ -19,6 +19,9 @@ import java.util.List;
  * This represents an immutable path between two cartesian coordinate points, particularly
  * {@link Path#getStart()} and {@link Path#getEnd()}. Also contains a cached
  * version of the total cost along this path, for efficient repeated access.
+ *
+ * @param <T> the type parameter of the path
+ *
  */
 public class Path<T> implements Iterable<Path<T>.Segment> {
 

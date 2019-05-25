@@ -8,6 +8,9 @@ package graph;
  * <p>A GraphEdge cannot have a null source node or destination node, but the node this edge
  * points to and from can be the same.
  *
+ * @param <T> the type parameter of the edge
+ * @param <NodeType> the type parameter of the nodes
+ *
  */
 
 public final class GraphEdge<T, NodeType> {

@@ -2,8 +2,6 @@ package graph;
 
 import java.util.Set;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -12,6 +10,9 @@ import java.util.HashMap;
  * a set of unique nodes.
  *
  * <p>A Graph can be empty but it cannot be null.
+ *
+ * @param <NodeType> the type parameter of the nodes
+ * @param <EdgeType> the type parameter of the edges
  *
  * <p>Abstract Invariant:
  * A graph cannot be null, and none of its nodes can be null.
@@ -67,15 +68,6 @@ public class Graph<NodeType, EdgeType> {
             throw new IllegalArgumentException("nodes must already be contained in this graph");
         }
         (nodes.get(e.getSource().getLabel())).addOutGoing(e);
-        //(nodes.get(e.getDestination().getLabel())).addInComing(e);
-        //for (GraphNode<NodeType, EdgeType> n : nodes) {
-        //    if (n.equals(e.getSource())) {
-        //        n.addOutGoing(e);
-        //    }
-        //    if (n.equals(e.getDestination())) {
-        //        n.addInComing(e);
-        //    }
-        //}
         edges.add(e);
         checkRep();
     }
@@ -95,14 +87,8 @@ public class Graph<NodeType, EdgeType> {
         if (n == null) {
             throw new IllegalArgumentException("node cannot be null");
         }
-        //for (GraphNode<NodeType, EdgeType> node : nodes) {
-        //    if (node.getLabel().equals(n.getLabel())) {
-        //        there = true;
-        //    }
-        //}
         if (!nodes.containsKey(n.getLabel())) {
             nodes.put(n.getLabel(), n);
-            //edges.addAll(n.getInComing());
             edges.addAll(n.getOutGoing());
         }
         checkRep();
@@ -120,15 +106,6 @@ public class Graph<NodeType, EdgeType> {
         checkRep();
         (nodes.get(e.getDestination().getLabel())).deleteEdge(e);
         (nodes.get(e.getSource().getLabel())).deleteEdge(e);
-        //for (GraphNode<NodeType, EdgeType> n : nodes) {
-        //    Set<GraphEdge<EdgeType, NodeType>> in = n.getInComing();
-        //    Set<GraphEdge<EdgeType, NodeType>> out = n.getOutGoing();
-        //    if (in.contains(e)) {
-        //        n.deleteEdge(e);
-        //    } else if (out.contains(e)) {
-        //        n.deleteEdge(e);
-        //    }
-        //}
         edges.remove(e);
         checkRep();
     }
@@ -147,9 +124,6 @@ public class Graph<NodeType, EdgeType> {
         if (!nodes.containsKey(n.getLabel())){
             throw new IllegalArgumentException("node must be contained in this graph");
         } else {
-            //for (GraphEdge<EdgeType, NodeType> e : n.getInComing()) {
-            //    deleteEdge(e);
-            //}
             for (GraphEdge<EdgeType, NodeType> e : n.getOutGoing()) {
                 deleteEdge(e);
             }
@@ -185,10 +159,22 @@ public class Graph<NodeType, EdgeType> {
         return e;
     }
 
+    /**
+     * Returns a set of all the edges out going from the given node.
+     *
+     * @param n the node name to find all the out going edges of
+     * @return a set of all the edges out going from n
+     */
     public Set<GraphEdge<EdgeType, NodeType>> getEdges(NodeType n) {
         return new HashSet<>(nodes.get(n).getOutGoing());
     }
 
+    /**
+     * Returns the node associated with the given type name.
+     *
+     * @param n the node name to find in this graph
+     * @return the node associated with n
+     */
     public GraphNode<NodeType, EdgeType> getNode(NodeType n) {
         return nodes.get(n);
     }
@@ -214,9 +200,9 @@ public class Graph<NodeType, EdgeType> {
     private void checkRep() {
         if (DEBUG) {
             assert nodes != null;
-            //for (GraphNode<NodeType, EdgeType> n : nodes) {
-            //    assert n != null;
-            //}
+            for (NodeType n : nodes.keySet()) {
+                assert n != null;
+            }
         }
     }
 }
