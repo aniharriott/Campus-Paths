@@ -15,15 +15,21 @@ import TextField from '@material-ui/core/TextField';
 import React, {Component} from 'react';
 
 class GridSizePicker extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+        value: 0
+    }
+  }
   render() {
     return (
       <div className="center-text">
-        <p>Pick the Grid Size:</p>
+      <p>Pick the Grid Size:</p>
         <TextField
           id={this.props.id}
           label={this.props.label}
-          value={this.props.value}
           onChange={this.props.onChange}
+          //çvalue={this.state.value}
           type="number"
           className={this.props.className}
           InputLabelProps={{
