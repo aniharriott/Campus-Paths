@@ -21,7 +21,14 @@ class GridSizePicker extends Component {
     this.increment = this.increment.bind(this);
   }
   increment(event) {
-    this.setState({value: event.target.value});
+    var num = event.target.value
+    if (num > 200) {
+        this.setState({value: 200})
+    } else if (num < 0) {
+        this.setState({value: 0})
+    } else {
+        this.setState({value: event.target.value});
+    }
   }
   render() {
     return (
