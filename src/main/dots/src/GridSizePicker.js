@@ -17,9 +17,11 @@ import React, {Component} from 'react';
 class GridSizePicker extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-        value: 0
-    }
+    this.state = {value: 0};
+    this.increment = this.increment.bind(this);
+  }
+  increment(event) {
+    this.setState({value: event.target.value});
   }
   render() {
     return (
@@ -28,8 +30,8 @@ class GridSizePicker extends Component {
         <TextField
           id={this.props.id}
           label={this.props.label}
-          onChange={this.props.onChange}
-          //çvalue={this.state.value}
+          onChange={this.increment}
+          value={this.state.value}
           type="number"
           className={this.props.className}
           InputLabelProps={{
