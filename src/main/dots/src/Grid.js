@@ -44,11 +44,18 @@ class Grid extends Component {
   };
 
   getCoordinates = () => {
-    return [
-      [100, 100], [100, 200], [100, 300],
-      [200, 100], [200, 200], [200, 300],
-      [300, 100], [300, 200], [300, 300]
-    ];
+    const gridSize = this.props.size;
+    const dist = 400/(parseInt(gridSize)+1);
+    let array = [];
+    for (let i = 1; i <= gridSize; i++) {
+        for (let j = 1; j <= gridSize; j++) {
+            let tempArray = [];
+            tempArray.push(i*dist);
+            tempArray.push(j*dist);
+            array.push(tempArray);
+        }
+    }
+    return array;
   };
 
   drawCircle = (ctx, coordinate) => {
@@ -61,7 +68,7 @@ class Grid extends Component {
     return (
       <div id="canvas-div">
         <canvas ref={this.canvasReference} width={this.props.width} height={this.props.height} />
-        <div className="center-text">Current Grid Size: 3 </div>
+        <div className="center-text">Current Grid Size: {this.props.size} </div>
         <Button color="primary" onClick={() => { console.log('onClick'); }} value="Draw" />
         <Button color="secondary" onClick={() => { console.log('onClick'); }} value="Clear" />
       </div>

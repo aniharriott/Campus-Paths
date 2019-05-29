@@ -40,7 +40,7 @@ class MainContainer extends Component {
     return (
       <div>
         <GridSizePicker value={this.state.value} onChange={this.increment} />
-        <Grid size={this.state.size} width={gridSize} height={gridSize} />
+        <Grid size={this.state.value} width={gridSize} height={gridSize} />
         <EdgeList value={this.state.edges} rows={5} />
       </div>
     );
