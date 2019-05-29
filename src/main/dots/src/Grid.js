@@ -61,7 +61,7 @@ class Grid extends Component {
     return (
       <div id="canvas-div">
         <canvas ref={this.canvasReference} width={this.props.width} height={this.props.height} />
-        <div className="center-text"> Current Grid Size: 3 </div>
+        <div className="center-text">Current Grid Size: 3 </div>
         <Button color="primary" onClick={() => { console.log('onClick'); }} value="Draw" />
         <Button color="secondary" onClick={() => { console.log('onClick'); }} value="Clear" />
       </div>

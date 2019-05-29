@@ -21,15 +21,25 @@ class MainContainer extends Component {
     super(props);
     this.state = {
       size: 3,
-      edges: ""
+      edges: "",
+      value: 0
     }
   }
-
+  increment = (event) => {
+        var num = event.target.value
+            if (num > 200) {
+                this.setState({value: 200});
+            } else if (num < 0) {
+                this.setState({value: 0});
+            } else {
+                this.setState({value: event.target.value});
+            }
+      }
   render() {
     let gridSize = 400;
     return (
       <div>
-        <GridSizePicker value={3} onChange={() => { console.log('onChange'); }} />
+        <GridSizePicker value={this.state.value} onChange={this.increment} />
         <Grid size={this.state.size} width={gridSize} height={gridSize} />
         <EdgeList value={this.state.edges} rows={5} />
       </div>
