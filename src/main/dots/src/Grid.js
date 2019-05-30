@@ -44,8 +44,8 @@ class Grid extends Component {
   };
 
   getCoordinates = () => {
-    const gridSize = this.props.size;
-    const dist = 400/(parseInt(gridSize)+1);
+    const gridSize = parseInt(this.props.size);
+    const dist = 400/(gridSize+1);
     let array = [];
     for (let i = 1; i <= gridSize; i++) {
         for (let j = 1; j <= gridSize; j++) {
@@ -64,13 +64,39 @@ class Grid extends Component {
     ctx.fill();
   };
 
+  drawLines = () => {
+    let ctx = this.canvasReference.current.getContext('2d');
+    const dist = 400/(parseInt(this.props.size)+1);
+    let inputString = this.props.edges;
+    let totalArray = inputString.split("\n");
+    console.log(totalArray);
+    for (let i = 0; i < totalArray.length; i++) { // for each line input
+        console.log("test");
+        let line = totalArray[i].split(" "); // array of two points and a color
+        let point1 = line[0].split(",");
+        let point2 = line[1].split(",");
+        let color = line[2];
+        console.log(color);
+        // draw the line
+        let x1 = (parseInt(point1[0])+1)*dist;
+        let y1 = (parseInt(point1[1])+1)*dist;
+        let x2 = (parseInt(point2[0])+1)*dist;
+        let y2 = (parseInt(point2[1])+1)*dist;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+    }
+  }
+
   render() {
     return (
       <div id="canvas-div">
         <canvas ref={this.canvasReference} width={this.props.width} height={this.props.height} />
         <div className="center-text">Current Grid Size: {this.props.size} </div>
-        <Button color="primary" onClick={() => { console.log('onClick'); }} value="Draw" />
-        <Button color="secondary" onClick={() => { console.log('onClick'); }} value="Clear" />
+        <Button color="primary" onClick={this.drawLines} value="Draw" />
+        <Button color="secondary" onClick={this.redraw} value="Clear" />
       </div>
     );
   }

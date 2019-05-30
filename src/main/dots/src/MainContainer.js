@@ -20,28 +20,34 @@ class MainContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      size: 3,
+      //size: 3,
       edges: "",
       value: 0
     }
   }
+
   increment = (event) => {
-        var num = event.target.value
-            if (num > 200) {
-                this.setState({value: 200});
-            } else if (num < 0) {
-                this.setState({value: 0});
-            } else {
-                this.setState({value: event.target.value});
-            }
+    var num = event.target.value
+        if (num > 200) {
+            this.setState({value: 200});
+        } else if (num < 0) {
+            this.setState({value: 0});
+        } else {
+            this.setState({value: event.target.value});
+        }
       }
+
+  edgeChange = (event) => {
+    this.setState({edges: event.target.value});
+  }
+
   render() {
     let gridSize = 400;
     return (
       <div>
         <GridSizePicker value={this.state.value} onChange={this.increment} />
-        <Grid size={this.state.value} width={gridSize} height={gridSize} />
-        <EdgeList value={this.state.edges} rows={5} />
+        <Grid size={this.state.value} width={gridSize} height={gridSize} edges={this.state.edges}/>
+        <EdgeList value={this.state.edges} rows={5} onChange={this.edgeChange} />
       </div>
     );
   }
