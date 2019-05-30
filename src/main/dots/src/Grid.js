@@ -69,24 +69,33 @@ class Grid extends Component {
     const dist = 400/(parseInt(this.props.size)+1);
     let inputString = this.props.edges;
     let totalArray = inputString.split("\n");
-    console.log(totalArray);
     for (let i = 0; i < totalArray.length; i++) { // for each line input
-        console.log("test");
         let line = totalArray[i].split(" "); // array of two points and a color
-        let point1 = line[0].split(",");
-        let point2 = line[1].split(",");
-        let color = line[2];
-        console.log(color);
-        // draw the line
-        let x1 = (parseInt(point1[0])+1)*dist;
-        let y1 = (parseInt(point1[1])+1)*dist;
-        let x2 = (parseInt(point2[0])+1)*dist;
-        let y2 = (parseInt(point2[1])+1)*dist;
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = color;
-        ctx.stroke();
+        if (line.length !== 3) { // validates non-empty edge input
+            alert("edge input lines must be of the form: x1,y1 x2,y2 COLOR")
+        } else {
+            let point1 = line[0].split(",");
+            let point2 = line[1].split(",");
+            let color = line[2];
+
+            if (parseInt(point1[0]) > parseInt(this.props.size)-1 ||
+                parseInt(point1[1]) > parseInt(this.props.size)-1 ||
+                parseInt(point2[0]) > parseInt(this.props.size)-1 ||
+                parseInt(point2[1]) > parseInt(this.props.size)-1) {
+                    alert("edge points must be on the current grid");
+            } else {
+            // draw the line
+            let x1 = (parseInt(point1[0])+1)*dist;
+            let y1 = (parseInt(point1[1])+1)*dist;
+            let x2 = (parseInt(point2[0])+1)*dist;
+            let y2 = (parseInt(point2[1])+1)*dist;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+            }
+        }
     }
   }
 

@@ -20,7 +20,6 @@ class MainContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      //size: 3,
       edges: "",
       value: 0
     }
@@ -28,10 +27,13 @@ class MainContainer extends Component {
 
   increment = (event) => {
     var num = event.target.value
+    console.log(num.typeof);
         if (num > 200) {
             this.setState({value: 200});
+            alert("grid size must be 200 or less");
         } else if (num < 0) {
             this.setState({value: 0});
+            alert("grid size must be greater than 0");
         } else {
             this.setState({value: event.target.value});
         }
@@ -44,9 +46,12 @@ class MainContainer extends Component {
   render() {
     let gridSize = 400;
     return (
-      <div>
+      <div className="center-text">
         <GridSizePicker value={this.state.value} onChange={this.increment} />
         <Grid size={this.state.value} width={gridSize} height={gridSize} edges={this.state.edges}/>
+        <p>Edge input lines must be of the form:</p>
+        <p>x1,y1 x2,y2 COLOR</p>
+        <p>Edges will be drawn in black if an invalid color is input</p>
         <EdgeList value={this.state.edges} rows={5} onChange={this.edgeChange} />
       </div>
     );
