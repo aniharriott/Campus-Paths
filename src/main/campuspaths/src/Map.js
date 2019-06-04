@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 import "./Map.css";
+import LocationSelector from "./LocationSelector";
+import InputBox from "./InputBox";
+import Button from '@material-ui/core/Button';
+import * as fetch from "node-fetch";
 
 class Map extends Component {
 
@@ -12,15 +16,20 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+          start: "KNE",
+          end: "MGH"
+        }
     this.backgroundImage = new Image();
+    this.canvasReference = React.createRef();
     this.backgroundImage.onload = () => {
-      // TODO: Do something when the image is ready?
+      this.drawBackgroundImage();
     };
-    this.backgroundImage.src = ""; // TODO: Fill this in.
+    this.backgroundImage.src = "campus_map.jpg";
   }
 
-  drawBackgroundImage() {
-    let canvas = null; // TODO Fill this in with the canvas, not the context.
+  drawBackgroundImage () {
+    let canvas = this.canvasReference.current;
     let ctx = canvas.getContext("2d");
     //
     if (this.backgroundImage.complete) { // This means the image has been loaded.
@@ -30,15 +39,33 @@ class Map extends Component {
     }
   }
 
+  handleClick = () => {
+    this.drawPath();
+  }
+
+  drawPath = () => {
+
+  }
+
   render() {
     // TODO: You should put a <canvas> inside the <div>. It has a className
     // that's set up to center the canvas for you. See Map.css for more details.
     // Make sure you set up the React references for the canvas correctly so you
     // can get the canvas object and call methods on it.
     return (
-      <div className="canvasHolder">
-
-      </div>
+        <div className="canvasHolder">
+            <InputBox label="Start" />
+            <InputBox label="End" />
+            <Button color="primary" onClick={this.props.onClick}>
+                Draw Path
+            </Button>
+            <Button color="secondary" onClick={this.props.onClick}>
+                Clear Path
+            </Button>
+            <div className="canvas">
+                <canvas ref={this.canvasReference}/>
+            </div>
+        </div>
     )
   }
 }
