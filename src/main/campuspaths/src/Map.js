@@ -18,7 +18,8 @@ class Map extends Component {
     super(props);
     this.state = {
           start: "KNE",
-          end: "MGH"
+          end: "MGH",
+          test: "not working"
         }
     this.backgroundImage = new Image();
     this.canvasReference = React.createRef();
@@ -44,7 +45,18 @@ class Map extends Component {
   }
 
   drawPath = () => {
-
+    let responsePromise = fetch("http://localhost:4567/findPath/KNE/MGH");
+    let responseTextPromise = responsePromise.then((res) => {return res.text()});
+    responseTextPromise.then(
+        (responseText) => {
+            this.setState({
+                test: responseText
+            });
+        },
+        (error) => {
+            alert(error);
+        }
+    );
   }
 
   render() {
@@ -54,9 +66,10 @@ class Map extends Component {
     // can get the canvas object and call methods on it.
     return (
         <div className="canvasHolder">
+            {this.state.test}
             <InputBox label="Start" />
             <InputBox label="End" />
-            <Button color="primary" onClick={this.props.onClick}>
+            <Button color="primary" onClick={this.handleClick}>
                 Draw Path
             </Button>
             <Button color="secondary" onClick={this.props.onClick}>

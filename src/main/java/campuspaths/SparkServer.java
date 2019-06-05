@@ -18,7 +18,7 @@ public class SparkServer {
     ModelConnector connector = new ModelConnector();
     Gson gson = new Gson();
     //get a path between two given keywords
-    Spark.get("/:start/:end", new Route() {
+    Spark.get("/findPath/:start/:end", new Route() {
       @Override
       public Object handle(Request req, Response res) throws Exception{
         String start = req.params(":start");
@@ -27,7 +27,7 @@ public class SparkServer {
         return gson.toJson(path);
       }
     });
-    Spark.get("/:buildings", new Route() {
+    Spark.get("/findBuildings", new Route() {
       @Override
       public Object handle(Request req, Response res) throws Exception {
         return gson.toJson(connector.buildingNames());
