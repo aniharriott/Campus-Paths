@@ -15,11 +15,6 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-          start: "",
-          end: "",
-          path: ""
-        }
     this.backgroundImage = new Image();
     this.canvasReference = React.createRef();
     this.backgroundImage.onload = () => {
@@ -44,13 +39,10 @@ class Map extends Component {
   }
 
   drawPath = () => {
-    let responsePromise = fetch("http://localhost:4567/findPath/" + this.state.start + "/" + this.state.end);
+    let responsePromise = fetch("http://localhost:4567/findPath/" + this.props.start + "/" + this.props.end);
     let responseTextPromise = responsePromise.then((res) => {return res.json()});
     responseTextPromise.then(
         (responseText) => {
-            this.setState({
-                path: responseText.path[0].start.x
-            });
             for (let i = 0; i < responseText.path.length; i++) {
                 let x1 = responseText.path[i].start.x;
                 let y1 = responseText.path[i].start.y;
@@ -75,20 +67,9 @@ class Map extends Component {
     ctx.stroke();
   }
 
-  changeStart = (event) => {
-    this.setState({start: event.target.value});
-  }
-
-  changeEnd = (event) => {
-    this.setState({end: event.target.value});
-  }
-
   render() {
     return (
         <div className="canvasHolder">
-            {this.state.path}
-            <InputBox label="Start" value={this.state.start} onChange={this.changeStart} />
-            <InputBox label="End" value={this.state.end} onChange={this.changeEnd} />
             <Button color="primary" onClick={this.handleClick}>
                 Draw Path
             </Button>
