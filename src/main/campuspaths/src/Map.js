@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import "./Map.css";
-import LocationSelector from "./LocationSelector";
 import InputBox from "./InputBox";
 import Button from '@material-ui/core/Button';
 import * as fetch from "node-fetch";
@@ -17,9 +16,9 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-          start: "KNE",
-          end: "MGH",
-          test: "not working"
+          start: "",
+          end: "",
+          path: ""
         }
     this.backgroundImage = new Image();
     this.canvasReference = React.createRef();
@@ -45,13 +44,20 @@ class Map extends Component {
   }
 
   drawPath = () => {
-    let responsePromise = fetch("http://localhost:4567/findPath/KNE/MGH");
-    let responseTextPromise = responsePromise.then((res) => {return res.text()});
+    let responsePromise = fetch("http://localhost:4567/findPath/" + this.state.start + "/" + this.state.end);
+    let responseTextPromise = responsePromise.then((res) => {return res.json()});
     responseTextPromise.then(
         (responseText) => {
             this.setState({
-                test: responseText
+                path: responseText.path[0].start.x
             });
+            for (let i = 0; i < responseText.path.length; i++) {
+                let x1 = responseText.path[i].start.x;
+                let y1 = responseText.path[i].start.y;
+                let x2 = responseText.path[i].end.x;
+                let y2 = responseText.path[i].end.y;
+                this.drawLine(x1, y1, x2, y2);
+            }
         },
         (error) => {
             alert(error);
@@ -59,16 +65,30 @@ class Map extends Component {
     );
   }
 
+  drawLine = (x1, y1, x2, y2) => {
+    let ctx = this.canvasReference.current.getContext('2d');
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+  }
+
+  changeStart = (event) => {
+    this.setState({start: event.target.value});
+  }
+
+  changeEnd = (event) => {
+    this.setState({end: event.target.value});
+  }
+
   render() {
-    // TODO: You should put a <canvas> inside the <div>. It has a className
-    // that's set up to center the canvas for you. See Map.css for more details.
-    // Make sure you set up the React references for the canvas correctly so you
-    // can get the canvas object and call methods on it.
     return (
         <div className="canvasHolder">
-            {this.state.test}
-            <InputBox label="Start" />
-            <InputBox label="End" />
+            {this.state.path}
+            <InputBox label="Start" value={this.state.start} onChange={this.changeStart} />
+            <InputBox label="End" value={this.state.end} onChange={this.changeEnd} />
             <Button color="primary" onClick={this.handleClick}>
                 Draw Path
             </Button>
