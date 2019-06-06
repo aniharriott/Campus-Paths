@@ -159,12 +159,16 @@ public class MarvelTestDriver {
     output.println("path from " + node1 + " to " + node2 + ":");
     if (nodes == null) {
       output.println("no path found");
-    } else if ((nodes.size() >= 1) && nodes.get(0).getLabel().equals("Bad start node")) {
+    }
+    else if ((nodes.size() >= 2) && nodes.get(0).getLabel().equals("Bad start node") &&
+            nodes.get(1).getLabel().equals("Bad destination node")) {
       output.println("unknown character " + node1);
-    } else if ((nodes.size() >= 1) && nodes.get(0).getLabel().equals("Bad destination node")) {
       output.println("unknown character " + node2);
-    } else if ((nodes.size() - 1 >= 1) && (nodes.get(0).getLabel().equals("Bad destination node") ||
-            nodes.get(1).getLabel().equals("Bad destination node"))) {
+    }
+    else if ((nodes.size() >= 1) && nodes.get(0).getLabel().equals("Bad start node")) {
+      output.println("unknown character " + node1);
+    }
+    else if ((nodes.size() >= 1) && nodes.get(0).getLabel().equals("Bad destination node")) {
       output.println("unknown character " + node2);
     }
     else if (!nodes.isEmpty()){

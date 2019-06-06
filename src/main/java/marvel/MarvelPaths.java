@@ -22,13 +22,14 @@ public class MarvelPaths {
         System.out.println("path from " + start + " to " + end + ":");
         if (path == null) {
             System.out.println("no path found");
+        } else if ((path.size() - 1 >= 1) && (path.get(0).getLabel().equals("Bad start node") &&
+                path.get(1).getLabel().equals("Bad destination node"))) {
+            System.out.println("unknown character " + start);
+            System.out.println("unknown character" + end);
         } else if ((path.size() >= 1) && path.get(0).getLabel().equals("Bad start node")) {
             System.out.println("unknown character " + start);
         } else if ((path.size() >= 1) && path.get(0).getLabel().equals("Bad destination node")) {
             System.out.println("unknown character " + end);
-        } else if ((path.size() - 1 >= 1) && (path.get(0).getLabel().equals("Bad destination node") ||
-                path.get(1).getLabel().equals("Bad destination node"))) {
-            System.out.println("unknown character " + start);
         }
         else if (!path.isEmpty()){
             GraphNode<String, String> node1 = null;
@@ -82,7 +83,7 @@ public class MarvelPaths {
                 start = n;
             }
             if (n.getLabel().equals(d)) {
-                    dest = n;
+                dest = n;
             }
         }
 
