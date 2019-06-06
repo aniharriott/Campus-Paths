@@ -30,7 +30,7 @@ public class SparkServer {
     Spark.get("/findBuildings", new Route() {
       @Override
       public Object handle(Request req, Response res) throws Exception {
-        return gson.toJson(connector.buildingNames());
+        return gson.toJson(connector.buildingNames().keySet());
       }
     });
 

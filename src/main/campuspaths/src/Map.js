@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import "./Map.css";
-import InputBox from "./InputBox";
 import Button from '@material-ui/core/Button';
 import * as fetch from "node-fetch";
 
@@ -26,7 +25,6 @@ class Map extends Component {
   drawBackgroundImage () {
     let canvas = this.canvasReference.current;
     let ctx = canvas.getContext("2d");
-    //
     if (this.backgroundImage.complete) { // This means the image has been loaded.
       canvas.width = this.backgroundImage.width;
       canvas.height = this.backgroundImage.height;
@@ -34,7 +32,7 @@ class Map extends Component {
     }
   }
 
-  handleClick = () => {
+  handleDraw = () => {
     this.drawPath();
   }
 
@@ -52,7 +50,7 @@ class Map extends Component {
             }
         },
         (error) => {
-            alert(error);
+            alert("unknown building key, please type a new one");
         }
     );
   }
@@ -67,14 +65,28 @@ class Map extends Component {
     ctx.stroke();
   }
 
+  clearMap = () => {
+    this.redraw();
+    this.props.onChange();
+  }
+
+  redraw = () => {
+    let ctx = this.canvasReference.current.getContext('2d');
+    ctx.clearRect(0, 0, this.canvasReference.current.width, this.canvasReference.current.height);
+    this.backgroundImage.onload = () => {
+          this.drawBackgroundImage();
+    };
+    this.backgroundImage.src = "campus_map.jpg";
+  }
+
   render() {
     return (
         <div className="canvasHolder">
-            <Button color="primary" onClick={this.handleClick}>
+            <Button color="primary" onClick={this.handleDraw}>
                 Draw Path
             </Button>
-            <Button color="secondary" onClick={this.props.onClick}>
-                Clear Path
+            <Button color="secondary" onClick={this.clearMap}>
+                Reset
             </Button>
             <div className="canvas">
                 <canvas ref={this.canvasReference}/>

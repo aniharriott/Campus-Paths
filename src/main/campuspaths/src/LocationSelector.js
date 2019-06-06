@@ -3,15 +3,38 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 class LocationSelector extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: ""
+        }
+
+    }
+
+    getBuildings = () => {
+        return this.props.buildings.map(building => (
+            <MenuItem> {building} </MenuItem>
+        ));
+    }
+
+    onChange = (event) => {
+        this.setState({
+        value: event.target.value,
+        name: event.target.name
+        });
+    }
+
     render() {
         return (
           <div>
+          {this.getBuildings()}
           <Select
-          autoWidth="true"
           children={this.props.children}
-          onChange={this.props.onChange}
+          value={this.props.value}
+          onChange={this.onChange}
           >
-            <MenuItem value="">None</MenuItem>
+            {this.getBuildings()}
+            <MenuItem value="None">None</MenuItem>
             <MenuItem value="KNE">KNE</MenuItem>
             <MenuItem value="MGH">MGH</MenuItem>
           </Select>
