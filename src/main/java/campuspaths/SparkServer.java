@@ -33,13 +33,6 @@ public class SparkServer {
         return gson.toJson(path);
       }
     });
-    // returns all the buildings in this graph
-    Spark.get("/findBuildings", new Route() {
-      @Override
-      public Object handle(Request req, Response res) throws Exception {
-        return gson.toJson(connector.buildingNames());
-      }
-    });
 
   }
 }
