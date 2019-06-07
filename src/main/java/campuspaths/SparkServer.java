@@ -6,8 +6,14 @@ import spark.*;
 import pathfinder.datastructures.*;
 import com.google.gson.Gson;
 
+/**
+ * This class represents a server for retrieving information about a certain graph.
+ */
 public class SparkServer {
 
+  // Not an ADT
+
+  // Creates routes to retrieve path information and data from a created graph.
   public static void main(String[] args) {
     CORSFilter corsFilter = new CORSFilter();
     corsFilter.apply();
@@ -17,7 +23,7 @@ public class SparkServer {
     // You should leave these two lines at the very beginning of main().
     ModelConnector connector = new ModelConnector();
     Gson gson = new Gson();
-    //get a path between two given keywords
+    // get a path between two given keywords
     Spark.get("/findPath/:start/:end", new Route() {
       @Override
       public Object handle(Request req, Response res) throws Exception{
@@ -27,10 +33,11 @@ public class SparkServer {
         return gson.toJson(path);
       }
     });
+    // returns all the buildings in this graph
     Spark.get("/findBuildings", new Route() {
       @Override
       public Object handle(Request req, Response res) throws Exception {
-        return gson.toJson(connector.buildingNames().keySet());
+        return gson.toJson(connector.buildingNames());
       }
     });
 

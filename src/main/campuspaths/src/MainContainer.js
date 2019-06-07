@@ -9,8 +9,7 @@ class MainContainer extends Component {
         this.state = {
             start: "",
             end: "",
-            shortBuildings: [],
-            longBuildings: []
+            shortBuildings: []
         }
         this.getBuildings();
       }
@@ -21,8 +20,7 @@ class MainContainer extends Component {
         responseTextPromise.then(
             (responseText) => {
                 this.setState({
-                    shortBuildings: Object.keys(responseText),
-                    longBuildings: Object.values(responseText)
+                    shortBuildings: Object.values(responseText)
                 });
             },
             (error) => {
@@ -34,11 +32,9 @@ class MainContainer extends Component {
     printBuildings = () => {
         let string = [];
         for (let i = 0; i < this.state.shortBuildings.length; i++){
-            string.push(this.state.shortBuildings[i] + " = " + this.state.longBuildings[i]);
+            string.push(this.state.shortBuildings[i]);
         }
-        return string.map(building => (
-            <p>{building}</p>
-        ));
+        return string.toString();
     }
 
     changeStart = (event) => {
@@ -60,7 +56,6 @@ class MainContainer extends Component {
         return (
           <div className="center-text">
           <p>Building Key Options:</p>
-          <p>Key = Building</p>
           {this.printBuildings()}
           <InputBox label="Start" value={this.state.start} onChange={this.changeStart} />
           <InputBox label="End" value={this.state.end} onChange={this.changeEnd} />
